@@ -1,0 +1,179 @@
+[gd_scene load_steps=15 format=3 uid="uid://da4bwfluldc2"]
+
+[ext_resource type="PackedScene" uid="uid://b7cuxk0tu524c" path="res://scene/paddle.tscn" id="1_cvkn8"]
+[ext_resource type="Script" uid="uid://baescvx0fjk8m" path="res://scene/arena.gd" id="1_jw0wr"]
+[ext_resource type="PackedScene" uid="uid://dy4imfqlq1who" path="res://scene/ball.tscn" id="2_5ovl6"]
+[ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://res/smooth_bounce.phymat" id="3_nye2f"]
+[ext_resource type="LabelSettings" uid="uid://cty01tuoquvu8" path="res://res/score_label.tres" id="5_fc27u"]
+[ext_resource type="Theme" uid="uid://c21ro17htrkum" path="res://res/default_theme.tres" id="5_g0wi5"]
+[ext_resource type="LabelSettings" uid="uid://c7q4xxt1br0c2" path="res://res/medium_label.tres" id="6_vsg4v"]
+[ext_resource type="AudioStream" uid="uid://7o8rcntfmob7" path="res://res/coach_whistle.wav" id="7_jd8s6"]
+
+[sub_resource type="Curve2D" id="Curve2D_g0ahc"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 50, 850)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_cvkn8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1550, 850, 0, 0, 0, 0, 1550, 50)
+}
+point_count = 2
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5ovl6"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nye2f"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jw0wr"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fc27u"]
+normal = Vector2(-1, 0)
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_jw0wr")
+
+[node name="Path2DLeft" type="Path2D" parent="."]
+curve = SubResource("Curve2D_g0ahc")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2DLeft"]
+position = Vector2(50, 450)
+rotation = 1.5708
+progress = 400.0
+loop = false
+
+[node name="Path2DRight" type="Path2D" parent="."]
+curve = SubResource("Curve2D_cvkn8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2DRight"]
+position = Vector2(1550, 450)
+rotation = -1.5708
+progress = 400.0
+loop = false
+
+[node name="PaddleLeft" parent="." node_paths=PackedStringArray("path_follow") instance=ExtResource("1_cvkn8")]
+path_follow = NodePath("../Path2DLeft/PathFollow2D")
+
+[node name="PaddleRight" parent="." node_paths=PackedStringArray("path_follow") instance=ExtResource("1_cvkn8")]
+path_follow = NodePath("../Path2DRight/PathFollow2D")
+
+[node name="Ball" parent="." instance=ExtResource("2_5ovl6")]
+position = Vector2(800, 450)
+
+[node name="Boundry" type="Node2D" parent="."]
+
+[node name="Side" type="StaticBody2D" parent="Boundry"]
+physics_material_override = ExtResource("3_nye2f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/Side"]
+position = Vector2(800, 0)
+shape = SubResource("WorldBoundaryShape2D_5ovl6")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundry/Side"]
+position = Vector2(800, 900)
+shape = SubResource("WorldBoundaryShape2D_nye2f")
+
+[node name="Area2DPlayer1Home" type="Area2D" parent="Boundry"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/Area2DPlayer1Home"]
+position = Vector2(-50, 450)
+shape = SubResource("WorldBoundaryShape2D_jw0wr")
+
+[node name="Area2DPlayer2Home" type="Area2D" parent="Boundry"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/Area2DPlayer2Home"]
+position = Vector2(1650, 450)
+shape = SubResource("WorldBoundaryShape2D_fc27u")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_g0wi5")
+
+[node name="WinnerLabel" type="Label" parent="UILayer/UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 72.0
+grow_horizontal = 2
+size_flags_vertical = 0
+text = "winner"
+label_settings = ExtResource("6_vsg4v")
+horizontal_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="UILayer/UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -36.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press Enter to continue"
+label_settings = ExtResource("6_vsg4v")
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RoundLabel" type="Label" parent="UILayer/UI/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Round 9"
+label_settings = ExtResource("6_vsg4v")
+horizontal_alignment = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="UILayer/UI/MarginContainer"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="ScoreLabelLeft" type="Label" parent="UILayer/UI/MarginContainer/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "3"
+label_settings = ExtResource("5_fc27u")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabelRight" type="Label" parent="UILayer/UI/MarginContainer/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "5"
+label_settings = ExtResource("5_fc27u")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Whistle" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_jd8s6")
+max_polyphony = 3
+
+[connection signal="ball_served" from="PaddleLeft" to="." method="_on_paddle_player_1_ball_served"]
+[connection signal="ball_served" from="PaddleRight" to="." method="_on_paddle_player_2_ball_served"]
+[connection signal="out_of_bound" from="Ball" to="." method="_on_ball_out_of_bound"]
+[connection signal="stucked" from="Ball" to="." method="_on_ball_stucked"]
+[connection signal="body_entered" from="Boundry/Area2DPlayer1Home" to="." method="_on_area_2d_player_1_home_body_entered"]
+[connection signal="body_entered" from="Boundry/Area2DPlayer2Home" to="." method="_on_area_2d_player_2_home_body_entered"]

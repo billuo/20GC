@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://dy4imfqlq1who"]
+
+[ext_resource type="Script" uid="uid://d3jv2x24vemj8" path="res://scene/ball.gd" id="1_d8dhm"]
+[ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://res/smooth_bounce.phymat" id="1_h6iok"]
+[ext_resource type="AudioStream" uid="uid://dxebh8nanl3h1" path="res://res/bounce_1.wav" id="3_h45nl"]
+[ext_resource type="AudioStream" uid="uid://dj1ucas6tq4xv" path="res://res/bounce_2.wav" id="4_4gb3l"]
+[ext_resource type="AudioStream" uid="uid://ckd800kys6a6i" path="res://res/bounce_3.wav" id="5_wnvag"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4a1xm"]
+radius = 30.0
+
+[node name="Ball" type="RigidBody2D" groups=["ball"]]
+physics_material_override = ExtResource("1_h6iok")
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("1_d8dhm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4a1xm")
+
+[node name="Bounce1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_h45nl")
+volume_db = 3.0
+max_polyphony = 3
+
+[node name="Bounce2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_4gb3l")
+volume_db = 3.0
+max_polyphony = 3
+
+[node name="Bounce3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_wnvag")
+volume_db = 3.0
+max_polyphony = 3
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

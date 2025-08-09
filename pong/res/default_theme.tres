@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c21ro17htrkum"]
+
+[ext_resource type="FontFile" uid="uid://cnyk4hv1gag3n" path="res://res/Kenney Future.ttf" id="1_joxn1"]
+
+[resource]
+default_font = ExtResource("1_joxn1")
+default_font_size = 32
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10

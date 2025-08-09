@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://cajyluhxhd446"]
+
+[ext_resource type="PackedScene" uid="uid://b7cuxk0tu524c" path="res://scene/paddle.tscn" id="1_vdls4"]
+[ext_resource type="PackedScene" uid="uid://dy4imfqlq1who" path="res://scene/ball.tscn" id="2_lg57d"]
+
+[sub_resource type="Curve2D" id="Curve2D_g2wt4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 120, 96, 0, 0, 0, 0, 131, 825)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_vdls4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1500, 802, 0, 0, 0, 0, 1502, 81)
+}
+point_count = 2
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lg57d"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ccq0l"]
+normal = Vector2(0, 1)
+
+[node name="PaddleBall" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_g2wt4")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(125.5, 460.5)
+rotation = 1.55571
+progress = 364.542
+
+[node name="Path2D2" type="Path2D" parent="."]
+curve = SubResource("Curve2D_vdls4")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D2"]
+position = Vector2(1501, 441.5)
+rotation = -1.56802
+progress = 360.502
+
+[node name="Paddle" parent="." node_paths=PackedStringArray("path_follow") instance=ExtResource("1_vdls4")]
+path_follow = NodePath("../Path2D/PathFollow2D")
+controller = 2
+
+[node name="Paddle2" parent="." node_paths=PackedStringArray("path_follow") instance=ExtResource("1_vdls4")]
+path_follow = NodePath("../Path2D2/PathFollow2D")
+controller = 3
+
+[node name="Ball" parent="." instance=ExtResource("2_lg57d")]
+position = Vector2(783, 419)
+
+[node name="Boundry" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Boundry"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D"]
+position = Vector2(810, 873)
+shape = SubResource("WorldBoundaryShape2D_lg57d")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundry/StaticBody2D"]
+position = Vector2(813, 23)
+shape = SubResource("WorldBoundaryShape2D_ccq0l")
