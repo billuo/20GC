@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8fn7eu3rmvfw"]
+
+[ext_resource type="PackedScene" uid="uid://84e33sekd6ay" path="res://scene/player.tscn" id="1_3a1jv"]
+[ext_resource type="Script" uid="uid://bmmuy2ucob268" path="res://scene/stage.gd" id="1_d8w7t"]
+[ext_resource type="Texture2D" uid="uid://dnm2552f62t2s" path="res://asset/bg/backgroundForest.png" id="1_svt74"]
+[ext_resource type="Texture2D" uid="uid://dwh1bod2thgpf" path="res://icon.svg" id="2_c1lbh"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c1lbh"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vdh54"]
+normal = Vector2(0, 1)
+
+[node name="Stage" type="Node2D"]
+script = ExtResource("1_d8w7t")
+
+[node name="Parallax" type="ParallaxBackground" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="Parallax"]
+repeat_size = Vector2(1024, 0)
+autoscroll = Vector2(-100, 0)
+repeat_times = 3
+
+[node name="TextureRect" type="TextureRect" parent="Parallax/Parallax2D"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_svt74")
+
+[node name="Floor" type="StaticBody2D" parent="." groups=["obstacle"]]
+position = Vector2(0, 850)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("WorldBoundaryShape2D_c1lbh")
+
+[node name="TextureRect" type="TextureRect" parent="Floor"]
+offset_left = -100.0
+offset_right = 1700.0
+offset_bottom = 128.0
+texture = ExtResource("2_c1lbh")
+stretch_mode = 1
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+shape = SubResource("WorldBoundaryShape2D_vdh54")
+
+[node name="Player" parent="." instance=ExtResource("1_3a1jv")]
+position = Vector2(600, 300)
+
+[node name="Obstacles" type="Node2D" parent="."]
