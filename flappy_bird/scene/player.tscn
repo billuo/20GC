@@ -1,19 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://84e33sekd6ay"]
+[gd_scene load_steps=10 format=3 uid="uid://84e33sekd6ay"]
 
 [ext_resource type="Script" uid="uid://dpsdbph0i1ni4" path="res://scene/player.gd" id="1_hjaqi"]
-[ext_resource type="Texture2D" uid="uid://dwh1bod2thgpf" path="res://icon.svg" id="1_xo3ru"]
+[ext_resource type="Texture2D" uid="uid://dgfsy8h2cogvf" path="res://asset/fishGreen_dead.png" id="2_ct4mp"]
+[ext_resource type="Texture2D" uid="uid://bbquxusu54pf0" path="res://asset/fishGreen.png" id="2_fvtld"]
+[ext_resource type="Texture2D" uid="uid://dbat1htyvqg0c" path="res://asset/fishGreen_move.png" id="3_ct4mp"]
+[ext_resource type="AudioStream" uid="uid://bve8r1maibqjy" path="res://asset/water_drop_1.wav" id="5_hp4bs"]
+[ext_resource type="AudioStream" uid="uid://b553p3ah86yo6" path="res://asset/water_drop_2.wav" id="6_g2vtq"]
+[ext_resource type="AudioStream" uid="uid://f5hty7e3r31h" path="res://asset/water_drop_3.wav" id="7_2fvbb"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hjaqi"]
-size = Vector2(64, 64)
+[sub_resource type="SpriteFrames" id="SpriteFrames_xo3ru"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ct4mp")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fvtld")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ct4mp")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fvtld"]
+radius = 24.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_hjaqi")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_xo3ru")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(-0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_xo3ru")
+animation = &"move"
+autoplay = "move"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0)
-shape = SubResource("RectangleShape2D_hjaqi")
+shape = SubResource("CircleShape2D_fvtld")
+
+[node name="JumpSound1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_hp4bs")
+
+[node name="JumpSound2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_g2vtq")
+
+[node name="JumpSound3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_2fvbb")

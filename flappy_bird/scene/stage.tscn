@@ -1,29 +1,68 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8fn7eu3rmvfw"]
+[gd_scene load_steps=14 format=4 uid="uid://b8fn7eu3rmvfw"]
 
 [ext_resource type="PackedScene" uid="uid://84e33sekd6ay" path="res://scene/player.tscn" id="1_3a1jv"]
 [ext_resource type="Script" uid="uid://bmmuy2ucob268" path="res://scene/stage.gd" id="1_d8w7t"]
-[ext_resource type="Texture2D" uid="uid://dnm2552f62t2s" path="res://asset/bg/backgroundForest.png" id="1_svt74"]
-[ext_resource type="Texture2D" uid="uid://dwh1bod2thgpf" path="res://icon.svg" id="2_c1lbh"]
+[ext_resource type="Texture2D" uid="uid://7xk231nj566r" path="res://asset/backgroundEmpty.png" id="2_vdh54"]
+[ext_resource type="Texture2D" uid="uid://bmt1r03kxl6y6" path="res://asset/nauticalTile_069.png" id="4_vdh54"]
+[ext_resource type="TileSet" uid="uid://dg4lx2u4br6c6" path="res://asset/tile_set.tres" id="4_y15gs"]
+[ext_resource type="AudioStream" uid="uid://5fl6nu56kjjb" path="res://asset/ring.wav" id="6_opmqi"]
+[ext_resource type="Theme" uid="uid://e0m55voeknm7" path="res://asset/default_theme.tres" id="6_y15gs"]
+[ext_resource type="AudioStream" uid="uid://cbjlvib7kcqd8" path="res://asset/mixkit-retro-arcade-game-over-470.wav" id="7_vgrrk"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c1lbh"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vdh54"]
 normal = Vector2(0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_vgrrk"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_y15gs"]
+font_size = 128
+font_color = Color(0.853597, 0, 0.124506, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_opmqi"]
+font_size = 64
+font_color = Color(0.853597, 0, 0.124506, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_d8w7t")
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
 
-[node name="Parallax2D" type="Parallax2D" parent="Parallax"]
+[node name="Background" type="Parallax2D" parent="Parallax"]
 repeat_size = Vector2(1024, 0)
 autoscroll = Vector2(-100, 0)
 repeat_times = 3
 
-[node name="TextureRect" type="TextureRect" parent="Parallax/Parallax2D"]
+[node name="TextureRect" type="TextureRect" parent="Parallax/Background"]
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("1_svt74")
+texture = ExtResource("2_vdh54")
+
+[node name="Floor" type="Parallax2D" parent="Parallax"]
+repeat_size = Vector2(70, 0)
+autoscroll = Vector2(-300, 0)
+repeat_times = 45
+
+[node name="TextureRect2" type="TextureRect" parent="Parallax/Floor"]
+offset_top = 840.0
+offset_right = 70.0
+offset_bottom = 910.0
+texture = ExtResource("4_vdh54")
+
+[node name="ForegroundWater" type="Parallax2D" parent="Parallax"]
+repeat_size = Vector2(1610, 0)
+autoscroll = Vector2(-350, 0)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Parallax/ForegroundWater"]
+self_modulate = Color(1, 1, 1, 0.501961)
+tile_map_data = PackedByteArray("AAAAAAAAAQAMAAkAAAABAAAAAQANAAkAAAACAAAAAQALAAkAAAADAAAAAQALAAkAAAAEAAAAAQALAAkAAAAFAAAAAQAMAAkAAAAGAAAAAQALAAkAAAAHAAAAAQAMAAkAAAAIAAAAAQAMAAkAAAAJAAAAAQAMAAkAAAAKAAAAAQALAAkAAAALAAAAAQALAAkAAAAMAAAAAQANAAkAAAANAAAAAQAMAAkAAAAOAAAAAQALAAkAAAAPAAAAAQAMAAkAAAAQAAAAAQANAAkAAAARAAAAAQANAAkAAAASAAAAAQAMAAkAAAATAAAAAQAMAAkAAAAUAAAAAQAMAAkAAAAVAAAAAQALAAkAAAAWAAAAAQALAAkAAAAAAAEAAQALAAoAAAAAAAIAAQAMAAoAAAAAAAMAAQANAAoAAAAAAAQAAQANAAoAAAAAAAUAAQAMAAoAAAAAAAYAAQALAAoAAAAAAAcAAQAMAAoAAAAAAAgAAQAMAAoAAAAAAAkAAQALAAoAAAAAAAoAAQANAAoAAAAAAAsAAQAMAAoAAAABAAEAAQAMAAoAAAABAAIAAQALAAoAAAABAAMAAQAMAAoAAAABAAQAAQAMAAoAAAABAAUAAQAMAAoAAAABAAYAAQALAAoAAAABAAcAAQANAAoAAAABAAgAAQALAAoAAAABAAkAAQAMAAoAAAABAAoAAQAMAAoAAAABAAsAAQAMAAoAAAACAAEAAQANAAoAAAACAAIAAQAMAAoAAAACAAMAAQAMAAoAAAACAAQAAQANAAoAAAACAAUAAQAMAAoAAAACAAYAAQAMAAoAAAACAAcAAQANAAoAAAACAAgAAQAMAAoAAAACAAkAAQANAAoAAAACAAoAAQAMAAoAAAACAAsAAQAMAAoAAAADAAEAAQALAAoAAAADAAIAAQALAAoAAAADAAMAAQALAAoAAAADAAQAAQANAAoAAAADAAUAAQALAAoAAAADAAYAAQAMAAoAAAADAAcAAQALAAoAAAADAAgAAQALAAoAAAADAAkAAQAMAAoAAAADAAoAAQALAAoAAAADAAsAAQAMAAoAAAAEAAEAAQANAAoAAAAEAAIAAQALAAoAAAAEAAMAAQAMAAoAAAAEAAQAAQAMAAoAAAAEAAUAAQALAAoAAAAEAAYAAQALAAoAAAAEAAcAAQALAAoAAAAEAAgAAQALAAoAAAAEAAkAAQAMAAoAAAAEAAoAAQANAAoAAAAEAAsAAQANAAoAAAAFAAEAAQANAAoAAAAFAAIAAQAMAAoAAAAFAAMAAQALAAoAAAAFAAQAAQALAAoAAAAFAAUAAQANAAoAAAAFAAYAAQALAAoAAAAFAAcAAQAMAAoAAAAFAAgAAQANAAoAAAAFAAkAAQANAAoAAAAFAAoAAQALAAoAAAAFAAsAAQANAAoAAAAGAAEAAQAMAAoAAAAGAAIAAQAMAAoAAAAGAAMAAQANAAoAAAAGAAQAAQAMAAoAAAAGAAUAAQAMAAoAAAAGAAYAAQALAAoAAAAGAAcAAQAMAAoAAAAGAAgAAQAMAAoAAAAGAAkAAQAMAAoAAAAGAAoAAQANAAoAAAAGAAsAAQALAAoAAAAHAAEAAQAMAAoAAAAHAAIAAQAMAAoAAAAHAAMAAQANAAoAAAAHAAQAAQANAAoAAAAHAAUAAQAMAAoAAAAHAAYAAQAMAAoAAAAHAAcAAQANAAoAAAAHAAgAAQANAAoAAAAHAAkAAQANAAoAAAAHAAoAAQANAAoAAAAHAAsAAQALAAoAAAAIAAEAAQANAAoAAAAIAAIAAQALAAoAAAAIAAMAAQALAAoAAAAIAAQAAQALAAoAAAAIAAUAAQAMAAoAAAAIAAYAAQANAAoAAAAIAAcAAQANAAoAAAAIAAgAAQALAAoAAAAIAAkAAQALAAoAAAAIAAoAAQANAAoAAAAIAAsAAQANAAoAAAAJAAEAAQAMAAoAAAAJAAIAAQANAAoAAAAJAAMAAQANAAoAAAAJAAQAAQANAAoAAAAJAAUAAQALAAoAAAAJAAYAAQANAAoAAAAJAAcAAQAMAAoAAAAJAAgAAQALAAoAAAAJAAkAAQAMAAoAAAAJAAoAAQALAAoAAAAJAAsAAQALAAoAAAAKAAEAAQANAAoAAAAKAAIAAQALAAoAAAAKAAMAAQALAAoAAAAKAAQAAQAMAAoAAAAKAAUAAQALAAoAAAAKAAYAAQALAAoAAAAKAAcAAQAMAAoAAAAKAAgAAQALAAoAAAAKAAkAAQAMAAoAAAAKAAoAAQANAAoAAAAKAAsAAQAMAAoAAAALAAEAAQANAAoAAAALAAIAAQAMAAoAAAALAAMAAQALAAoAAAALAAQAAQALAAoAAAALAAUAAQANAAoAAAALAAYAAQAMAAoAAAALAAcAAQAMAAoAAAALAAgAAQALAAoAAAALAAkAAQALAAoAAAALAAoAAQAMAAoAAAALAAsAAQAMAAoAAAAMAAEAAQALAAoAAAAMAAIAAQAMAAoAAAAMAAMAAQANAAoAAAAMAAQAAQALAAoAAAAMAAUAAQAMAAoAAAAMAAYAAQAMAAoAAAAMAAcAAQAMAAoAAAAMAAgAAQALAAoAAAAMAAkAAQALAAoAAAAMAAoAAQALAAoAAAAMAAsAAQANAAoAAAANAAEAAQANAAoAAAANAAIAAQAMAAoAAAANAAMAAQALAAoAAAANAAQAAQALAAoAAAANAAUAAQAMAAoAAAANAAYAAQALAAoAAAANAAcAAQANAAoAAAANAAgAAQANAAoAAAANAAkAAQANAAoAAAANAAoAAQAMAAoAAAANAAsAAQANAAoAAAAOAAEAAQANAAoAAAAOAAIAAQANAAoAAAAOAAMAAQANAAoAAAAOAAQAAQANAAoAAAAOAAUAAQANAAoAAAAOAAYAAQALAAoAAAAOAAcAAQANAAoAAAAOAAgAAQALAAoAAAAOAAkAAQALAAoAAAAOAAoAAQANAAoAAAAOAAsAAQAMAAoAAAAPAAEAAQAMAAoAAAAPAAIAAQANAAoAAAAPAAMAAQANAAoAAAAPAAQAAQAMAAoAAAAPAAUAAQANAAoAAAAPAAYAAQAMAAoAAAAPAAcAAQALAAoAAAAPAAgAAQAMAAoAAAAPAAkAAQAMAAoAAAAPAAoAAQAMAAoAAAAPAAsAAQAMAAoAAAAQAAEAAQANAAoAAAAQAAIAAQALAAoAAAAQAAMAAQAMAAoAAAAQAAQAAQALAAoAAAAQAAUAAQAMAAoAAAAQAAYAAQALAAoAAAAQAAcAAQAMAAoAAAAQAAgAAQAMAAoAAAAQAAkAAQAMAAoAAAAQAAoAAQAMAAoAAAAQAAsAAQANAAoAAAARAAEAAQANAAoAAAARAAIAAQANAAoAAAARAAMAAQALAAoAAAARAAQAAQANAAoAAAARAAUAAQAMAAoAAAARAAYAAQANAAoAAAARAAcAAQALAAoAAAARAAgAAQANAAoAAAARAAkAAQAMAAoAAAARAAoAAQANAAoAAAARAAsAAQANAAoAAAASAAEAAQANAAoAAAASAAIAAQAMAAoAAAASAAMAAQANAAoAAAASAAQAAQANAAoAAAASAAUAAQAMAAoAAAASAAYAAQALAAoAAAASAAcAAQAMAAoAAAASAAgAAQAMAAoAAAASAAkAAQANAAoAAAASAAoAAQAMAAoAAAASAAsAAQALAAoAAAATAAEAAQALAAoAAAATAAIAAQANAAoAAAATAAMAAQALAAoAAAATAAQAAQANAAoAAAATAAUAAQAMAAoAAAATAAYAAQALAAoAAAATAAcAAQAMAAoAAAATAAgAAQALAAoAAAATAAkAAQANAAoAAAATAAoAAQANAAoAAAATAAsAAQAMAAoAAAAUAAEAAQANAAoAAAAUAAIAAQAMAAoAAAAUAAMAAQAMAAoAAAAUAAQAAQANAAoAAAAUAAUAAQALAAoAAAAUAAYAAQALAAoAAAAUAAcAAQAMAAoAAAAUAAgAAQAMAAoAAAAUAAkAAQAMAAoAAAAUAAoAAQAMAAoAAAAUAAsAAQAMAAoAAAAVAAEAAQALAAoAAAAVAAIAAQANAAoAAAAVAAMAAQAMAAoAAAAVAAQAAQALAAoAAAAVAAUAAQANAAoAAAAVAAYAAQANAAoAAAAVAAcAAQANAAoAAAAVAAgAAQANAAoAAAAVAAkAAQANAAoAAAAVAAoAAQANAAoAAAAVAAsAAQALAAoAAAAWAAEAAQALAAoAAAAWAAIAAQANAAoAAAAWAAMAAQAMAAoAAAAWAAQAAQALAAoAAAAWAAUAAQAMAAoAAAAWAAYAAQANAAoAAAAWAAcAAQALAAoAAAAWAAgAAQALAAoAAAAWAAkAAQALAAoAAAAWAAoAAQALAAoAAAAWAAsAAQALAAoAAAA=")
+tile_set = ExtResource("4_y15gs")
 
 [node name="Floor" type="StaticBody2D" parent="." groups=["obstacle"]]
 position = Vector2(0, 850)
@@ -31,19 +70,74 @@ position = Vector2(0, 850)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 shape = SubResource("WorldBoundaryShape2D_c1lbh")
 
-[node name="TextureRect" type="TextureRect" parent="Floor"]
-offset_left = -100.0
-offset_right = 1700.0
-offset_bottom = 128.0
-texture = ExtResource("2_c1lbh")
-stretch_mode = 1
-
 [node name="Ceiling" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
 shape = SubResource("WorldBoundaryShape2D_vdh54")
 
+[node name="Obstacles" type="Node2D" parent="."]
+
 [node name="Player" parent="." instance=ExtResource("1_3a1jv")]
 position = Vector2(600, 300)
 
-[node name="Obstacles" type="Node2D" parent="."]
+[node name="ScoreSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_opmqi")
+volume_db = 10.0
+
+[node name="GameOverSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_vgrrk")
+volume_db = 10.0
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_y15gs")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/UI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="ScoreLabel" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Score 00000"
+
+[node name="HighScoreLabel" type="Label" parent="UILayer/UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "HiScore 12345"
+label_settings = SubResource("LabelSettings_vgrrk")
+
+[node name="GameOverLabel" type="Label" parent="UILayer/UI/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_y15gs")
+horizontal_alignment = 1
+
+[node name="RestartLabel" type="Label" parent="UILayer/UI/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "PRESS R TO RESTART"
+label_settings = SubResource("LabelSettings_opmqi")
+horizontal_alignment = 1
+
+[connection signal="hit_by_obstacle" from="Player" to="." method="_on_player_hit"]

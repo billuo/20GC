@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://e0m55voeknm7"]
+
+[ext_resource type="FontFile" uid="uid://bn484xcxims3t" path="res://asset/luckiest-guy/LuckiestGuy.ttf" id="1_5pb32"]
+
+[resource]
+default_font = ExtResource("1_5pb32")
+default_font_size = 48
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20

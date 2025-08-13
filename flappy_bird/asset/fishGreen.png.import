@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwbd18hv0pdoo"
-path="res://.godot/imported/cloud4.png-e3792ad7b591005023b76e6669eb23fb.ctex"
+uid="uid://bbquxusu54pf0"
+path="res://.godot/imported/fishGreen.png-36b93296a0a8e7191162807bf49eb268.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/bg/cloud4.png"
-dest_files=["res://.godot/imported/cloud4.png-e3792ad7b591005023b76e6669eb23fb.ctex"]
+source_file="res://asset/fishGreen.png"
+dest_files=["res://.godot/imported/fishGreen.png-36b93296a0a8e7191162807bf49eb268.ctex"]
 
 [params]
 

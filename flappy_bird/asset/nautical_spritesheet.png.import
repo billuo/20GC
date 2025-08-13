@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0ddpm3ee8vlf"
-path="res://.godot/imported/cloud3.png-1d18cb1ca9d64b99605e33c70ee8d887.ctex"
+uid="uid://5mppwc3fwtvm"
+path="res://.godot/imported/nautical_spritesheet.png-0f422ab333bceb1936be26f96cb86d35.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/bg/cloud3.png"
-dest_files=["res://.godot/imported/cloud3.png-1d18cb1ca9d64b99605e33c70ee8d887.ctex"]
+source_file="res://asset/nautical_spritesheet.png"
+dest_files=["res://.godot/imported/nautical_spritesheet.png-0f422ab333bceb1936be26f96cb86d35.ctex"]
 
 [params]
 

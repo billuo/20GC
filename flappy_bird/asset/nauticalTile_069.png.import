@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnm2552f62t2s"
-path="res://.godot/imported/backgroundForest.png-e4d9c40e457e4f2dca410571261a85cc.ctex"
+uid="uid://bmt1r03kxl6y6"
+path="res://.godot/imported/nauticalTile_069.png-83fd0d794e49889cf3d72bd9cc7dabfb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/bg/backgroundForest.png"
-dest_files=["res://.godot/imported/backgroundForest.png-e4d9c40e457e4f2dca410571261a85cc.ctex"]
+source_file="res://asset/nauticalTile_069.png"
+dest_files=["res://.godot/imported/nauticalTile_069.png-83fd0d794e49889cf3d72bd9cc7dabfb.ctex"]
 
 [params]
 

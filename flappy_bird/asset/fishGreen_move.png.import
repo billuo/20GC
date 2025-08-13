@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu6o66bgga3hm"
-path="res://.godot/imported/cloud6.png-db554a4af2fa386e8b08d470c793de5e.ctex"
+uid="uid://dbat1htyvqg0c"
+path="res://.godot/imported/fishGreen_move.png-15c547c82aa1ff349d7528c25d25e633.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/bg/cloud6.png"
-dest_files=["res://.godot/imported/cloud6.png-db554a4af2fa386e8b08d470c793de5e.ctex"]
+source_file="res://asset/fishGreen_move.png"
+dest_files=["res://.godot/imported/fishGreen_move.png-15c547c82aa1ff349d7528c25d25e633.ctex"]
 
 [params]
 

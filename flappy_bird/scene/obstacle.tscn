@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmjkjomq6dpf6"]
+[gd_scene load_steps=5 format=3 uid="uid://cmjkjomq6dpf6"]
 
 [ext_resource type="Script" uid="uid://dtjpigkgfxowe" path="res://scene/obstacle.gd" id="1_nyukl"]
+[ext_resource type="TileSet" uid="uid://dg4lx2u4br6c6" path="res://asset/tile_set.tres" id="2_nyukl"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyukl"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nyukl"]
+radius = 28.81
+height = 105.25
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p1pd2"]
 
@@ -13,8 +16,14 @@ script = ExtResource("1_nyukl")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 rect = Rect2(0, 400, 100, 100)
 
+[node name="UpperLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_nyukl")
+
+[node name="LowerLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_nyukl")
+
 [node name="Upper" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_nyukl")
+shape = SubResource("CapsuleShape2D_nyukl")
 
 [node name="Lower" type="CollisionShape2D" parent="."]
 position = Vector2(0, 900)
