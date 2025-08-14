@@ -1,0 +1,7 @@
+class_name Global
+extends Node
+
+const VIEWPORT_WIDTH := 1600
+const VIEWPORT_HEIGHT := 1200
+const VIEWPORT_SIZE := Vector2(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)
+const VIEWPORT_RECT := Rect2(Vector2.ZERO, VIEWPORT_SIZE)

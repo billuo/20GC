@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxsn33wc0m3rw"]
+
+[ext_resource type="Script" uid="uid://dk3dgn50oviro" path="res://scene/ball.gd" id="1_d8dhm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4a1xm"]
+radius = 20.0
+
+[node name="Ball" type="RigidBody2D"]
+can_sleep = false
+lock_rotation = true
+custom_integrator = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("1_d8dhm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4a1xm")

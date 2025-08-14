@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://8gxnntx62efo"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://asset/smooth_bounce.phymat" id="1_cvkn8"]
+[ext_resource type="Script" uid="uid://c506j3dtw5xm1" path="res://scene/arena.gd" id="1_jw0wr"]
+[ext_resource type="PackedScene" uid="uid://dyvrywb3i8u3d" path="res://scene/paddle.tscn" id="2_5ovl6"]
+[ext_resource type="PackedScene" uid="uid://bxsn33wc0m3rw" path="res://scene/ball.tscn" id="3_nye2f"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_g0ahc"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_cvkn8"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5ovl6"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="Curve2D" id="Curve2D_cvkn8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 1150, 0, 0, 0, 0, 1600, 1150)
+}
+point_count = 2
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_jw0wr")
+
+[node name="Boundry" type="StaticBody2D" parent="."]
+physics_material_override = ExtResource("1_cvkn8")
+
+[node name="Top" type="CollisionShape2D" parent="Boundry"]
+position = Vector2(800, 0)
+shape = SubResource("WorldBoundaryShape2D_g0ahc")
+
+[node name="Left" type="CollisionShape2D" parent="Boundry"]
+position = Vector2(0, 600)
+shape = SubResource("WorldBoundaryShape2D_cvkn8")
+
+[node name="Right" type="CollisionShape2D" parent="Boundry"]
+position = Vector2(1600, 600)
+shape = SubResource("WorldBoundaryShape2D_5ovl6")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_cvkn8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(800, 1150)
+progress = 800.0
+loop = false
+
+[node name="Paddle" parent="." node_paths=PackedStringArray("path_follow") instance=ExtResource("2_5ovl6")]
+position = Vector2(817, 947)
+path_follow = NodePath("../Path2D/PathFollow2D")
+
+[node name="Ball" parent="." instance=ExtResource("3_nye2f")]
+position = Vector2(819, 866)
+physics_material_override = ExtResource("1_cvkn8")
