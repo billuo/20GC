@@ -19,6 +19,14 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1600
 window/size/viewport_height=1200
+window/stretch/mode="viewport"
+
+[global_group]
+
+paddle=""
+brick=""
+boundry=""
+ball=""
 
 [input]
 
@@ -41,10 +49,17 @@ serve_ball={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Ball"
+
 [physics]
 
+common/physics_ticks_per_second=120
 common/physics_interpolation=true
 
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.0627451, 0.0627451, 0.0627451, 1)
+anti_aliasing/quality/screen_space_aa=1

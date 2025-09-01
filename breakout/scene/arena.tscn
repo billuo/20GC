@@ -1,9 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://8gxnntx62efo"]
+[gd_scene load_steps=21 format=3 uid="uid://8gxnntx62efo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://asset/smooth_bounce.phymat" id="1_cvkn8"]
 [ext_resource type="Script" uid="uid://c506j3dtw5xm1" path="res://scene/arena.gd" id="1_jw0wr"]
 [ext_resource type="PackedScene" uid="uid://dyvrywb3i8u3d" path="res://scene/paddle.tscn" id="2_5ovl6"]
+[ext_resource type="Script" uid="uid://nr8p7v1mibry" path="res://scene/boundry.gd" id="3_g0wi5"]
 [ext_resource type="PackedScene" uid="uid://bxsn33wc0m3rw" path="res://scene/ball.tscn" id="3_nye2f"]
+[ext_resource type="AudioStream" uid="uid://kw7gldeuno0f" path="res://asset/sfx/boundry/bounce_wall_01.wav" id="4_kxnuh"]
+[ext_resource type="AudioStream" uid="uid://dix2686qjky4o" path="res://asset/sfx/boundry/bounce_wall_02.wav" id="5_86xr0"]
+[ext_resource type="Theme" uid="uid://cb3cjfbikoxel" path="res://asset/default_theme.tres" id="5_fc27u"]
+[ext_resource type="AudioStream" uid="uid://dfqaivt0g0d80" path="res://asset/sfx/boundry/bounce_wall_03.wav" id="6_q4yd7"]
+[ext_resource type="AudioStream" uid="uid://bsloe35ijr7gf" path="res://asset/sfx/boundry/bounce_wall_04.wav" id="7_ft8p0"]
+[ext_resource type="AudioStream" uid="uid://b0lfgxetnxaqx" path="res://asset/sfx/boundry/bounce_wall_05.wav" id="8_80tcu"]
+[ext_resource type="AudioStream" uid="uid://dtln6ewk3oqos" path="res://asset/sfx/boundry/bounce_wall_06.wav" id="9_rj7u4"]
+[ext_resource type="AudioStream" uid="uid://c67fx7watm2lg" path="res://asset/sfx/boundry/bounce_wall_07.wav" id="10_1a7fc"]
+[ext_resource type="AudioStream" uid="uid://c7s03m8yprupy" path="res://asset/sfx/boundry/bounce_wall_08.wav" id="11_86xr0"]
+[ext_resource type="PackedScene" uid="uid://cxhp3t3lvlyyj" path="res://scene/background/checker45.tscn" id="14_q4yd7"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_g0ahc"]
 normal = Vector2(0, 1)
@@ -14,17 +25,30 @@ normal = Vector2(1, 0)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5ovl6"]
 normal = Vector2(-1, 0)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ktql4"]
+random_pitch = 1.1
+streams_count = 8
+stream_0/stream = ExtResource("4_kxnuh")
+stream_1/stream = ExtResource("5_86xr0")
+stream_2/stream = ExtResource("6_q4yd7")
+stream_3/stream = ExtResource("7_ft8p0")
+stream_4/stream = ExtResource("8_80tcu")
+stream_5/stream = ExtResource("9_rj7u4")
+stream_6/stream = ExtResource("10_1a7fc")
+stream_7/stream = ExtResource("11_86xr0")
+
 [sub_resource type="Curve2D" id="Curve2D_cvkn8"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 1150, 0, 0, 0, 0, 1600, 1150)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 1120, 0, 0, 0, 0, 1600, 1120)
 }
 point_count = 2
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_jw0wr")
 
-[node name="Boundry" type="StaticBody2D" parent="."]
+[node name="Boundry" type="StaticBody2D" parent="." groups=["boundry"]]
 physics_material_override = ExtResource("1_cvkn8")
+script = ExtResource("3_g0wi5")
 
 [node name="Top" type="CollisionShape2D" parent="Boundry"]
 position = Vector2(800, 0)
@@ -38,11 +62,15 @@ shape = SubResource("WorldBoundaryShape2D_cvkn8")
 position = Vector2(1600, 600)
 shape = SubResource("WorldBoundaryShape2D_5ovl6")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Boundry"]
+stream = SubResource("AudioStreamRandomizer_ktql4")
+max_polyphony = 2
+
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_cvkn8")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(800, 1150)
+position = Vector2(800, 1120)
 progress = 800.0
 loop = false
 
@@ -50,6 +78,67 @@ loop = false
 position = Vector2(817, 947)
 path_follow = NodePath("../Path2D/PathFollow2D")
 
-[node name="Ball" parent="." instance=ExtResource("3_nye2f")]
+[node name="Balls" type="Node2D" parent="."]
+
+[node name="Ball" parent="Balls" instance=ExtResource("3_nye2f")]
 position = Vector2(819, 866)
-physics_material_override = ExtResource("1_cvkn8")
+
+[node name="Bricks" type="Node2D" parent="."]
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" parent="BackgroundLayer" instance=ExtResource("14_q4yd7")]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_fc27u")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/UI/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="UILayer/UI/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Score: 0"
+
+[node name="HighscoreLabel" type="Label" parent="UILayer/UI/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Highscore: 0"
+
+[node name="LivesLabel" type="Label" parent="UILayer/UI/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Lives: 3"
+
+[node name="BricksLabel" type="Label" parent="UILayer/UI/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Bricks: 0"
+
+[connection signal="escaped" from="Balls/Ball" to="." method="_on_ball_escaped"]
+[connection signal="hit_top" from="Balls/Ball" to="." method="_on_ball_hit_top"]

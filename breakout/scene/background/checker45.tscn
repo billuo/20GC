@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxhp3t3lvlyyj"]
+
+[ext_resource type="Shader" uid="uid://xgmbbvaga3er" path="res://scene/background/checker45.gdshader" id="1_ubby1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpwal"]
+shader = ExtResource("1_ubby1")
+shader_parameter/interval = 2.0
+shader_parameter/size = 80.0
+shader_parameter/fg = Vector3(0.15, 0.12, 0.15)
+shader_parameter/bg = Vector3(0.1, 0.1, 0.1)
+
+[node name="ColorRect" type="ColorRect"]
+material = SubResource("ShaderMaterial_xpwal")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.615686, 1, 1, 1)

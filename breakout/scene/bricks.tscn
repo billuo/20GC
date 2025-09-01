@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://dsm3p5dtaa778"]
-
-[node name="Bricks" type="Node2D"]
-
-[node name="TileMapLayer" type="TileMapLayer" parent="."]

@@ -1,0 +1,54 @@
+[gd_scene load_steps=16 format=3 uid="uid://dsm3p5dtaa778"]
+
+[ext_resource type="Script" uid="uid://0bjlueetdqg5" path="res://scene/brick.gd" id="1_ah86m"]
+[ext_resource type="Shader" uid="uid://0jaftg6orvlr" path="res://scene/brick.gdshader" id="2_18ifo"]
+[ext_resource type="AudioStream" uid="uid://cdjk2vo0qqha7" path="res://asset/sfx/brick/stone_on_stone_01.wav" id="3_ub4b2"]
+[ext_resource type="AudioStream" uid="uid://c3tkarr4u1om" path="res://asset/sfx/brick/stone_on_stone_02.wav" id="4_qn2pg"]
+[ext_resource type="AudioStream" uid="uid://ddnqtndwuwnnw" path="res://asset/sfx/brick/stone_on_stone_03.wav" id="5_xq3ut"]
+[ext_resource type="AudioStream" uid="uid://4sc8mtard3lo" path="res://asset/sfx/brick/stone_on_stone_04.wav" id="6_tk4lm"]
+[ext_resource type="AudioStream" uid="uid://dvgaprr50hq3n" path="res://asset/sfx/brick/stone_on_stone_05.wav" id="7_q3o5j"]
+[ext_resource type="AudioStream" uid="uid://d4ijkcux8hwao" path="res://asset/sfx/brick/stone_on_stone_06.wav" id="8_8gvmt"]
+[ext_resource type="AudioStream" uid="uid://cypl7ftqw3fa6" path="res://asset/sfx/brick/stone_on_stone_07.wav" id="9_wqmuv"]
+[ext_resource type="AudioStream" uid="uid://c0qaws7l6ablt" path="res://asset/sfx/brick/stone_on_stone_08.wav" id="10_j625n"]
+[ext_resource type="AudioStream" uid="uid://birrac4yvblh4" path="res://asset/sfx/brick/stone_on_stone_09.wav" id="11_7stve"]
+[ext_resource type="AudioStream" uid="uid://cqynegige5o8c" path="res://asset/sfx/stone-debris-109593.mp3" id="12_qn2pg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hb1sv"]
+size = Vector2(80, 20)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7qav0"]
+streams_count = 9
+stream_0/stream = ExtResource("3_ub4b2")
+stream_1/stream = ExtResource("4_qn2pg")
+stream_2/stream = ExtResource("5_xq3ut")
+stream_3/stream = ExtResource("6_tk4lm")
+stream_4/stream = ExtResource("7_q3o5j")
+stream_5/stream = ExtResource("8_8gvmt")
+stream_6/stream = ExtResource("9_wqmuv")
+stream_7/stream = ExtResource("10_j625n")
+stream_8/stream = ExtResource("11_7stve")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oigqh"]
+shader = ExtResource("2_18ifo")
+shader_parameter/brick_size = Vector2(80, 20)
+shader_parameter/round_corner = 10.0
+
+[node name="Bricks" type="StaticBody2D" groups=["brick"]]
+script = ExtResource("1_ah86m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hb1sv")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_7qav0")
+volume_db = 5.0
+
+[node name="BreakSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_qn2pg")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_oigqh")
+offset_left = -40.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = 10.0

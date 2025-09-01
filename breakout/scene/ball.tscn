@@ -1,18 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxsn33wc0m3rw"]
+[gd_scene load_steps=7 format=3 uid="uid://bxsn33wc0m3rw"]
 
 [ext_resource type="Script" uid="uid://dk3dgn50oviro" path="res://scene/ball.gd" id="1_d8dhm"]
+[ext_resource type="Shader" uid="uid://coudnhgbs1uvr" path="res://scene/ball.gdshader" id="2_h6iok"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h45nl"]
+shader = ExtResource("2_h6iok")
+shader_parameter/look_at = Vector2(0, -1)
+
+[sub_resource type="Gradient" id="Gradient_h6iok"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h6iok"]
+gradient = SubResource("Gradient_h6iok")
+width = 32
+height = 32
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4a1xm"]
-radius = 20.0
+radius = 16.0
 
-[node name="Ball" type="RigidBody2D"]
-can_sleep = false
-lock_rotation = true
-custom_integrator = true
-continuous_cd = 2
-contact_monitor = true
-max_contacts_reported = 3
+[node name="Ball" type="CharacterBody2D" groups=["ball"]]
+collision_layer = 2
 script = ExtResource("1_d8dhm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_h45nl")
+texture = SubResource("GradientTexture2D_h6iok")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_4a1xm")

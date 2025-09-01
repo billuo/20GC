@@ -1,28 +1,26 @@
 [gd_scene load_steps=5 format=3 uid="uid://dyvrywb3i8u3d"]
 
 [ext_resource type="Script" uid="uid://drbr3a6mg4akx" path="res://scene/paddle.gd" id="1_g2524"]
-[ext_resource type="Texture2D" uid="uid://ce3axrcmwsqjp" path="res://icon.svg" id="1_mgy5m"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_g2524"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_mgy5m")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[ext_resource type="Texture2D" uid="uid://cscg0lxb6nqxl" path="res://asset/tex/plate.jpg" id="2_g2524"]
+[ext_resource type="AudioStream" uid="uid://cuo6k05lkutqx" path="res://asset/sfx/metal-hit-92-200420.mp3" id="3_idco4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_naixt"]
-size = Vector2(128, 32)
+size = Vector2(200, 30)
 
-[node name="Paddle" type="CharacterBody2D"]
+[node name="Paddle" type="CharacterBody2D" groups=["paddle"]]
 script = ExtResource("1_g2524")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(1, 0.25)
-sprite_frames = SubResource("SpriteFrames_g2524")
+[node name="ColorRect" type="TextureRect" parent="."]
+offset_left = -100.0
+offset_top = -15.0
+offset_right = 100.0
+offset_bottom = 15.0
+texture = ExtResource("2_g2524")
+expand_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_naixt")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_idco4")
+max_polyphony = 3

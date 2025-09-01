@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cb3cjfbikoxel"]
+
+[ext_resource type="FontFile" uid="uid://bkm317jns8pnr" path="res://asset/BoldPixels1.4.ttf" id="1_5pb32"]
+
+[resource]
+default_font = ExtResource("1_5pb32")
+default_font_size = 32
+MarginContainer/constants/margin_bottom = 15
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 15
