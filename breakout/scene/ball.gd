@@ -122,7 +122,7 @@ func lock_to_paddle(paddle: Paddle):
 		State.Start, State.Locked, State.Free, State.Escaped:
 			_next_state = State.Locked
 			_locked_by = paddle
-			# HACK: avoid colliding with bricks in new level
+			# to avoid colliding with bricks in new level
 			global_position = _locked_by.global_position + Vector2(0, -50)
 		_:
 			_err_trans_state(_state, State.Locked)

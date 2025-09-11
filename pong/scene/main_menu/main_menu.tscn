@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://b8yi1hevqj4an"]
 
-[ext_resource type="Script" uid="uid://dradmouhk4xym" path="res://scene/main_menu.gd" id="1_2fwvj"]
+[ext_resource type="Script" uid="uid://dradmouhk4xym" path="res://scene/main_menu/main_menu.gd" id="1_2fwvj"]
 [ext_resource type="Theme" uid="uid://c21ro17htrkum" path="res://res/default_theme.tres" id="1_3er1b"]
 [ext_resource type="LabelSettings" uid="uid://cty01tuoquvu8" path="res://res/score_label.tres" id="2_hxu56"]
 [ext_resource type="Texture2D" uid="uid://c5xkecs5lelhp" path="res://res/icons/gear.png" id="4_0iwki"]
-[ext_resource type="Script" uid="uid://dfnl32kjiinxj" path="res://scene/settings_window.gd" id="5_sepwh"]
+[ext_resource type="Script" uid="uid://dfnl32kjiinxj" path="res://scene/main_menu/settings_window.gd" id="5_sepwh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m4svf"]
 font_size = 64
@@ -86,16 +86,29 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_3er1b")
 
-[node name="Title" type="Label" parent="UILayer/UI"]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/UI"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-offset_bottom = 288.0
+anchor_bottom = 0.5
+offset_top = -128.0
+offset_bottom = 128.0
 grow_horizontal = 2
-text = "Pong"
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="UILayer/UI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = " Pong"
 label_settings = ExtResource("2_hxu56")
-horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="UILayer/UI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "20 Games Challenge Series"
 
 [node name="Prompt" type="Label" parent="UILayer/UI"]
 unique_name_in_owner = true
@@ -118,18 +131,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_bottom = 100
 
 [node name="Settings" type="Button" parent="UILayer/UI/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 8
+size_flags_vertical = 0
 icon = ExtResource("4_0iwki")
 
 [node name="GameOverSettings" type="HBoxContainer" parent="UILayer/UI/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
+size_flags_vertical = 8
 alignment = 1
 
 [node name="BOSlider" type="HSlider" parent="UILayer/UI/MarginContainer/GameOverSettings"]
@@ -152,7 +166,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 4
 theme_override_constants/separation = 30
 
 [node name="ModePve" type="Button" parent="UILayer/UI/MarginContainer/ModeSelects"]
@@ -188,18 +202,24 @@ grow_vertical = 2
 layout_mode = 2
 alignment = 1
 
-[node name="HSplitContainer" type="HSplitContainer" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer"]
+[node name="Volume" type="HBoxContainer" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="Label" type="Label" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/Volume"]
 layout_mode = 2
 text = "Volume"
 
-[node name="VolumeSlider" type="HSlider" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="VolumeSlider" type="HSlider" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/Volume"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 value = 50.0
 rounded = true
+
+[node name="Value" type="Label" parent="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/Volume"]
+layout_mode = 2
+text = "50"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -212,4 +232,4 @@ autoplay = "prompt_blink"
 [connection signal="pressed" from="UILayer/UI/MarginContainer/ModeSelects/ModePve" to="." method="_on_mode_pve_pressed"]
 [connection signal="pressed" from="UILayer/UI/MarginContainer/ModeSelects/ModePvp" to="." method="_on_mode_pvp_pressed"]
 [connection signal="pressed" from="UILayer/UI/MarginContainer/ModeSelects/ModeEve" to="." method="_on_mode_eve_pressed"]
-[connection signal="value_changed" from="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/HSplitContainer/VolumeSlider" to="UILayer/UI/MarginContainer/SettingsWindow" method="_on_volume_slider_value_changed"]
+[connection signal="value_changed" from="UILayer/UI/MarginContainer/SettingsWindow/MarginContainer/VBoxContainer/Volume/VolumeSlider" to="UILayer/UI/MarginContainer/SettingsWindow" method="_on_volume_slider_value_changed"]

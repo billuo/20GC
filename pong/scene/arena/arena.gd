@@ -2,10 +2,9 @@ class_name Arena
 extends Node2D
 
 # TODO:
-# 1. define max score of a game (BO9, etc)
-# 2. highlight winner
+# 1. highlight winner
 
-const PAUSE_MENU_SCENE := preload("res://scene/pause_menu.tscn")
+const PAUSE_MENU_SCENE := preload("res://scene/pause_menu/pause_menu.tscn")
 const SCORE_LABEL_MODULATE_DEFAULT = Color(1.0, 1.0, 1.0, 0.2)
 
 @onready var paddle_left := $PaddleLeft
@@ -39,23 +38,20 @@ func _input(event: InputEvent) -> void:
 		var menu = PAUSE_MENU_SCENE.instantiate()
 		$UILayer.add_child(menu)
 
-	var k = event as InputEventKey
-	if game_is_over and k and k.is_pressed():
-		if k.keycode == KEY_ENTER:
-			Game.main_menu()
-	if OS.is_debug_build() and k and k.is_pressed():
-		match k.keycode:
-			KEY_BRACKETLEFT:
+	if event is InputEventKey and event.is_pressed():
+		event = event as InputEventKey
+		match event.keycode:
+			KEY_ENTER when game_is_over:
+				Game.main_menu()
+			KEY_BRACKETLEFT when OS.is_debug_build():
 				p1_score += 1
-			KEY_BRACKETRIGHT:
+			KEY_BRACKETRIGHT when OS.is_debug_build():
 				p2_score += 1
 
 
 func _ready() -> void:
 	seed(round(Time.get_unix_time_from_system() * 1000))
 	new_game()
-	score_label_p1.modulate = SCORE_LABEL_MODULATE_DEFAULT
-	score_label_p2.modulate = SCORE_LABEL_MODULATE_DEFAULT
 
 
 func _process(_delta: float) -> void:

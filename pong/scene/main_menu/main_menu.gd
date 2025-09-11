@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var title := %Title
+@onready var subtitle := %Subtitle
 @onready var prompt := %Prompt
 @onready var settings := %Settings
 @onready var settings_window := %SettingsWindow
@@ -11,7 +12,7 @@ extends Node2D
 
 enum State {
 	Prompt,
-	ModeSelect,  # PvP or PvE or EvE
+	ModeSelect,
 }
 var _state: State:
 	set = set_state
@@ -46,12 +47,14 @@ func set_state(value: State):
 	match _state:
 		State.Prompt:
 			title.show()
+			subtitle.show()
 			prompt.show()
 			settings.hide()
 			game_over_settings.hide()
 			mode_selects.hide()
 		State.ModeSelect:
-			title.show()
+			title.hide()
+			subtitle.hide()
 			prompt.hide()
 			settings.show()
 			game_over_settings.show()

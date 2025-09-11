@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3 uid="uid://da4bwfluldc2"]
 
-[ext_resource type="PackedScene" uid="uid://b7cuxk0tu524c" path="res://scene/paddle.tscn" id="1_cvkn8"]
-[ext_resource type="Script" uid="uid://baescvx0fjk8m" path="res://scene/arena.gd" id="1_jw0wr"]
-[ext_resource type="PackedScene" uid="uid://dy4imfqlq1who" path="res://scene/ball.tscn" id="2_5ovl6"]
+[ext_resource type="PackedScene" uid="uid://b7cuxk0tu524c" path="res://scene/paddle/paddle.tscn" id="1_cvkn8"]
+[ext_resource type="Script" uid="uid://baescvx0fjk8m" path="res://scene/arena/arena.gd" id="1_jw0wr"]
+[ext_resource type="PackedScene" uid="uid://dy4imfqlq1who" path="res://scene/ball/ball.tscn" id="2_5ovl6"]
 [ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://res/smooth_bounce.phymat" id="3_nye2f"]
 [ext_resource type="LabelSettings" uid="uid://cty01tuoquvu8" path="res://res/score_label.tres" id="5_fc27u"]
 [ext_resource type="Theme" uid="uid://c21ro17htrkum" path="res://res/default_theme.tres" id="5_g0wi5"]

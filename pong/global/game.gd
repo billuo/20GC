@@ -1,7 +1,7 @@
 extends Node
 
-const ARENA_SCENE := preload("res://scene/arena.tscn")
-const MAIN_MENU_SCENE := preload("res://scene/main_menu.tscn")
+const ARENA_SCENE := preload("res://scene/arena/arena.tscn")
+const MAIN_MENU_SCENE := preload("res://scene/main_menu/main_menu.tscn")
 
 var arena_config := Arena.Config.new()
 var world_interface := WorldInterface.new()

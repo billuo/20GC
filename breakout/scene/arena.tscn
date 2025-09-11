@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://8gxnntx62efo"]
+[gd_scene load_steps=24 format=3 uid="uid://8gxnntx62efo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://asset/smooth_bounce.phymat" id="1_cvkn8"]
 [ext_resource type="Script" uid="uid://c506j3dtw5xm1" path="res://scene/arena.gd" id="1_jw0wr"]
@@ -15,6 +15,56 @@
 [ext_resource type="AudioStream" uid="uid://c67fx7watm2lg" path="res://asset/sfx/boundry/bounce_wall_07.wav" id="10_1a7fc"]
 [ext_resource type="AudioStream" uid="uid://c7s03m8yprupy" path="res://asset/sfx/boundry/bounce_wall_08.wav" id="11_86xr0"]
 [ext_resource type="PackedScene" uid="uid://cxhp3t3lvlyyj" path="res://scene/background/checker45.tscn" id="14_q4yd7"]
+
+[sub_resource type="Animation" id="Animation_q4yd7"]
+resource_name = "highscore_congrats"
+length = 2.0
+step = 0.333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UILayer/UI/MarginContainer/HBoxContainer/HighscoreLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["NEW RECORD"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UILayer/UI/MarginContainer/HBoxContainer/HighscoreLabel:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.333333, 0.666667, 1, 1.33333, 1.66667, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ft8p0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UILayer/UI/MarginContainer/HBoxContainer/HighscoreLabel:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_80tcu"]
+_data = {
+&"RESET": SubResource("Animation_ft8p0"),
+&"highscore_congrats": SubResource("Animation_q4yd7")
+}
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_g0ahc"]
 normal = Vector2(0, 1)
@@ -45,6 +95,11 @@ point_count = 2
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_jw0wr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_80tcu")
+}
 
 [node name="Boundry" type="StaticBody2D" parent="." groups=["boundry"]]
 physics_material_override = ExtResource("1_cvkn8")
@@ -126,7 +181,7 @@ text = "Score: 0"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
-text = "Highscore: 0"
+text = "NEW RECORD"
 
 [node name="LivesLabel" type="Label" parent="UILayer/UI/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -140,5 +195,6 @@ layout_mode = 2
 size_flags_horizontal = 2
 text = "Bricks: 0"
 
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="escaped" from="Balls/Ball" to="." method="_on_ball_escaped"]
 [connection signal="hit_top" from="Balls/Ball" to="." method="_on_ball_hit_top"]

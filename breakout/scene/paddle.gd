@@ -1,8 +1,6 @@
 class_name Paddle
 extends CharacterBody2D
 
-# TODO: mark center for easier movement
-
 const MIN_LENGTH := 50.0
 const MAX_LENGTH := 1600.0
 

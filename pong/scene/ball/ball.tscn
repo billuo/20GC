@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dy4imfqlq1who"]
 
-[ext_resource type="Script" uid="uid://d3jv2x24vemj8" path="res://scene/ball.gd" id="1_d8dhm"]
+[ext_resource type="Script" uid="uid://d3jv2x24vemj8" path="res://scene/ball/ball.gd" id="1_d8dhm"]
 [ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://res/smooth_bounce.phymat" id="1_h6iok"]
 [ext_resource type="AudioStream" uid="uid://dxebh8nanl3h1" path="res://res/bounce_1.wav" id="3_h45nl"]
 [ext_resource type="AudioStream" uid="uid://dj1ucas6tq4xv" path="res://res/bounce_2.wav" id="4_4gb3l"]

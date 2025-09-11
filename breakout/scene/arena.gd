@@ -1,7 +1,7 @@
 extends Node2D
 
 const BALL_SCENE := preload("res://scene/ball.tscn")
-const MAX_BALLS := 1024
+const MAX_BALLS := 128
 
 @onready var balls: Node2D = $Balls
 @onready var paddle: Paddle = $Paddle
@@ -9,6 +9,7 @@ const MAX_BALLS := 1024
 
 var _score: int = 0:
 	set = set_score
+var _is_new_record: bool = false
 var _highscore: int = 0:
 	set = set_highscore
 var _lives: int = 3:
@@ -142,7 +143,9 @@ func set_score(value: int):
 	_score = value
 	if _score > _highscore:
 		_highscore = _score
-		# TODO: show congrats for new highscore
+		if not _is_new_record:
+			_is_new_record = true
+			$AnimationPlayer.play("highscore_congrats")
 	%ScoreLabel.text = "Score: %06d" % _score
 
 
@@ -187,10 +190,14 @@ func _on_ball_hit_top() -> void:
 
 func _on_brick_destroyed(brick: Brick) -> void:
 	# TODO: random power-ups
-	# TODO: paddle length
 	paddle.set_length_animated(paddle.length + 10.0)
 	_score += brick.score
 	var remaining = bricks.get_child_count()
 	%BricksLabel.text = "Bricks: %d" % remaining
 	if remaining == 0:
 		finish_level()
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "highscore_congrats":
+		_highscore = _highscore

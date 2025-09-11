@@ -1,8 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyvrywb3i8u3d"]
+[gd_scene load_steps=7 format=3 uid="uid://dyvrywb3i8u3d"]
 
 [ext_resource type="Script" uid="uid://drbr3a6mg4akx" path="res://scene/paddle.gd" id="1_g2524"]
 [ext_resource type="Texture2D" uid="uid://cscg0lxb6nqxl" path="res://asset/tex/plate.jpg" id="2_g2524"]
 [ext_resource type="AudioStream" uid="uid://cuo6k05lkutqx" path="res://asset/sfx/metal-hit-92-200420.mp3" id="3_idco4"]
+
+[sub_resource type="Gradient" id="Gradient_idco4"]
+offsets = PackedFloat32Array(0, 0.351171, 0.585284, 0.682274, 0.83612)
+colors = PackedColorArray(1, 0, 0, 1, 0.994293, 0.0758152, 0.0758152, 1, 0.94, 0.94, 0.94, 1, 0.93, 0.93, 0.93, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yse1p"]
+gradient = SubResource("Gradient_idco4")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_naixt"]
 size = Vector2(200, 30)
@@ -17,6 +28,9 @@ offset_right = 100.0
 offset_bottom = 15.0
 texture = ExtResource("2_g2524")
 expand_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_yse1p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_naixt")

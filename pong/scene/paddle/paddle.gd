@@ -113,14 +113,21 @@ func _update_ai_decision():
 	var ball_rel = path_follow.global_position - ball_pos
 	var ball_eta = ball_rel.x / ball_v.x
 	if ball_eta <= 0:
-		# ball is moving away, don't care. be random.
-		# TODO:
+		# ball is moving away, just reset somewhat.
+		_moving_left = path_follow.progress_ratio > 0.7
+		_moving_right = path_follow.progress_ratio < 0.3
 		return
 	else:
-		var d_still = path_follow.global_position.distance_squared_to(ball_pos)
-		var d_left = _peek_path_follow(-0.01).distance_squared_to(ball_pos)
-		var d_right = _peek_path_follow(0.01).distance_squared_to(ball_pos)
+		var d_still = path_follow.global_position.distance_to(ball_pos)
+		var d_left = _peek_path_follow(-0.01).distance_to(ball_pos)
+		var d_right = _peek_path_follow(0.01).distance_to(ball_pos)
 		var d_min = min(d_still, d_left, d_right)
+		if abs(ball_rel.x) < 200 and abs(ball_rel.x) / d_min > 0.8:
+			# close enough, do not wiggle
+			_moving_left = false
+			_moving_right = false
+			_accelerated = false
+			return
 		_moving_left = d_min == d_left
 		_moving_right = d_min == d_right
 		_accelerated = ball_eta <= _ai_personality.acc_threshold

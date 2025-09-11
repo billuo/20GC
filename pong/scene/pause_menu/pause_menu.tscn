@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dojdjq6gr8bvk"]
 
 [ext_resource type="Texture2D" uid="uid://b5gnadnst6hwj" path="res://icon.svg" id="1_grdc7"]
-[ext_resource type="Script" uid="uid://bj8blq5q1obqn" path="res://scene/pause_menu.gd" id="1_me6vf"]
+[ext_resource type="Script" uid="uid://bj8blq5q1obqn" path="res://scene/pause_menu/pause_menu.gd" id="1_me6vf"]
 [ext_resource type="Theme" uid="uid://c21ro17htrkum" path="res://res/default_theme.tres" id="3_cq4tv"]
 
 [node name="PauseMenu" type="Control"]
