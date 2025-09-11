@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dyvrywb3i8u3d"]
 
-[ext_resource type="Script" uid="uid://drbr3a6mg4akx" path="res://scene/paddle.gd" id="1_g2524"]
+[ext_resource type="Script" uid="uid://drbr3a6mg4akx" path="res://scene/paddle/paddle.gd" id="1_g2524"]
 [ext_resource type="Texture2D" uid="uid://cscg0lxb6nqxl" path="res://asset/tex/plate.jpg" id="2_g2524"]
 [ext_resource type="AudioStream" uid="uid://cuo6k05lkutqx" path="res://asset/sfx/metal-hit-92-200420.mp3" id="3_idco4"]
 

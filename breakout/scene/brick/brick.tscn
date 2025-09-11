@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://dsm3p5dtaa778"]
 
-[ext_resource type="Script" uid="uid://0bjlueetdqg5" path="res://scene/brick.gd" id="1_ah86m"]
-[ext_resource type="Shader" uid="uid://0jaftg6orvlr" path="res://scene/brick.gdshader" id="2_18ifo"]
+[ext_resource type="Script" uid="uid://0bjlueetdqg5" path="res://scene/brick/brick.gd" id="1_ah86m"]
+[ext_resource type="Shader" uid="uid://0jaftg6orvlr" path="res://scene/brick/brick.gdshader" id="2_18ifo"]
 [ext_resource type="AudioStream" uid="uid://cdjk2vo0qqha7" path="res://asset/sfx/brick/stone_on_stone_01.wav" id="3_ub4b2"]
 [ext_resource type="AudioStream" uid="uid://c3tkarr4u1om" path="res://asset/sfx/brick/stone_on_stone_02.wav" id="4_qn2pg"]
 [ext_resource type="AudioStream" uid="uid://ddnqtndwuwnnw" path="res://asset/sfx/brick/stone_on_stone_03.wav" id="5_xq3ut"]

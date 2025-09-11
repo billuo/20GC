@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1e5qlys6tn7y"]
+
+[ext_resource type="Theme" uid="uid://cb3cjfbikoxel" path="res://asset/default_theme.tres" id="1_o25w2"]
+[ext_resource type="Script" uid="uid://dp6im8c7e33nk" path="res://scene/main_menu/main_menu.gd" id="2_cds3d"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cds3d"]
+font_size = 196
+
+[sub_resource type="LabelSettings" id="LabelSettings_o25w2"]
+font_size = 64
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_o25w2")
+script = ExtResource("2_cds3d")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.265393, 0.172684, 0.253716, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 60
+alignment = 1
+
+[node name="Start" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="Options" type="Button" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Options"
+
+[node name="Quit" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -116.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Breakout"
+label_settings = SubResource("LabelSettings_cds3d")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "20 Game Challenge Series"
+label_settings = SubResource("LabelSettings_o25w2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

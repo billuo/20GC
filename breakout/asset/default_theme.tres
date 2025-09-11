@@ -5,6 +5,7 @@
 [resource]
 default_font = ExtResource("1_5pb32")
 default_font_size = 32
+Button/font_sizes/font_size = 64
 MarginContainer/constants/margin_bottom = 15
 MarginContainer/constants/margin_left = 20
 MarginContainer/constants/margin_right = 20

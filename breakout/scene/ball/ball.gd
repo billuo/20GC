@@ -35,7 +35,6 @@ func _physics_process(delta: float) -> void:
 			global_position = _locked_by.global_position + Vector2(0, -50)
 			_look_at = Vector2.UP
 		State.Free:
-			# FIXME: use Area2D
 			if not Global.VIEWPORT_RECT.has_point(global_position):
 				_next_state = State.Escaped
 				print_debug("ESCAPED")

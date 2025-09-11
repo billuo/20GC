@@ -1,6 +1,6 @@
 extends Node2D
 
-const BALL_SCENE := preload("res://scene/ball.tscn")
+const BALL_SCENE := preload("res://scene/ball/ball.tscn")
 const MAX_BALLS := 128
 
 @onready var balls: Node2D = $Balls
@@ -90,7 +90,8 @@ func _input(event: InputEvent) -> void:
 
 
 func init_level():
-	const BRICK_SCENE := preload("res://scene/brick.tscn")
+	# TODO: need a level manager
+	const BRICK_SCENE := preload("res://scene/brick/brick.tscn")
 	const BRICK_SIZE := Vector2(80, 20)
 	var gap = Vector2(8, 8)
 	var count = Vector2(8, 6)
@@ -128,13 +129,13 @@ func finish_level():
 	all_balls[0].lock_to_paddle(paddle)
 	for ball in all_balls.slice(1):
 		ball.queue_free()
-	# TODO: create more levels
+	# TODO: next level
 	init_level.call_deferred()
 	_save_game()
 
 
 func fail_level():
-	# TODO: main menu?
+	# TODO: back to main menu
 	print_debug("GAME OVER")
 	_save_game()
 

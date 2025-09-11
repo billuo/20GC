@@ -1,10 +1,10 @@
 [gd_scene load_steps=24 format=3 uid="uid://8gxnntx62efo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://c024jmnskr4hr" path="res://asset/smooth_bounce.phymat" id="1_cvkn8"]
-[ext_resource type="Script" uid="uid://c506j3dtw5xm1" path="res://scene/arena.gd" id="1_jw0wr"]
-[ext_resource type="PackedScene" uid="uid://dyvrywb3i8u3d" path="res://scene/paddle.tscn" id="2_5ovl6"]
-[ext_resource type="Script" uid="uid://nr8p7v1mibry" path="res://scene/boundry.gd" id="3_g0wi5"]
-[ext_resource type="PackedScene" uid="uid://bxsn33wc0m3rw" path="res://scene/ball.tscn" id="3_nye2f"]
+[ext_resource type="Script" uid="uid://c506j3dtw5xm1" path="res://scene/arena/arena.gd" id="1_jw0wr"]
+[ext_resource type="PackedScene" uid="uid://dyvrywb3i8u3d" path="res://scene/paddle/paddle.tscn" id="2_5ovl6"]
+[ext_resource type="Script" uid="uid://nr8p7v1mibry" path="res://scene/arena/boundry.gd" id="3_g0wi5"]
+[ext_resource type="PackedScene" uid="uid://bxsn33wc0m3rw" path="res://scene/ball/ball.tscn" id="3_nye2f"]
 [ext_resource type="AudioStream" uid="uid://kw7gldeuno0f" path="res://asset/sfx/boundry/bounce_wall_01.wav" id="4_kxnuh"]
 [ext_resource type="AudioStream" uid="uid://dix2686qjky4o" path="res://asset/sfx/boundry/bounce_wall_02.wav" id="5_86xr0"]
 [ext_resource type="Theme" uid="uid://cb3cjfbikoxel" path="res://asset/default_theme.tres" id="5_fc27u"]
@@ -15,6 +15,21 @@
 [ext_resource type="AudioStream" uid="uid://c67fx7watm2lg" path="res://asset/sfx/boundry/bounce_wall_07.wav" id="10_1a7fc"]
 [ext_resource type="AudioStream" uid="uid://c7s03m8yprupy" path="res://asset/sfx/boundry/bounce_wall_08.wav" id="11_86xr0"]
 [ext_resource type="PackedScene" uid="uid://cxhp3t3lvlyyj" path="res://scene/background/checker45.tscn" id="14_q4yd7"]
+
+[sub_resource type="Animation" id="Animation_ft8p0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UILayer/UI/MarginContainer/HBoxContainer/HighscoreLabel:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_q4yd7"]
 resource_name = "highscore_congrats"
@@ -43,21 +58,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_ft8p0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UILayer/UI/MarginContainer/HBoxContainer/HighscoreLabel:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_80tcu"]
