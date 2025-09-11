@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cmjkjomq6dpf6"]
 
-[ext_resource type="Script" uid="uid://dtjpigkgfxowe" path="res://scene/obstacle.gd" id="1_nyukl"]
+[ext_resource type="Script" uid="uid://dtjpigkgfxowe" path="res://scene/obstacle/obstacle.gd" id="1_nyukl"]
 [ext_resource type="TileSet" uid="uid://dg4lx2u4br6c6" path="res://asset/tile_set.tres" id="2_nyukl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nyukl"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=4 uid="uid://b8fn7eu3rmvfw"]
 
-[ext_resource type="PackedScene" uid="uid://84e33sekd6ay" path="res://scene/player.tscn" id="1_3a1jv"]
-[ext_resource type="Script" uid="uid://bmmuy2ucob268" path="res://scene/stage.gd" id="1_d8w7t"]
+[ext_resource type="PackedScene" uid="uid://84e33sekd6ay" path="res://scene/player/player.tscn" id="1_3a1jv"]
+[ext_resource type="Script" uid="uid://bmmuy2ucob268" path="res://scene/stage/stage.gd" id="1_d8w7t"]
 [ext_resource type="Texture2D" uid="uid://7xk231nj566r" path="res://asset/backgroundEmpty.png" id="2_vdh54"]
 [ext_resource type="Texture2D" uid="uid://bmt1r03kxl6y6" path="res://asset/nauticalTile_069.png" id="4_vdh54"]
 [ext_resource type="TileSet" uid="uid://dg4lx2u4br6c6" path="res://asset/tile_set.tres" id="4_y15gs"]

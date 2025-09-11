@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://84e33sekd6ay"]
 
-[ext_resource type="Script" uid="uid://dpsdbph0i1ni4" path="res://scene/player.gd" id="1_hjaqi"]
+[ext_resource type="Script" uid="uid://dpsdbph0i1ni4" path="res://scene/player/player.gd" id="1_hjaqi"]
 [ext_resource type="Texture2D" uid="uid://dgfsy8h2cogvf" path="res://asset/fishGreen_dead.png" id="2_ct4mp"]
 [ext_resource type="Texture2D" uid="uid://bbquxusu54pf0" path="res://asset/fishGreen.png" id="2_fvtld"]
 [ext_resource type="Texture2D" uid="uid://dbat1htyvqg0c" path="res://asset/fishGreen_move.png" id="3_ct4mp"]

@@ -1,8 +1,8 @@
 extends Node2D
 
 const VIEWPORT_WIDTH := 1600
-const OBSTACLE_SCENE := preload("res://scene/obstacle.tscn")
-const STAGE_SCENE := preload("res://scene/stage.tscn")
+const OBSTACLE_SCENE := preload("res://scene/obstacle/obstacle.tscn")
+const STAGE_SCENE := preload("res://scene/stage/stage.tscn")
 
 var speed := 0.0:
 	set = set_speed  ## how fast the _player seems to advance
@@ -29,6 +29,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# TODO:
 	if _game_is_over and event.is_action_pressed("restart"):
 		get_tree().change_scene_to_packed(STAGE_SCENE)
 
