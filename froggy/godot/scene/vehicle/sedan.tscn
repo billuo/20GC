@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2e46rd7koji8"]
+
+[ext_resource type="PackedScene" uid="uid://c1l1fa0haldj1" path="res://asset/vehicle/sedan.glb" id="1_wrrya"]
+[ext_resource type="Script" uid="uid://dsaostmu16wr7" path="res://scene/vehicle/vehicle.gd" id="2_s277s"]
+[ext_resource type="PackedScene" uid="uid://cij8jd07a8ra8" path="res://scene/vehicle/particle.tscn" id="3_hhpdq"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_s277s"]
+points = PackedVector3Array(-0.575151, 0.05, -1.18651, 0.565203, 0.586889, 1.2141, -0.456558, 1.11721, -0.493562, -0.64877, 0.263103, 1.2141, 0.649469, 0.05, -1.10978, 0.160545, -0.020238, 1.29524, 0.456115, 1.11942, -0.495546, -0.567778, 0.586889, -1.25467, -0.438563, 1.09546, 0.218639, 0.649469, 0.05, 1.10978, 0.565203, 0.586889, -1.25467, -0.770107, 0.667778, 0.32381, 0.767833, 0.667778, 0.323556, -0.65, 0.0513843, 1.06878, -0.567778, 0.586889, 1.2141, -0.16297, -0.020238, -1.29524, 0.436288, 1.09546, 0.218638, -0.689116, 0.263103, -1.13321, 0.160545, -0.020238, -1.29524, -0.16297, -0.020238, 1.29524, 0.686842, 0.546444, -0.809397, -0.689116, 0.546444, -0.809397, -0.65, 0.0513843, -1.06878, 0.686842, 0.263218, -1.17352, -0.770107, 0.546444, 0.32381, 0.767833, 0.546444, 0.323556, 0.60585, 0.263218, 1.25467, 0.60585, 0.263218, -1.25467, -0.608124, 0.263103, -1.25467, -0.608124, 0.263103, 1.25467, -0.575151, 0.05, 1.18651, 0.572877, 0.05, -1.18651)
+
+[node name="sedan" instance=ExtResource("1_wrrya")]
+script = ExtResource("2_s277s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.025)
+shape = SubResource("ConvexPolygonShape3D_s277s")
+
+[node name="Particle" parent="." index="6" instance=ExtResource("3_hhpdq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.087514, -1.29446)
