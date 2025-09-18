@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://i30hylmgoctq"]
+
+[ext_resource type="Theme" uid="uid://f0wb3unpmagn" path="res://scene/default_theme.tres" id="1_yfug0"]
+[ext_resource type="Script" uid="uid://b2gyt0rm3souu" path="res://scene/ui/main_menu/main_menu.gd" id="2_ccc6b"]
+[ext_resource type="FontFile" uid="uid://ns3xd8r5kqgt" path="res://asset/font/Ls.otf" id="2_l8co2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ccc6b"]
+font_size = 128
+
+[sub_resource type="LabelSettings" id="LabelSettings_gaax8"]
+font = ExtResource("2_l8co2")
+font_size = 48
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_yfug0")
+script = ExtResource("2_ccc6b")
+
+[node name="Titles" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -131.5
+offset_right = 270.0
+offset_bottom = 131.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Titles"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Froggy"
+label_settings = SubResource("LabelSettings_ccc6b")
+
+[node name="Subtitle" type="Label" parent="Titles"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "20 Games Challenge Series"
+label_settings = SubResource("LabelSettings_gaax8")
+
+[node name="Control" type="Control" parent="Titles"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="Titles"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Start"

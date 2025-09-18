@@ -1,0 +1,12 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://f0wb3unpmagn"]
+
+[ext_resource type="FontFile" uid="uid://drc4bgbhf08n6" path="res://asset/font/Beta54.otf" id="1_ygxyb"]
+
+[resource]
+default_font = ExtResource("1_ygxyb")
+default_font_size = 32
+Button/font_sizes/font_size = 64
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dppq8428lyr08"]
 
-[ext_resource type="PackedScene" uid="uid://coi758jeb3oh1" path="res://asset/vehicle/truck.glb" id="1_grn5a"]
+[ext_resource type="PackedScene" uid="uid://coi758jeb3oh1" path="res://asset/model/vehicle/truck.glb" id="1_grn5a"]
 [ext_resource type="Script" uid="uid://dsaostmu16wr7" path="res://scene/vehicle/vehicle.gd" id="2_2c5b5"]
 [ext_resource type="PackedScene" uid="uid://cij8jd07a8ra8" path="res://scene/vehicle/particle.tscn" id="3_pfb0m"]
 
