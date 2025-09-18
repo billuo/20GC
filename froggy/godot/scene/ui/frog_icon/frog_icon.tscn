@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxe3mvisoe7yg"]
+
+[ext_resource type="Script" uid="uid://i64yt7bsplpa" path="res://scene/ui/frog_icon/frog_icon.gd" id="1_ha77b"]
+[ext_resource type="Texture2D" uid="uid://dlbq8jyagbin4" path="res://asset/icon/frog.svg" id="2_d7dgb"]
+[ext_resource type="Texture2D" uid="uid://cf27ys718prtf" path="res://asset/icon/check.svg" id="3_d7dgb"]
+[ext_resource type="Texture2D" uid="uid://ctmnfasly6lyj" path="res://asset/icon/cross.svg" id="4_plfkf"]
+
+[node name="FrogIcon" type="CenterContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_ha77b")
+
+[node name="Frog" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_d7dgb")
+
+[node name="Check" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.752941)
+layout_mode = 2
+texture = ExtResource("3_d7dgb")
+
+[node name="Cross" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.752941)
+layout_mode = 2
+texture = ExtResource("4_plfkf")
