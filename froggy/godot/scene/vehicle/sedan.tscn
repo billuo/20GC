@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d2e46rd7koji8"]
 
-[ext_resource type="PackedScene" uid="uid://c1l1fa0haldj1" path="res://asset/vehicle/sedan.glb" id="1_wrrya"]
+[ext_resource type="PackedScene" uid="uid://c1l1fa0haldj1" path="res://asset/model/vehicle/sedan.glb" id="1_wrrya"]
 [ext_resource type="Script" uid="uid://dsaostmu16wr7" path="res://scene/vehicle/vehicle.gd" id="2_s277s"]
 [ext_resource type="PackedScene" uid="uid://cij8jd07a8ra8" path="res://scene/vehicle/particle.tscn" id="3_hhpdq"]
 
