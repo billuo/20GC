@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://i30hylmgoctq"]
+[gd_scene load_steps=21 format=3 uid="uid://i30hylmgoctq"]
 
 [ext_resource type="PackedScene" uid="uid://dskpaon5cy61r" path="res://scene/lighting/sun.tscn" id="1_gaax8"]
 [ext_resource type="Theme" uid="uid://f0wb3unpmagn" path="res://scene/default_theme.tres" id="1_yfug0"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://dxhexo6bjm0bl" path="res://scene/ui/main_menu/camera.gd" id="3_c8ndp"]
 [ext_resource type="PackedScene" uid="uid://b5cb5kde37to5" path="res://scene/level/multi_grass.tscn" id="4_07d0v"]
 [ext_resource type="PackedScene" uid="uid://5tsardlpexj2" path="res://asset/model/frog-1060.glb" id="5_qmsml"]
+[ext_resource type="Shader" uid="uid://cwee0bfj82d6u" path="res://scene/level/grass.gdshader" id="6_xvqil"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gaax8"]
 albedo_color = Color(0.145098, 0.0784314, 0.0196078, 1)
@@ -16,6 +17,45 @@ albedo_color = Color(0.145098, 0.0784314, 0.0196078, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_l8co2"]
 material = SubResource("StandardMaterial3D_gaax8")
 size = Vector2(10, 10)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d3kjt"]
+noise_type = 2
+seed = 84122
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wd1ah"]
+seamless = true
+noise = SubResource("FastNoiseLite_d3kjt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wd1ah"]
+seed = 84244
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_woi1n"]
+seamless = true
+noise = SubResource("FastNoiseLite_wd1ah")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eeeer"]
+render_priority = 0
+shader = ExtResource("6_xvqil")
+shader_parameter/scale = 1.0
+shader_parameter/bend_scale = 0.5
+shader_parameter/bend_power = 2.0
+shader_parameter/color_young = Color(0.1, 0.6, 0.1, 1)
+shader_parameter/color_old = Color(0.3, 0.6, 0.1, 1)
+shader_parameter/back_light = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/patch_noise = SubResource("NoiseTexture2D_wd1ah")
+shader_parameter/patch_scale = 10.0
+shader_parameter/patch_min = 0.2
+shader_parameter/patch_max = 0.8
+shader_parameter/wind_noise = SubResource("NoiseTexture2D_woi1n")
+shader_parameter/wind_strength = 1.0
+shader_parameter/wind_speed = 0.1
+shader_parameter/wind_direction = Vector2(1, 0)
+shader_parameter/wind_bend_ao = 0.5
+shader_parameter/avoidance_enabled = true
+shader_parameter/object_radius = 1.8
+shader_parameter/object_origin = Vector3(0, 0, 0)
+shader_parameter/cut = 1.0
 
 [sub_resource type="MultiMesh" id="MultiMesh_c8ndp"]
 transform_format = 1
@@ -38,7 +78,7 @@ transform = Transform3D(0.258819, -0.836516, -0.482963, 0, -0.5, 0.866025, -0.96
 [node name="WorldEnvironment" parent="." instance=ExtResource("2_33hly")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.912398, -0.127691, 0.388877, 0, 0.950092, 0.311971, -0.409305, -0.284642, 0.866861, 2.34802, 1.88366, 2.23406)
+transform = Transform3D(0.912398, -0.127691, 0.388877, 0, 0.950092, 0.31197, -0.409305, -0.284641, 0.866861, 2.34802, 1.88366, 2.23406)
 script = ExtResource("3_c8ndp")
 
 [node name="Grass" type="Node3D" parent="."]
@@ -51,6 +91,7 @@ mesh = ExtResource("3_33hly")
 mesh = SubResource("PlaneMesh_l8co2")
 
 [node name="MultiGrass" parent="Grass" node_paths=PackedStringArray("avoid_objects") instance=ExtResource("4_07d0v")]
+material_override = SubResource("ShaderMaterial_eeeer")
 multimesh = SubResource("MultiMesh_c8ndp")
 avoid_objects = [NodePath("../../Frog")]
 
