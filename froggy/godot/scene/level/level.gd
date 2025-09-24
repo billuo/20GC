@@ -20,6 +20,9 @@ var time_elapsed := 0.0
 @onready var goal_counter: Label = %LivesCounter/CountLabel
 @onready var time_label: Label = %Time
 @onready var fps_label: Label = %FPSLabel
+@onready var restart_button: Button = %RestartButton
+@onready var exit_button: Button = %ExitButton
+
 @onready var multi_grass_1: MultiMeshInstance3D = %MultiGrass1
 @onready var multi_grass_2: MultiMeshInstance3D = %MultiGrass2
 @onready var multi_grass_3: MultiMeshInstance3D = %MultiGrass3
@@ -59,6 +62,8 @@ func _ready() -> void:
 		node.start_spawn()
 
 	timer_running = true
+	restart_button.pressed.connect(Game.switch_to_level)
+	exit_button.pressed.connect(Game.switch_to_main_menu)
 
 
 func _physics_process(delta: float) -> void:
@@ -96,10 +101,11 @@ func next_player(last_has_finished: bool):
 
 func end_level(succeeded: bool):
 	timer_running = false
+	%LevelEnd.show()
 	if succeeded:
-		%LevelClearLabel.show()
+		%LevelEnd/LevelResultLabel.text = "LEVEL CLEARED"
 	else:
-		%LevelFailLabel.show()
+		%LevelEnd/LevelResultLabel.text = "LEVEL FAILED"
 
 
 func spawn_player():

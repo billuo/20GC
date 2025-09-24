@@ -1,17 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://bi68opqljojm2"]
+[gd_scene load_steps=12 format=3 uid="uid://bi68opqljojm2"]
 
 [ext_resource type="ArrayMesh" uid="uid://dwvf6pvuy6rft" path="res://asset/model/grass-stalk.obj" id="1_2r2qy"]
+[ext_resource type="Environment" uid="uid://dwyck14sjssgj" path="res://scene/world_env.tres" id="1_h6a0o"]
 [ext_resource type="Shader" uid="uid://cwee0bfj82d6u" path="res://scene/level/grass.gdshader" id="2_7ejol"]
-
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_7ejol"]
-ground_color = Color(0.900531, 0.833478, 0.799684, 1)
-
-[sub_resource type="Sky" id="Sky_2r2qy"]
-sky_material = SubResource("PhysicalSkyMaterial_7ejol")
-
-[sub_resource type="Environment" id="Environment_h6a0o"]
-background_mode = 2
-sky = SubResource("Sky_2r2qy")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ejol"]
 albedo_color = Color(0.126624, 0.0496227, 0.00835084, 1)
@@ -70,7 +61,7 @@ buffer = PackedFloat32Array(-0.990765, 0, -0.142777, -1.82894, 0, 1.001, 0, -1.0
 metadata/credit = "https://hexaquo.at/"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_h6a0o")
+environment = ExtResource("1_h6a0o")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.939693, -0.0885213, 0.330366, 0, 0.965926, 0.258819, -0.34202, 0.24321, -0.907673, 0, 0, 0)

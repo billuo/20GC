@@ -106,11 +106,11 @@ void fragment() {
               voronoi_border(st, highlight_width, highlight_smooth));
 
   // fake AO
-  const float gap = 0.02;
-  const float sm = 0.01;
-  float d = 1.0 - (smoothstep(gap, gap + sm, UV.y) -
-                   smoothstep(1.0 - gap - sm, 1.0 - gap, UV.y));
-  color = mix(color, vec3(0.0), d * 0.8);
+  // const float gap = 0.02;
+  // const float sm = 0.01;
+  // float d = 1.0 - (smoothstep(gap, gap + sm, UV.y) -
+  //                  smoothstep(1.0 - gap - sm, 1.0 - gap, UV.y));
+  // color = mix(color, vec3(0.0), d * 0.8);
 
   // ALBEDO.rb = fract(UV);
   // ALBEDO.g = 0.0;
