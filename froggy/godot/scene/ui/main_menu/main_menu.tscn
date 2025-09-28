@@ -24,15 +24,15 @@ seed = 84122
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wd1ah"]
-seamless = true
 noise = SubResource("FastNoiseLite_d3kjt")
+seamless = true
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wd1ah"]
 seed = 84244
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_woi1n"]
-seamless = true
 noise = SubResource("FastNoiseLite_wd1ah")
+seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eeeer"]
 render_priority = 0
@@ -78,7 +78,7 @@ transform = Transform3D(0.258819, -0.836516, -0.482963, 0, -0.5, 0.866025, -0.96
 [node name="WorldEnvironment" parent="." instance=ExtResource("2_33hly")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.912398, -0.127691, 0.388877, 0, 0.950092, 0.31197, -0.409305, -0.284641, 0.866861, 2.34802, 1.88366, 2.23406)
+transform = Transform3D(0.9123978, -0.12769113, 0.38887715, 0, 0.9500919, 0.31197026, -0.4093052, -0.28464112, 0.8668608, 2.34802, 1.88366, 2.23406)
 script = ExtResource("3_c8ndp")
 
 [node name="Grass" type="Node3D" parent="."]
