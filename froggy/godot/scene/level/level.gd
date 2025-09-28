@@ -86,15 +86,14 @@ func next_player(last_has_finished: bool):
 	if finished_players.size() >= needs_finished:
 		end_level(true)
 		pcam.follow_mode = PhantomCamera3D.FollowMode.GROUP
-		# BUG: upstream: the following line doesn't work???
+		# NOTE: https://github.com/godotengine/godot-proposals/discussions/7364
+		# explains why the following line won't work.
 		# pcam.follow_targets = finished_players.map(func(x): return x as Node3D) as Array[Node3D]
-		var targets: Array[Node3D] = []
+		pcam.follow_targets.clear()
 		for p in finished_players:
-			targets.push_back(p as Node3D)
-		pcam.follow_targets = targets
+			pcam.follow_targets.push_back(p as Node3D)
 	elif total_lives - live_idx < needs_finished - finished_players.size():
 		end_level(false)
-		# TODO:
 	else:
 		spawn_player()
 
