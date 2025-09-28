@@ -77,7 +77,7 @@ void vertex() {
       1.0 - texture(patch_noise, NODE_POSITION_WORLD.xz / patch_scale).x;
   VERTEX *= scale * mix(patch_min, patch_max, patch_factor);
 
-  // TODO: not effective if cut < 1.0
+  // TODO: grass loses highlight when cut < 1.0
   NORMAL = mix(NORMAL, vec3(0.0, 1.0, 0.0), pow(height, 2.5));
 }
 
