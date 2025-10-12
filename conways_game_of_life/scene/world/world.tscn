@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6ocq7geulfa7"]
+
+[ext_resource type="Script" uid="uid://cqh23fh2et0ux" path="res://scene/world/world.gd" id="1_jiood"]
+[ext_resource type="Script" uid="uid://8ono43xommmf" path="res://scene/world/grid.gd" id="1_mcmpp"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_jiood")
+
+[node name="Grid" type="Node2D" parent="."]
+script = ExtResource("1_mcmpp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+
+[node name="ResetButton" type="Button" parent="CanvasLayer/Control/HBoxContainer2"]
+visible = false
+layout_mode = 2
+text = "Reset"
+
+[node name="StepButton" type="Button" parent="CanvasLayer/Control/HBoxContainer2"]
+layout_mode = 2
+text = "Step"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="WidthLabel" type="Label" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+text = "Width"
+
+[node name="WidthSpinBox" type="SpinBox" parent="CanvasLayer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 1.0
+rounded = true
+
+[node name="HeightLabel" type="Label" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+text = "Height"
+
+[node name="HeightSpinBox" type="SpinBox" parent="CanvasLayer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 1.0
+rounded = true
+
+[node name="CellSizeLabel" type="Label" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="CellSizeSpinBox" type="SpinBox" parent="CanvasLayer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 10.0
+rounded = true
+
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer2/StepButton" to="." method="_on_step_button_pressed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HBoxContainer/WidthSpinBox" to="Grid" method="_on_width_spin_box_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HBoxContainer/HeightSpinBox" to="Grid" method="_on_height_spin_box_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HBoxContainer/CellSizeSpinBox" to="Grid" method="_on_cell_size_spin_box_value_changed"]
