@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://dbbj1sxjj6pu4"]
+
+[ext_resource type="Script" uid="uid://dwrtjmor84172" path="res://scene/player/player.gd" id="2_6smn3"]
+[ext_resource type="Texture2D" uid="uid://cdvaalqlamqmj" path="res://asset/trail01.png" id="2_ajqqa"]
+[ext_resource type="AudioStream" uid="uid://dgxcn86ain6h5" path="res://asset/audio/laser_shoot.wav" id="3_5lop3"]
+[ext_resource type="Texture2D" uid="uid://1571ol3kyar1" path="res://asset/simpleSpace_vector.svg" id="3_6smn3"]
+[ext_resource type="AudioStream" uid="uid://dxojt2tw3610u" path="res://asset/audio/engine_001.wav" id="4_5lop3"]
+
+[sub_resource type="Curve" id="Curve_5lop3"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_6smn3"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cm2cf"]
+atlas = ExtResource("3_6smn3")
+region = Rect2(456, 312, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5lop3"]
+atlas = ExtResource("3_6smn3")
+region = Rect2(256, 0, 48, 48)
+
+[node name="Player" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 3
+gravity_scale = 0.0
+can_sleep = false
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("2_6smn3")
+
+[node name="TrailParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 23)
+amount = 32
+texture = ExtResource("2_ajqqa")
+lifetime = 0.5
+randomness = 0.2
+emission_shape = 3
+emission_rect_extents = Vector2(4, 1)
+direction = Vector2(0, 1)
+spread = 40.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+damping_min = 5.0
+damping_max = 5.0
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.9
+scale_amount_max = 1.1
+scale_amount_curve = SubResource("Curve_5lop3")
+color_ramp = SubResource("Gradient_6smn3")
+
+[node name="Trail" type="Sprite2D" parent="."]
+position = Vector2(-8, 16)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_cm2cf")
+centered = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_5lop3")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -24, -24, 16, -16, 24, 0, 16, 16, 24, 24, 16)
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("3_5lop3")
+max_polyphony = 8
+
+[node name="Engine" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("4_5lop3")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
