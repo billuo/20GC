@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://wrqqqdokdvc0"]
+
+[ext_resource type="Shader" uid="uid://mwix6bk5mg8k" path="res://scene/arena/background.gdshader" id="1_fujhf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uxdco"]
+shader = ExtResource("1_fujhf")
+shader_parameter/star_density = 5.0
+shader_parameter/star_glow = 0.05
+shader_parameter/star_truncate = 1.0
+shader_parameter/flare_shape = 2.7
+shader_parameter/debug_flare_intensity = 0.2
+shader_parameter/debug_flare_angle = 0.0
+
+[node name="Background" type="ColorRect"]
+material = SubResource("ShaderMaterial_uxdco")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0627451, 0.0627451, 0.0627451, 1)

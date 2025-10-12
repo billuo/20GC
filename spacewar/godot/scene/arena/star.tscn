@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://lhbc4di4a065"]
+
+[ext_resource type="Script" uid="uid://duohtsaxvsv32" path="res://scene/arena/star.gd" id="1_6h2pq"]
+
+[sub_resource type="Gradient" id="Gradient_khgbj"]
+offsets = PackedFloat32Array(0, 0.6555184, 1)
+colors = PackedColorArray(0.92, 0.3588, 0.38249716, 1, 0.86153847, 0.336, 0.3581913, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bhymu"]
+gradient = SubResource("Gradient_khgbj")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8504273, 0.15811966)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_khgbj"]
+radius = 40.0
+
+[node name="Star" type="Area2D"]
+collision_mask = 3
+script = ExtResource("1_6h2pq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = SubResource("GradientTexture2D_bhymu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_khgbj")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

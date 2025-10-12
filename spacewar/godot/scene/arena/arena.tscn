@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://d0si87uk88v78"]
+
+[ext_resource type="PackedScene" uid="uid://dbbj1sxjj6pu4" path="res://scene/player/player.tscn" id="1_khgbj"]
+[ext_resource type="PackedScene" uid="uid://wrqqqdokdvc0" path="res://scene/arena/background.tscn" id="1_nq1he"]
+[ext_resource type="PackedScene" uid="uid://lhbc4di4a065" path="res://scene/arena/star.tscn" id="2_bhymu"]
+[ext_resource type="Shader" uid="uid://mwix6bk5mg8k" path="res://scene/arena/background.gdshader" id="2_vf884"]
+[ext_resource type="Shader" uid="uid://cet1sv1uulxx1" path="res://scene/arena/star.gdshader" id="3_c6ks7"]
+[ext_resource type="Texture2D" uid="uid://7rxowdd5ppl7" path="res://asset/surface.jpg" id="4_7y4jp"]
+
+[sub_resource type="Environment" id="Environment_bwlb7"]
+glow_enabled = true
+glow_intensity = 1.5
+glow_bloom = 0.1
+glow_hdr_threshold = 0.9
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6ks7"]
+shader = ExtResource("2_vf884")
+shader_parameter/star_density = 5.0
+shader_parameter/star_glow = 0.05
+shader_parameter/star_truncate = 0.50000002375
+shader_parameter/flare_shape = 2.400000114
+shader_parameter/debug_flare_intensity = 0.2
+shader_parameter/debug_flare_angle = 0.0
+
+[sub_resource type="Gradient" id="Gradient_7y4jp"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yl6c4"]
+gradient = SubResource("Gradient_7y4jp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7y4jp"]
+shader = ExtResource("3_c6ks7")
+shader_parameter/iChannel0 = ExtResource("4_7y4jp")
+shader_parameter/iChannel1 = SubResource("GradientTexture2D_yl6c4")
+
+[node name="Arena" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bwlb7")
+
+[node name="BackgroundCanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" parent="BackgroundCanvasLayer" instance=ExtResource("1_nq1he")]
+material = SubResource("ShaderMaterial_c6ks7")
+
+[node name="Star" type="ColorRect" parent="BackgroundCanvasLayer"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_7y4jp")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Player1" parent="." instance=ExtResource("1_khgbj")]
+position = Vector2(250, 750)
+controller = 1
+color = Color(1, 0.33999997, 0.33999997, 1)
+
+[node name="Player2" parent="." instance=ExtResource("1_khgbj")]
+position = Vector2(750, 250)
+rotation = 3.1415927
+controller = 2
+color = Color(0.33999997, 0.33999997, 1, 1)
+
+[node name="Star" parent="." instance=ExtResource("2_bhymu")]
+position = Vector2(500, 500)
+mass = 500.0

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://fff644xn1cyc"]
+
+[ext_resource type="Texture2D" uid="uid://bumlu8ao5omfp" path="res://asset/Projectile Effects/star1.png" id="1_nh75y"]
+[ext_resource type="Texture2D" uid="uid://b6l4qeprera1m" path="res://asset/Projectile Effects/star2.png" id="2_xu6bb"]
+[ext_resource type="Texture2D" uid="uid://bhs7drhv6ejnn" path="res://asset/Projectile Effects/star3.png" id="3_pucas"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j58ux"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_nh75y")
+}, {
+"duration": 2.0,
+"texture": ExtResource("2_xu6bb")
+}, {
+"duration": 2.0,
+"texture": ExtResource("3_pucas")
+}],
+"loop": false,
+"name": &"vanish",
+"speed": 30.0
+}]
+
+[node name="Animation" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_j58ux")
+animation = &"vanish"
+frame = 2
+frame_progress = 1.0

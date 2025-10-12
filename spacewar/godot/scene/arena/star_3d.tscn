@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3jfflgah65h"]
+
+[ext_resource type="Shader" uid="uid://dla8xhfp2bn7x" path="res://scene/arena/star_3d.gdshader" id="1_tejck"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ao5c6"]
+render_priority = 0
+shader = ExtResource("1_tejck")
+
+[sub_resource type="SphereMesh" id="SphereMesh_tejck"]
+material = SubResource("ShaderMaterial_ao5c6")
+
+[node name="Star3d" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_tejck")
