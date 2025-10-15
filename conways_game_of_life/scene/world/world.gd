@@ -1,121 +1,167 @@
 extends Node2D
 
-var size: Vector2i
-var bytes_1: PackedInt32Array
-var bytes_2: PackedInt32Array
+const PLAY_ICON := preload("res://asset/play-button.svg")
+const PAUSE_ICON := preload("res://asset/pause-button.svg")
 
-var rd: RenderingDevice
-var shader: RID
-var sbo1: RID
-var sbo2: RID
+enum Tool {
+	None,
+	Pencil,
+	Bucket,
+}
+
+var _playing := false:
+	set = set_playing
+var _last_step_start := 0.0
+var _step_interval := 1000.0
+
+var _current_tool := Tool.None:
+	set = set_current_tool
+var _current_mouse_cell_pos = null
+var _tool_last_clicked_pos = null
+var _tool_last_clicked_button = 0
+var _tool_drag_start = null
+var _tool_drag_last = null
+
+@onready var grid: Grid = $Grid
+@onready var next_button: Button = %NextButton
+@onready var play_pause_button: Button = %PlayPauseButton
+@onready var tool_buttons: Array[Button] = [
+	%PencilButton,
+	%BucketButton,
+]
 
 
-func _mypprint(a: PackedInt32Array):
-	var s = ""
-	for j in range(size.y):
-		for i in range(size.x):
-			s += str(a[i + j * size.x])
-		s += "\n"
-	print(s)
+func _ready() -> void:
+	grid.reset(Vector2i(32, 32))
+	for button in tool_buttons:
+		assert(button.toggle_mode)
 
 
-func _enter_tree() -> void:
-	rd = RenderingServer.create_local_rendering_device()
-	if rd == null:
-		push_error("Failed to create rendering device")
-		queue_free()
+func _process(_delta: float) -> void:
+	if _playing and not grid.step_in_progress():
+		var now = Time.get_ticks_usec()
+		if now - _last_step_start > _step_interval:
+			_last_step_start = now
+			grid.step()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		_current_mouse_cell_pos = grid.global_to_cell_pos(event.global_position)
+		if _current_tool != Tool.None:
+			if _tool_drag_last != null and _tool_drag_last != _current_mouse_cell_pos and event.button_mask & _tool_last_clicked_button:
+				_tool_drag_last = _current_mouse_cell_pos
+				if _tool_last_clicked_button == MOUSE_BUTTON_LEFT:
+					_tool_apply_left_drag(_tool_drag_last)
+				elif _tool_last_clicked_button == MOUSE_BUTTON_RIGHT:
+					_tool_apply_right_drag(_tool_drag_last)
+
+	elif event is InputEventMouseButton:
+		if _current_tool != Tool.None:
+			if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+				_tool_last_clicked_pos = grid.global_to_cell_pos(event.global_position)
+				_tool_last_clicked_button = MOUSE_BUTTON_LEFT
+				_tool_drag_last = _tool_last_clicked_pos
+				_tool_apply_left_click(_tool_last_clicked_pos)
+			elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+				_tool_last_clicked_pos = grid.global_to_cell_pos(event.global_position)
+				_tool_last_clicked_button = MOUSE_BUTTON_RIGHT
+				_tool_drag_last = _tool_last_clicked_pos
+				_tool_apply_right_click(_tool_last_clicked_pos)
+
+
+func set_playing(value: bool):
+	_playing = value
+	if _playing:
+		play_pause_button.icon = PAUSE_ICON
+		play_pause_button.tooltip_text = "Pause"
+		next_button.disabled = true
+	else:
+		play_pause_button.icon = PLAY_ICON
+		play_pause_button.tooltip_text = "Play"
+		next_button.disabled = false
+
+
+func set_current_tool(value: Tool):
+	_current_tool = value
+	if _current_tool == Tool.None:
+		_tool_last_clicked_pos = null
+		_tool_drag_start = null
+		_tool_drag_last = null
+
+
+func _ensure_tool_buttons_exclusive(just_toggled: Button):
+	assert(just_toggled in tool_buttons)
+	if not just_toggled.button_pressed:
 		return
-
-	var shader_file: RDShaderFile = load("res://scene/world/gol.glsl")
-	var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
-	shader = rd.shader_create_from_spirv(shader_spirv)
-
-	# FIXME: test only
-	reset(Vector2i(32, 33))
-	for y in range(1, size.y, 2):
-		for x in range(size.x):
-			bytes_1[x + y * size.x] = 1
-	$Grid.data = bytes_1
+	for button in tool_buttons:
+		if button == just_toggled:
+			continue
+		button.button_pressed = false
 
 
-func _exit_tree() -> void:
-	rd.free_rid(shader)
-	rd.free()
+func _tool_apply_left_click(cell_pos: Vector2i):
+	if not grid.has_cell(cell_pos):
+		return
+	match _current_tool:
+		Tool.Pencil:
+			grid.set_cell(cell_pos, true)
+			if _playing:
+				_playing = false
 
 
-func reset(new_size: Vector2i):
-	size = new_size
-	bytes_1.clear()
-	bytes_1.resize(size.x * size.y)
-	bytes_2.clear()
-	bytes_2.resize(size.x * size.y)
-	$Grid.width = size.x
-	$Grid.height = size.y
+func _tool_apply_right_click(cell_pos: Vector2i):
+	if not grid.has_cell(cell_pos):
+		return
+	match _current_tool:
+		Tool.Pencil:
+			grid.set_cell(cell_pos, false)
+			if _playing:
+				_playing = false
 
 
-func step():
-	var t0 = Time.get_ticks_usec()
-
-	# upload data
-	var u_uniforms := RDUniform.new()
-	u_uniforms.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
-	u_uniforms.binding = 0
-	var ubo = rd.uniform_buffer_create(16, PackedInt32Array([size.x, size.y, 0, 0]).to_byte_array())
-	u_uniforms.add_id(ubo)
-
-	var u_cur := RDUniform.new()
-	u_cur.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	u_cur.binding = 1
-	_free_if_valid(sbo1)
-	sbo1 = rd.storage_buffer_create(bytes_1.size() * 4, bytes_1.to_byte_array())
-	u_cur.add_id(sbo1)
-
-	var u_next := RDUniform.new()
-	u_next.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	u_next.binding = 2
-	_free_if_valid(sbo2)
-	sbo2 = rd.storage_buffer_create(bytes_2.size() * 4, bytes_2.to_byte_array())
-	u_next.add_id(sbo2)
-
-	var uniform_set = rd.uniform_set_create([u_uniforms, u_cur, u_next], shader, 0)
-
-	# setup pipeline
-	var pipeline = rd.compute_pipeline_create(shader)
-	var compute_list = rd.compute_list_begin()
-	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
-	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-	rd.compute_list_dispatch(compute_list, int(ceilf(size.x / 32.0)), int(ceilf(size.y / 32.0)), 1)
-	rd.compute_list_end()
-
-	# compute and free memory
-	rd.submit()
-	rd.sync()
-	_free_if_valid(ubo)
-	_free_if_valid(uniform_set)
-	_free_if_valid(pipeline)
-
-	# retrieve output
-	bytes_2 = rd.buffer_get_data(sbo2).to_int32_array()
-	# _mypprint(bytes_1)
-	# _mypprint(bytes_2)
-	var t = bytes_2
-	bytes_2 = bytes_1
-	bytes_1 = t
-	$Grid.data = bytes_1
-
-	var t1 = Time.get_ticks_usec()
-	print_debug("Time elapsed: %d us" % (t1 - t0))
+func _tool_apply_left_drag(cell_pos: Vector2i):
+	if not grid.has_cell(cell_pos):
+		return
+	match _current_tool:
+		Tool.Pencil:
+			if cell_pos != _tool_drag_start:
+				grid.set_cell(cell_pos, true)
 
 
-func _free_if_valid(rid: RID):
-	if rid.is_valid():
-		RenderingServer.free_rid(rid)
+func _tool_apply_right_drag(cell_pos: Vector2i):
+	if not grid.has_cell(cell_pos):
+		return
+	match _current_tool:
+		Tool.Pencil:
+			if cell_pos != _tool_drag_start:
+				grid.set_cell(cell_pos, false)
 
 
-func _on_step_button_pressed() -> void:
-	step()
+func _on_generate_pattern_button_pressed() -> void:
+	grid.generate_pattern()
 
 
-class StepData:
-	var current: PackedInt32Array
-	var next: PackedInt32Array
+func _on_next_button_pressed() -> void:
+	if _playing:
+		return
+	grid.step()
+
+
+func _on_play_pause_button_pressed() -> void:
+	_playing = not _playing
+
+
+func _on_pencil_button_toggled(toggled_on: bool) -> void:
+	_ensure_tool_buttons_exclusive(%PencilButton)
+	_current_tool = Tool.Pencil if toggled_on else Tool.None
+
+
+func _on_bucket_button_toggled(toggled_on: bool) -> void:
+	_ensure_tool_buttons_exclusive(%BucketButton)
+	_current_tool = Tool.Bucket if toggled_on else Tool.None
+
+
+func _on_trash_button_pressed() -> void:
+	grid.reset()
+	_playing = false

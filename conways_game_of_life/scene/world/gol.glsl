@@ -13,6 +13,8 @@ layout(set = 0, binding = 1, std430) restrict buffer CurGrid { int data[]; }
 cur_grid;
 layout(set = 0, binding = 2, std430) restrict buffer NextGrid { int data[]; }
 next_grid;
+layout(set = 0, binding = 3,
+       rgba8) restrict writeonly uniform image2D output_image;
 
 int get_cur_grid(ivec2 coord) {
   if (coord.x < 0 || coord.y < 0 || coord.x >= width || coord.y >= height) {
@@ -22,6 +24,9 @@ int get_cur_grid(ivec2 coord) {
 }
 void set_next_grid(ivec2 coord, int alive) {
   next_grid.data[coord.x + coord.y * width] = alive;
+}
+void draw_image(ivec2 coord, int alive) {
+  imageStore(output_image, coord, vec4(float(alive)));
 }
 
 void main() {
@@ -47,4 +52,5 @@ void main() {
       next_alive = 1;
   }
   set_next_grid(coord, next_alive);
+  draw_image(coord, next_alive);
 }

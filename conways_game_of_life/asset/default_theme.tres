@@ -1,0 +1,10 @@
+[gd_resource type="Theme" format=3 uid="uid://do8emmo4i1wte"]
+
+[resource]
+default_font_size = 24
+Button/colors/icon_hover_pressed_color = Color(1, 0.84313726, 0.23529412, 1)
+Button/colors/icon_pressed_color = Color(1, 0.8434999, 0.23693943, 1)
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20
