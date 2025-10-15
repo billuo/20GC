@@ -38,14 +38,15 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if _playing and not grid.step_in_progress():
+	if _playing:
 		var now = Time.get_ticks_usec()
 		if now - _last_step_start > _step_interval:
 			_last_step_start = now
 			grid.step()
+			%GenerationLabel.text = "Generation: %d" % grid.get_generation()
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_current_mouse_cell_pos = grid.global_to_cell_pos(event.global_position)
 		if _current_tool != Tool.None:
@@ -55,6 +56,9 @@ func _input(event: InputEvent) -> void:
 					_tool_apply_left_drag(_tool_drag_last)
 				elif _tool_last_clicked_button == MOUSE_BUTTON_RIGHT:
 					_tool_apply_right_drag(_tool_drag_last)
+
+		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
+			grid.position += event.screen_relative
 
 	elif event is InputEventMouseButton:
 		if _current_tool != Tool.None:
@@ -68,6 +72,18 @@ func _input(event: InputEvent) -> void:
 				_tool_last_clicked_button = MOUSE_BUTTON_RIGHT
 				_tool_drag_last = _tool_last_clicked_pos
 				_tool_apply_right_click(_tool_last_clicked_pos)
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
+			var zoom_center = Global.VIEWPORT_SIZE / 2.0
+			var zoom_center_cell_pos = grid.global_to_cell_pos(zoom_center)
+			grid.cell_size = minf(100.0, grid.cell_size * 1.25)
+			var zoom_center_new = grid.cell_to_global_pos(zoom_center_cell_pos)
+			grid.global_position += zoom_center - zoom_center_new
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
+			var zoom_center = Global.VIEWPORT_SIZE / 2.0
+			var zoom_center_cell_pos = grid.global_to_cell_pos(zoom_center)
+			grid.cell_size = maxf(1.0, grid.cell_size / 1.25)
+			var zoom_center_new = grid.cell_to_global_pos(zoom_center_cell_pos)
+			grid.global_position += zoom_center - zoom_center_new
 
 
 func set_playing(value: bool):
@@ -146,6 +162,7 @@ func _on_next_button_pressed() -> void:
 	if _playing:
 		return
 	grid.step()
+	%GenerationLabel.text = "Generation: %d" % grid.get_generation()
 
 
 func _on_play_pause_button_pressed() -> void:
