@@ -3,12 +3,12 @@ extends Node2D
 
 var width := 0
 var height := 0
-var cell_size := Vector2(10.0, 10.0):
+var cell_size := 1.0:
 	set = set_cell_size
 
-var _data: PackedInt32Array:
+var _data: PackedByteArray:
 	set = set_data
-var _computing_step := false
+var _generation := 0
 
 @onready var compute: GridCompute = $GridGPUCompute
 @onready var texrect: TextureRect = %GridRect
@@ -16,46 +16,26 @@ var _computing_step := false
 
 func _ready() -> void:
 	position = Global.VIEWPORT_SIZE / 2.0
-	%CellSizeSpinBox.value = cell_size.x
 
 
 func _draw() -> void:
+	# FIXME: needs to compute beforehand???
 	var image = Image.create_from_data(width, height, false, Image.FORMAT_R8, compute.get_image_bytes())
 	if texrect.texture and texrect.texture.get_size() == Vector2(width, height):
 		texrect.texture.update(image)
 	else:
 		texrect.texture = ImageTexture.create_from_image(image)
 
-	# var bytes = PackedByteArray()
-	# for y in range(height):
-	# 	for x in range(width):
-	# 		var alive = _data[x + y * width]
-	# 		bytes.push_back(0)
-	# 		bytes.push_back(255 if alive else 0)
-	# 		bytes.push_back(0)
-	# var image = Image.create_from_data(width, height, false, Image.FORMAT_RGB8, bytes)
 
-	# var total_size = cell_size * Vector2(width, height)
-	# var o = -total_size / 2.0
-	# for i in range(width):
-	# 	for j in range(height):
-	# 		var cell_rect = Rect2(o + cell_size * Vector2(i, j), cell_size)
-	# 		var idx = i + j * width
-	# 		var alive = _data.get(idx)
-	# 		var color: Color
-	# 		if alive:
-	# 			color = Color.GREEN
-	# 		else:
-	# 			color = Color.BLACK
-	# 		draw_rect(cell_rect, color)
-
-
-func set_cell_size(value: Vector2):
+func set_cell_size(value: float):
 	cell_size = value
-	queue_redraw()
+	texrect.scale = Vector2.ONE * cell_size
+	if texrect.texture:
+		var size = texrect.texture.get_size() * cell_size
+		texrect.position = -size / 2.0
 
 
-func set_data(value: PackedInt32Array):
+func set_data(value: PackedByteArray):
 	assert(value.size() == width * height)
 	_data = value
 	queue_redraw()
@@ -64,8 +44,13 @@ func set_data(value: PackedInt32Array):
 func global_to_cell_pos(global_pos: Vector2) -> Vector2i:
 	var local_pos = to_local(global_pos)
 	local_pos += cell_size * Vector2(width, height) / 2.0
-	var cell_pos = Vector2i(local_pos.x / cell_size.x, local_pos.y / cell_size.y)
-	return cell_pos
+	return local_pos / cell_size
+
+
+func cell_to_global_pos(cell_pos: Vector2i) -> Vector2:
+	var local_pos = cell_pos * cell_size
+	local_pos -= cell_size * Vector2(width, height) / 2.0
+	return to_global(local_pos)
 
 
 func has_cell(cell_pos: Vector2i) -> bool:
@@ -83,31 +68,26 @@ func reset(new_size := Vector2i()):
 		compute.reset(new_size)
 		_data = compute.get_data()
 		%GridSizeLabel.text = "Grid Size: %d x %d" % [width, height]
+	_generation = 0
 
 
 func generate_pattern():
-	reset(Vector2i(1024, 1025))
+	const N = 1000
+	reset(Vector2i(N, N + 1))
 	for y in range(1, height, 2):
 		for x in range(width):
 			_data[x + y * width] = 1
+	# FIXME: image not updated
 	queue_redraw()
 
 
 func step():
-	if _computing_step:
-		return
-	_computing_step = true
-	compute.step(_step_callback)
+	_data = compute.step()
+	_generation += 1
 
 
-func step_in_progress():
-	return _computing_step
-
-
-func _step_callback(new_data: PackedInt32Array):
-	_data = new_data
-	queue_redraw()
-	_computing_step = false
+func get_generation() -> int:
+	return _generation
 
 
 func toggle_cell(cell_pos: Vector2i):
@@ -124,4 +104,4 @@ func set_cell(cell_pos: Vector2i, alive: bool):
 
 func _on_cell_size_spin_box_value_changed(value: float) -> void:
 	value = round(value)
-	cell_size = Vector2(value, value)
+	cell_size = int(value)

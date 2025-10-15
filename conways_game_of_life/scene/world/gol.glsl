@@ -9,24 +9,25 @@ layout(set = 0, binding = 0) uniform UniformData {
   int _padding0;
   int _padding1;
 };
-layout(set = 0, binding = 1, std430) restrict buffer CurGrid { int data[]; }
+layout(set = 0, binding = 1, std430) restrict readonly buffer CurGrid { int data[]; }
 cur_grid;
-layout(set = 0, binding = 2, std430) restrict buffer NextGrid { int data[]; }
+layout(set = 0, binding = 2, std430) restrict writeonly buffer NextGrid { int data[]; }
 next_grid;
-layout(set = 0, binding = 3,
-       rgba8) restrict writeonly uniform image2D output_image;
 
 int get_cur_grid(ivec2 coord) {
   if (coord.x < 0 || coord.y < 0 || coord.x >= width || coord.y >= height) {
     return 0;
   }
-  return cur_grid.data[coord.x + coord.y * width];
+  int idx = coord.x + coord.y * width;
+  int chunk = cur_grid.data[idx / 4];
+  int byte = chunk & (0xff << ((idx % 4) * 8));
+  bool alive = byte != 0;
+  return int(alive);
 }
-void set_next_grid(ivec2 coord, int alive) {
-  next_grid.data[coord.x + coord.y * width] = alive;
-}
-void draw_image(ivec2 coord, int alive) {
-  imageStore(output_image, coord, vec4(float(alive)));
+void set_next_grid(ivec2 coord, int byte) {
+  int idx = coord.x + coord.y * width;
+  atomicAnd(next_grid.data[idx / 4], 0x00 << ((idx % 4) * 8));
+  atomicOr(next_grid.data[idx / 4], (byte & 0xff) << ((idx % 4) * 8));
 }
 
 void main() {
@@ -43,14 +44,13 @@ void main() {
   int n7 = get_cur_grid(coord + ivec2(0, 1));
   int n8 = get_cur_grid(coord + ivec2(1, 1));
   int n_alive = n0 + n1 + n2 + n3 + n5 + n6 + n7 + n8;
-  int next_alive = n4;
+  bool next_alive = n4 != 0;
   if (n4 != 0) {
     if (n_alive < 2 || n_alive > 3)
-      next_alive = 0;
+      next_alive = false;
   } else {
     if (n_alive == 3)
-      next_alive = 1;
+      next_alive = true;
   }
-  set_next_grid(coord, next_alive);
-  draw_image(coord, next_alive);
+  set_next_grid(coord, int(next_alive));
 }
