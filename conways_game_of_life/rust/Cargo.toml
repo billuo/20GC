@@ -1,0 +1,10 @@
+[package]
+name = "gol"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ca-rules = "0.3.5"
+godot = "0.4.0"
+[lib]
+crate-type = ["cdylib"]

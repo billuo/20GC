@@ -102,10 +102,10 @@ func get_image_bytes() -> PackedByteArray:
 	return image_bytes
 
 
-func step() -> PackedByteArray:
+func step(b_mask: int, s_mask: int) -> PackedByteArray:
 	# upload data
 	_free_if_valid(ubo)
-	ubo = rd.uniform_buffer_create(16, PackedInt32Array([size.x, size.y, 0, 0]).to_byte_array())
+	ubo = rd.uniform_buffer_create(16, PackedInt32Array([size.x, size.y, b_mask, s_mask]).to_byte_array())
 	var u_uniforms := RDUniform.new()
 	u_uniforms.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
 	u_uniforms.binding = 0
