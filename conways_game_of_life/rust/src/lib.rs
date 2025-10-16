@@ -1,4 +1,5 @@
 use godot::prelude::*;
+use rand::Rng;
 
 #[derive(GodotClass)]
 #[class(no_init)]
@@ -33,6 +34,16 @@ impl GridCPUCompute {
         } else {
             vec![]
         }
+    }
+    #[func]
+    fn randomize(mut bytes: PackedByteArray, alive_ratio: f32) -> PackedByteArray {
+        let mut rng = rand::rng();
+        let dist = rand::distr::Uniform::new(0.0, 1.0).unwrap();
+        for byte in bytes.as_mut_slice() {
+            let alive = rng.sample(dist) < alive_ratio;
+            *byte = if alive { 1 } else { 0 }
+        }
+        bytes
     }
 }
 

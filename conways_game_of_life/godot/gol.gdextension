@@ -6,7 +6,8 @@ reloadable = true
 [libraries]
 linux.debug.x86_64 =     "res://../rust/target/debug/libgol.so"
 linux.release.x86_64 =   "res://../rust/target/release/libgol.so"
-windows.debug.x86_64 =   "res://../rust/target/debug/gol.dll"
+#windows.debug.x86_64 =   "res://../rust/target/debug/gol.dll"
+windows.debug.x86_64 =   "res://../rust/target/release/gol.dll"
 windows.release.x86_64 = "res://../rust/target/release/gol.dll"
 macos.debug =            "res://../rust/target/debug/libgol.dylib"
 macos.release =          "res://../rust/target/release/libgol.dylib"
