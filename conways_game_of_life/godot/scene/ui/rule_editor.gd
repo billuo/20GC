@@ -106,3 +106,8 @@ func _rebuild_based_on_buttons():
 			s_mask |= 0x01 << i
 	line_edit.text = s
 	rules_changed.emit()
+
+
+func _on_rule_string_line_edit_focus_exited() -> void:
+	if GridCPUCompute.parse_rule_string(line_edit.text).is_empty():
+		_rebuild_based_on_buttons()

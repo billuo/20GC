@@ -14,5 +14,17 @@ func get_image_bytes() -> PackedByteArray:
 	return PackedByteArray()
 
 
-func step(_b_mask: int, _s_mask: int) -> PackedByteArray:
-	return PackedByteArray()
+func set_cell(_cell_pos: Vector2i, _alive: bool):
+	pass
+
+
+func toggle_cell(_cell_pos: Vector2i):
+	pass
+
+
+func step(_b_mask: int, _s_mask: int):
+	pass
+
+
+func randomize(_alive_ratio: float):
+	pass

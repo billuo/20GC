@@ -61,7 +61,7 @@ func _process(_delta: float) -> void:
 		if now - _last_step_start > _step_interval:
 			_last_step_start = now
 			grid.step()
-			_update_n_alive()
+			_update_population()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -93,7 +93,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				_tool_apply_right_click(_tool_last_clicked_pos)
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
 			var sz = grid.cell_size
-			if sz < 10:
+			if sz < 1.0:
+				sz += 0.1
+			elif sz < 10:
 				sz += 1
 			else:
 				sz += 2
@@ -101,7 +103,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			%ToolPreview.cell_pos = grid.global_to_cell_pos(event.global_position)
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
 			var sz = grid.cell_size
-			if sz <= 10:
+			if sz <= 1.0:
+				sz -= 0.1
+			elif sz <= 10:
 				sz -= 1
 			else:
 				sz -= 2
@@ -137,9 +141,8 @@ func set_current_tool(value: Tool):
 		_tool_drag_last = null
 
 
-func _update_n_alive():
-	var n_alive = GridCPUCompute.count_alive(grid._data)
-	%CounterLabel.text = "Alive: " + str(n_alive)
+func _update_population():
+	%CounterLabel.text = "Population: " + str(grid.get_population())
 
 
 func _ensure_tool_buttons_exclusive(just_toggled: Button):
@@ -160,7 +163,7 @@ func _tool_apply_left_click(cell_pos: Vector2i):
 			grid.set_cell(cell_pos, true)
 			if _playing:
 				_playing = false
-	_update_n_alive()
+	_update_population()
 
 
 func _tool_apply_right_click(cell_pos: Vector2i):
@@ -171,7 +174,7 @@ func _tool_apply_right_click(cell_pos: Vector2i):
 			grid.set_cell(cell_pos, false)
 			if _playing:
 				_playing = false
-	_update_n_alive()
+	_update_population()
 
 
 func _tool_apply_left_drag(cell_pos: Vector2i):
@@ -181,7 +184,7 @@ func _tool_apply_left_drag(cell_pos: Vector2i):
 		Tool.Pencil:
 			if cell_pos != _tool_drag_start:
 				grid.set_cell(cell_pos, true)
-	_update_n_alive()
+	_update_population()
 
 
 func _tool_apply_right_drag(cell_pos: Vector2i):
@@ -191,19 +194,19 @@ func _tool_apply_right_drag(cell_pos: Vector2i):
 		Tool.Pencil:
 			if cell_pos != _tool_drag_start:
 				grid.set_cell(cell_pos, false)
-	_update_n_alive()
+	_update_population()
 
 
 func _on_generate_pattern_button_pressed() -> void:
 	grid.generate_pattern()
-	_update_n_alive()
+	_update_population()
 
 
 func _on_next_button_pressed() -> void:
 	if _playing:
 		return
 	grid.step()
-	_update_n_alive()
+	_update_population()
 
 
 func _on_play_pause_button_pressed() -> void:
@@ -241,7 +244,7 @@ func _on_new_popup_id_pressed(id: int) -> void:
 		3:
 			grid.reset(Vector2i(4096, 4096))
 			grid.cell_size = 1.0
-	_update_n_alive()
+	_update_population()
 
 
 func _on_playback_limit_check_box_toggled(toggled_on: bool) -> void:
@@ -258,4 +261,4 @@ func _on_playback_limit_check_box_toggled(toggled_on: bool) -> void:
 func _on_randomize_button_pressed() -> void:
 	grid.position = Global.VIEWPORT_SIZE / 2.0
 	grid.randomize(%RandomizeSpinBox.value)
-	_update_n_alive()
+	_update_population()

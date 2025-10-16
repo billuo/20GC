@@ -102,6 +102,15 @@ func get_image_bytes() -> PackedByteArray:
 	return image_bytes
 
 
+func set_cell(cell_pos: Vector2i, alive: bool):
+	data_1[cell_pos.x + cell_pos.y * size.x] = 1 if alive else 0
+
+
+func toggle_cell(cell_pos: Vector2i):
+	var cur = data_1[cell_pos.x + cell_pos.y * size.x]
+	data_1[cell_pos.x + cell_pos.y * size.x] = 1 if cur == 0 else 0
+
+
 func step(b_mask: int, s_mask: int) -> PackedByteArray:
 	# upload data
 	_free_if_valid(ubo)
@@ -144,6 +153,10 @@ func step(b_mask: int, s_mask: int) -> PackedByteArray:
 	data_1 = rd.buffer_get_data(sbo2)
 	RenderingServer.free_rid(uniform_set)
 	return data_1
+
+
+func randomize(alive_ratio: float):
+	data_1 = GridCPUCompute.randomize(data_1, alive_ratio)
 
 
 func _free_if_valid(rid: RID):

@@ -205,4 +205,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Invert"
 
+[connection signal="focus_exited" from="RuleStringLineEdit" to="." method="_on_rule_string_line_edit_focus_exited"]
 [connection signal="text_changed" from="RuleStringLineEdit" to="." method="_on_line_edit_text_changed"]
