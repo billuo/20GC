@@ -1,0 +1,239 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6ocq7geulfa7"]
+
+[ext_resource type="Script" uid="uid://cqh23fh2et0ux" path="res://scene/world/world.gd" id="1_jiood"]
+[ext_resource type="Script" uid="uid://8ono43xommmf" path="res://scene/world/grid.gd" id="1_mcmpp"]
+[ext_resource type="Texture2D" uid="uid://ci1tua2j0r7mw" path="res://asset/play-button.svg" id="3_3td6k"]
+[ext_resource type="Script" uid="uid://c5nxmqqytgdjk" path="res://scene/world/grid_gpu_compute.gd" id="3_dp1oe"]
+[ext_resource type="Script" uid="uid://dxt78jvc0wsc2" path="res://scene/world/tool_preview.gd" id="4_4mi5g"]
+[ext_resource type="Texture2D" uid="uid://cs02l3q3wkywv" path="res://asset/next-button.svg" id="4_dp1oe"]
+[ext_resource type="Theme" uid="uid://do8emmo4i1wte" path="res://asset/default_theme.tres" id="4_ydhjj"]
+[ext_resource type="Texture2D" uid="uid://osmgrxrct77e" path="res://asset/conway-oob.png" id="7_se62r"]
+[ext_resource type="Texture2D" uid="uid://dwqyuti0xdj4j" path="res://asset/pencil.svg" id="7_y1ys1"]
+[ext_resource type="Texture2D" uid="uid://7rpqungbgnna" path="res://asset/paint-bucket.svg" id="8_mtuhj"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_jiood")
+
+[node name="Grid" type="Sprite2D" parent="."]
+texture_filter = 1
+script = ExtResource("1_mcmpp")
+
+[node name="GridGPUCompute" type="Node" parent="Grid"]
+script = ExtResource("3_dp1oe")
+
+[node name="ToolPreview" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_4mi5g")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("4_ydhjj")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Buttons"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="NewButton" type="MenuButton" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New"
+switch_on_hover = true
+item_count = 4
+popup/item_0/text = "32x32"
+popup/item_0/id = 0
+popup/item_1/text = "128x128"
+popup/item_1/id = 1
+popup/item_2/text = "1024x1024"
+popup/item_2/id = 2
+popup/item_3/text = "4096x4096"
+popup/item_3/id = 3
+
+[node name="ClearButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Clear
+"
+
+[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Generate"
+
+[node name="RandomizeButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Randomize"
+
+[node name="Iterations" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Iterations"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PlayPauseButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Play"
+icon = ExtResource("3_3td6k")
+
+[node name="NextButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Step once"
+icon = ExtResource("4_dp1oe")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Zoom"
+
+[node name="ZoomSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+min_value = 0.1
+step = 0.01
+value = 1.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+suffix = "x"
+
+[node name="HSplitContainer2" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="PlaybackLimitCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+text = "Playback Limit"
+
+[node name="PlaybackLimitSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 0.1
+step = 0.1
+value = 10.0
+allow_greater = true
+alignment = 1
+suffix = "/s"
+
+[node name="Tools" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Tools"]
+layout_mode = 2
+
+[node name="PencilButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Pencil Tool"
+toggle_mode = true
+icon = ExtResource("7_y1ys1")
+
+[node name="BucketButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Bucket Tool"
+toggle_mode = true
+icon = ExtResource("8_mtuhj")
+
+[node name="Infos" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="GridSizeLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Grid Size: 0x0"
+
+[node name="GenerationLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generation: 0"
+
+[node name="CounterLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Alive: 0"
+
+[node name="BackgroundCanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundCanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0627451, 0.0627451, 0.0627451, 1)
+
+[node name="TextureRect" type="TextureRect" parent="BackgroundCanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_se62r")
+stretch_mode = 1
+
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/ClearButton" to="." method="_on_trash_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/GenerateButton" to="." method="_on_generate_pattern_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/PlayPauseButton" to="." method="_on_play_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2/PlaybackLimitCheckBox" to="." method="_on_playback_limit_check_box_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer/PencilButton" to="." method="_on_pencil_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer/BucketButton" to="." method="_on_bucket_button_toggled"]
