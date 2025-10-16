@@ -1,0 +1,208 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0io7xwtf1yxy"]
+
+[ext_resource type="Script" uid="uid://r7ajf3tvsqim" path="res://scene/ui/rule_editor.gd" id="1_086yn"]
+
+[node name="RuleEditor" type="VBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -112.5
+offset_right = 82.0
+offset_bottom = 112.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_086yn")
+
+[node name="RuleStringLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Rule String"
+
+[node name="RuleStringLineEdit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "B3/S23"
+emoji_menu_enabled = false
+caret_blink = true
+
+[node name="BLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Born with neighbours"
+
+[node name="BGridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 5
+
+[node name="Button" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "0"
+
+[node name="Button2" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "1"
+
+[node name="Button3" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "2"
+
+[node name="Button4" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "3"
+
+[node name="Button5" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "4"
+
+[node name="Button6" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "5"
+
+[node name="Button7" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "6"
+
+[node name="Button8" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "7"
+
+[node name="Button9" type="Button" parent="BGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "8"
+
+[node name="BButtons" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NoneButton" type="Button" parent="BButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "None"
+
+[node name="AllButton" type="Button" parent="BButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "All"
+
+[node name="InvertButton" type="Button" parent="BButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Invert"
+
+[node name="SLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Survive with neighbours"
+
+[node name="SGridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 5
+
+[node name="Button" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "0"
+
+[node name="Button2" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "1"
+
+[node name="Button3" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "2"
+
+[node name="Button4" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "3"
+
+[node name="Button5" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "4"
+
+[node name="Button6" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "5"
+
+[node name="Button7" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "6"
+
+[node name="Button8" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "7"
+
+[node name="Button9" type="Button" parent="SGridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "8"
+
+[node name="SButtons" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NoneButton" type="Button" parent="SButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "None"
+
+[node name="AllButton" type="Button" parent="SButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "All"
+
+[node name="InvertButton" type="Button" parent="SButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Invert"
+
+[connection signal="text_changed" from="RuleStringLineEdit" to="." method="_on_line_edit_text_changed"]

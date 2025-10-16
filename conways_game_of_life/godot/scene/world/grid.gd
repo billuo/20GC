@@ -3,7 +3,6 @@ extends Sprite2D
 
 signal size_changed(size: Vector2i)
 signal cell_size_changed(size: float)
-signal data_changed(data: PackedByteArray)
 signal generation_changed(gen: int)
 
 var size: Vector2i
@@ -13,6 +12,8 @@ var _data: PackedByteArray:
 	set = _set_data
 var _generation := 0:
 	set = _set_generation
+var _b_mask := 0
+var _s_mask := 0
 
 @onready var compute: GridCompute = $GridGPUCompute
 
@@ -30,13 +31,17 @@ func set_cell_size(value: float):
 func _set_data(value: PackedByteArray):
 	assert(value.size() == size.x * size.y)
 	_data = value
-	data_changed.emit(_data)
 	queue_redraw()
 
 
 func _set_generation(value: int):
 	_generation = value
 	generation_changed.emit(_generation)
+
+
+func set_rules(b_mask: int, s_mask: int):
+	_b_mask = b_mask
+	_s_mask = s_mask
 
 
 func global_to_cell_pos(global_pos: Vector2) -> Vector2i:
@@ -96,12 +101,14 @@ func generate_pattern():
 
 
 func step():
-	_data = compute.step()
+	_data = compute.step(_b_mask, _s_mask)
 	_generation += 1
+
 
 func randomize(alive_ratio: float):
 	for i in range(_data.size()):
 		_data[i] = int(randf_range(0.0, 1.0) < alive_ratio)
+
 
 func toggle_cell(cell_pos: Vector2i):
 	if has_cell(cell_pos):

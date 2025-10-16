@@ -6,8 +6,8 @@ layout(local_size_x = 32, local_size_y = 32, local_size_z = 1) in;
 layout(set = 0, binding = 0) uniform UniformData {
   int width;
   int height;
-  int _padding0;
-  int _padding1;
+  int b_mask;
+  int s_mask;
 };
 layout(set = 0, binding = 1, std430) restrict readonly buffer CurGrid { int data[]; }
 cur_grid;
@@ -44,13 +44,14 @@ void main() {
   int n7 = get_cur_grid(coord + ivec2(0, 1));
   int n8 = get_cur_grid(coord + ivec2(1, 1));
   int n_alive = n0 + n1 + n2 + n3 + n5 + n6 + n7 + n8;
-  bool next_alive = n4 != 0;
-  if (n4 != 0) {
-    if (n_alive < 2 || n_alive > 3)
-      next_alive = false;
+  bool currently_alive = n4 != 0;
+  bool next_alive;
+  if (currently_alive) {
+    // check against s_mask if can survive
+    next_alive = (s_mask & (0x01 << n_alive)) != 0;
   } else {
-    if (n_alive == 3)
-      next_alive = true;
+    // check against b_mask if should be born
+    next_alive = (b_mask & (0x01 << n_alive)) != 0;
   }
   set_next_grid(coord, int(next_alive));
 }

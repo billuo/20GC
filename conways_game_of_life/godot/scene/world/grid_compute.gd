@@ -14,5 +14,5 @@ func get_image_bytes() -> PackedByteArray:
 	return PackedByteArray()
 
 
-func step() -> PackedByteArray:
+func step(_b_mask: int, _s_mask: int) -> PackedByteArray:
 	return PackedByteArray()

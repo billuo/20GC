@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6ocq7geulfa7"]
+[gd_scene load_steps=12 format=3 uid="uid://c6ocq7geulfa7"]
 
 [ext_resource type="Script" uid="uid://cqh23fh2et0ux" path="res://scene/world/world.gd" id="1_jiood"]
 [ext_resource type="Script" uid="uid://8ono43xommmf" path="res://scene/world/grid.gd" id="1_mcmpp"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dxt78jvc0wsc2" path="res://scene/world/tool_preview.gd" id="4_4mi5g"]
 [ext_resource type="Texture2D" uid="uid://cs02l3q3wkywv" path="res://asset/next-button.svg" id="4_dp1oe"]
 [ext_resource type="Theme" uid="uid://do8emmo4i1wte" path="res://asset/default_theme.tres" id="4_ydhjj"]
+[ext_resource type="PackedScene" uid="uid://c0io7xwtf1yxy" path="res://scene/ui/rule_editor.tscn" id="6_wvhmq"]
 [ext_resource type="Texture2D" uid="uid://osmgrxrct77e" path="res://asset/conway-oob.png" id="7_se62r"]
 [ext_resource type="Texture2D" uid="uid://dwqyuti0xdj4j" path="res://asset/pencil.svg" id="7_y1ys1"]
 [ext_resource type="Texture2D" uid="uid://7rpqungbgnna" path="res://asset/paint-bucket.svg" id="8_mtuhj"]
@@ -82,9 +83,30 @@ text = "Clear
 layout_mode = 2
 text = "Generate"
 
-[node name="RandomizeButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="RandomizeButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer"]
 layout_mode = 2
 text = "Randomize"
+
+[node name="RandomizeSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.5
+alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="RuleEditor" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer" instance=ExtResource("6_wvhmq")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Iterations" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
 layout_mode = 2
@@ -231,7 +253,7 @@ stretch_mode = 1
 
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/ClearButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/GenerateButton" to="." method="_on_generate_pattern_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/PlayPauseButton" to="." method="_on_play_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
 [connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2/PlaybackLimitCheckBox" to="." method="_on_playback_limit_check_box_toggled"]

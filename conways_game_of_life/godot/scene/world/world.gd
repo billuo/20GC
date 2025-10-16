@@ -32,6 +32,7 @@ var _tool_drag_last = null
 ]
 @onready var zoom_spin_box: SpinBox = %ZoomSpinBox
 @onready var play_back_limit_spin_box: SpinBox = %PlaybackLimitSpinBox
+@onready var rule_editor: RuleEditor = %RuleEditor
 
 
 func _ready() -> void:
@@ -41,14 +42,6 @@ func _ready() -> void:
 	new_popup.id_pressed.connect(_on_new_popup_id_pressed)
 	grid.size_changed.connect(func(sz): %GridSizeLabel.text = "Grid Size: %d x %d" % [sz.x, sz.y])
 	grid.generation_changed.connect(func(gen): %GenerationLabel.text = "Generation: " + str(gen))
-	# grid.data_changed.connect(
-	# 	# OPTIMIZE:
-	# 	func(data: PackedByteArray):
-	# 		var n_alive = 0
-	# 		for byte in data:
-	# 			n_alive += int(byte != 0)
-	# 		%CounterLabel.text = "Alive: " + str(n_alive)
-	# )
 	grid.cell_size_changed.connect(func(sz): zoom_spin_box.value = sz)
 	zoom_spin_box.value_changed.connect(func(v): grid.cell_size = v)
 	play_back_limit_spin_box.value_changed.connect(func(v): _step_interval = 1e6 / v)
@@ -58,6 +51,9 @@ func _ready() -> void:
 	grid.cell_size = 20.0
 	%ToolPreview.grid = grid
 
+	grid.set_rules(rule_editor.b_mask, rule_editor.s_mask)
+	rule_editor.rules_changed.connect(func(): grid.set_rules(rule_editor.b_mask, rule_editor.s_mask))
+
 
 func _process(_delta: float) -> void:
 	if _playing:
@@ -65,6 +61,7 @@ func _process(_delta: float) -> void:
 		if now - _last_step_start > _step_interval:
 			_last_step_start = now
 			grid.step()
+			_update_n_alive()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -95,10 +92,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				_tool_drag_last = _tool_last_clicked_pos
 				_tool_apply_right_click(_tool_last_clicked_pos)
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.is_pressed():
-			grid.zoom_at(grid.cell_size * 1.25, event.global_position)
+			var sz = grid.cell_size
+			if sz < 10:
+				sz += 1
+			else:
+				sz += 2
+			grid.zoom_at(sz, event.global_position)
 			%ToolPreview.cell_pos = grid.global_to_cell_pos(event.global_position)
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.is_pressed():
-			grid.zoom_at(grid.cell_size / 1.25, event.global_position)
+			var sz = grid.cell_size
+			if sz <= 10:
+				sz -= 1
+			else:
+				sz -= 2
+			grid.zoom_at(sz, event.global_position)
 			%ToolPreview.cell_pos = grid.global_to_cell_pos(event.global_position)
 		if event.button_index == MOUSE_BUTTON_MIDDLE and event.is_pressed() and event.double_click:
 			grid.position = Global.VIEWPORT_SIZE / 2.0
@@ -130,6 +137,11 @@ func set_current_tool(value: Tool):
 		_tool_drag_last = null
 
 
+func _update_n_alive():
+	var n_alive = GridCPUCompute.count_alive(grid._data)
+	%CounterLabel.text = "Alive: " + str(n_alive)
+
+
 func _ensure_tool_buttons_exclusive(just_toggled: Button):
 	assert(just_toggled in tool_buttons)
 	if not just_toggled.button_pressed:
@@ -148,6 +160,7 @@ func _tool_apply_left_click(cell_pos: Vector2i):
 			grid.set_cell(cell_pos, true)
 			if _playing:
 				_playing = false
+	_update_n_alive()
 
 
 func _tool_apply_right_click(cell_pos: Vector2i):
@@ -158,6 +171,7 @@ func _tool_apply_right_click(cell_pos: Vector2i):
 			grid.set_cell(cell_pos, false)
 			if _playing:
 				_playing = false
+	_update_n_alive()
 
 
 func _tool_apply_left_drag(cell_pos: Vector2i):
@@ -167,6 +181,7 @@ func _tool_apply_left_drag(cell_pos: Vector2i):
 		Tool.Pencil:
 			if cell_pos != _tool_drag_start:
 				grid.set_cell(cell_pos, true)
+	_update_n_alive()
 
 
 func _tool_apply_right_drag(cell_pos: Vector2i):
@@ -176,16 +191,19 @@ func _tool_apply_right_drag(cell_pos: Vector2i):
 		Tool.Pencil:
 			if cell_pos != _tool_drag_start:
 				grid.set_cell(cell_pos, false)
+	_update_n_alive()
 
 
 func _on_generate_pattern_button_pressed() -> void:
 	grid.generate_pattern()
+	_update_n_alive()
 
 
 func _on_next_button_pressed() -> void:
 	if _playing:
 		return
 	grid.step()
+	_update_n_alive()
 
 
 func _on_play_pause_button_pressed() -> void:
@@ -223,6 +241,7 @@ func _on_new_popup_id_pressed(id: int) -> void:
 		3:
 			grid.reset(Vector2i(4096, 4096))
 			grid.cell_size = 1.0
+	_update_n_alive()
 
 
 func _on_playback_limit_check_box_toggled(toggled_on: bool) -> void:
@@ -238,4 +257,5 @@ func _on_playback_limit_check_box_toggled(toggled_on: bool) -> void:
 
 func _on_randomize_button_pressed() -> void:
 	grid.position = Global.VIEWPORT_SIZE / 2.0
-	grid.randomize(0.5)
+	grid.randomize(%RandomizeSpinBox.value)
+	_update_n_alive()
