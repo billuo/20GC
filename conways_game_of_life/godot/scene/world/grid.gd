@@ -4,16 +4,77 @@ extends Sprite2D
 signal size_changed(size: Vector2i)
 signal cell_size_changed(size: float)
 signal generation_changed(gen: int)
+signal compute_method_changed(node)
+
+const TOTAL_TIME_MAX_SAMPLES := 100
+
+enum ComputeMethod {
+	Auto,
+	GPU,
+	CPU,
+}
+@export var compute_method = ComputeMethod.Auto:
+	set(value):
+		compute_method = value
+		if is_node_ready():
+			_resolve_compute()
 
 var size: Vector2i
 var cell_size := 1.0:
 	set = set_cell_size
+var force_multithread := false:
+	set(value):
+		force_multithread = value
+		if _compute is GridCompute:
+			_compute.parallel = value
+			print_debug(_compute.parallel)
+
 var _generation := 0:
 	set = _set_generation
 var _b_mask := 0
 var _s_mask := 0
+var _compute
+var _total_time_samples: Array[float] = []
+var _image: Image
 
-@onready var compute: GridCompute = $GridGPUCompute
+
+func _ready() -> void:
+	$GridCompute.auto_parallel = true
+	_resolve_compute()
+
+
+func _process(_delta: float) -> void:
+	if scale.x < 1.0:
+		texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	else:
+		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+
+func _resolve_compute():
+	# FIXME: not properly initialized and data transferred if switch at runtime
+	var renderer = ProjectSettings.get_setting_with_override("rendering/renderer/rendering_method")
+	match renderer:
+		"forward_plus":
+			match compute_method:
+				ComputeMethod.Auto, ComputeMethod.GPU:
+					_compute = $GridGPUCompute
+				ComputeMethod.CPU:
+					_compute = $GridCompute
+		"mobile":
+			match compute_method:
+				ComputeMethod.GPU:
+					_compute = $GridGPUCompute
+				ComputeMethod.Auto, ComputeMethod.CPU:
+					_compute = $GridCompute
+		"gl_compatibility":
+			if compute_method == ComputeMethod.GPU:
+				push_error("GPU compute unsupported by compatibility renderer")
+			_compute = $GridCompute
+		_:
+			push_error("unknown renderer: %s" % renderer)
+			_compute = $GridCompute
+	print("Using %s compute" % ("CPU" if _compute is GridCompute else "GPU"))
+	compute_method_changed.emit(_compute)
 
 
 func set_cell_size(value: float):
@@ -54,7 +115,7 @@ func get_generation() -> int:
 
 
 func get_population() -> int:
-	return GridCPUCompute.count_alive(compute.get_data())
+	return _compute.get_population()
 
 
 func zoom_at(new_cell_size: float, center: Vector2):
@@ -66,11 +127,21 @@ func zoom_at(new_cell_size: float, center: Vector2):
 
 func reset(new_size := Vector2i()):
 	if new_size == Vector2i.ZERO:
-		compute.reset(size)
+		_compute.reset(size)
 	else:
 		size = new_size
-		compute.reset(size)
+		_compute.reset(size)
 		size_changed.emit(size)
+	_update_image()
+	_generation = 0
+
+
+func set_data(new_size: Vector2i, new_data: PackedByteArray):
+	assert(new_size.x * new_size.y == new_data.size())
+	size = new_size
+	_compute.reset(new_size)
+	size_changed.emit(size)
+	_compute.set_data(new_data)
 	_update_image()
 	_generation = 0
 
@@ -78,35 +149,79 @@ func reset(new_size := Vector2i()):
 func generate_pattern():
 	for y in range(1, size.y):
 		for x in range(size.x):
-			compute.set_cell(Vector2i(x, y), y % 2 == 0)
+			_compute.set_cell(Vector2i(x, y), y % 2 == 0)
 	_update_image()
 
 
 func step():
-	compute.step(_b_mask, _s_mask)
+	var t0 = Time.get_ticks_usec()
+	_compute.step(_b_mask, _s_mask)
 	_generation += 1
+	# var t1 = Time.get_ticks_usec()
 	_update_image()
+	var t2 = Time.get_ticks_usec()
+	# var step_time = t1 - t0
+	# var image_time = t2 - t1
+	var total_time = t2 - t0
+	if _total_time_samples.size() >= TOTAL_TIME_MAX_SAMPLES:
+		_total_time_samples.remove_at(0)
+	_total_time_samples.push_back(total_time)
+	var sum = 0.0
+	for t in _total_time_samples:
+		sum += t
+	var avg = sum / _total_time_samples.size()
+	if Engine.get_process_frames() % 30 == 0:
+		# TODO:
+		print_debug("%dus ~ %.1f/s" % [avg, 1e6 / avg])
 
 
 func randomize(alive_ratio: float):
-	compute.randomize(alive_ratio)
+	_compute.randomize(alive_ratio)
 	_update_image()
 
 
 func toggle_cell(cell_pos: Vector2i):
-	compute.toggle_cell(cell_pos)
-	_update_image()
+	if has_cell(cell_pos):
+		var current: int = _compute.get_cell(cell_pos)
+		if current == 0:
+			_compute.set_cell(cell_pos, 1)
+		else:
+			_compute.set_cell(cell_pos, 0)
+		_update_image()
 
 
 func set_cell(cell_pos: Vector2i, alive: bool):
 	if has_cell(cell_pos):
-		compute.set_cell(cell_pos, alive)
+		_compute.set_cell(cell_pos, alive)
 		_update_image()
 
 
 func _update_image():
-	var image = Image.create_from_data(size.x, size.y, false, Image.FORMAT_R8, compute.get_image_bytes())
+	var image_bytes = _compute.render_image()
+	_image = Image.create_from_data(size.x, size.y, false, Image.FORMAT_R8, image_bytes)
 	if texture and texture.get_size() == Vector2(size):
-		texture.update(image)
+		texture.update(_image)
 	else:
-		texture = ImageTexture.create_from_image(image)
+		texture = ImageTexture.create_from_image(_image)
+
+
+func save_image():
+	if not texture:
+		push_error("no image yet")
+		return
+	var save_dir := OS.get_user_data_dir()
+	var d = Time.get_datetime_dict_from_system()
+	var timestamp = "%04d%02d%02d-%02d%02d%02d" % [d["year"], d["month"], d["day"], d["hour"], d["minute"], d["second"]]
+	var make_filename := func(i) -> String:
+		if i == 0:
+			return "grid-" + timestamp + ".png"
+		else:
+			return "grid-" + timestamp + "-" + str(i) + ".png"
+	var id = 0
+	var path = save_dir.path_join(make_filename.call(id))
+	while FileAccess.file_exists(path):
+		id += 1
+		path = save_dir.path_join(make_filename.call(id))
+	var image = (texture as ImageTexture).get_image()
+	image.save_png(path)
+	print("Image saved to ", path)

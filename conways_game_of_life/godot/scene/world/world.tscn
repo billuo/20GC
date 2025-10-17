@@ -19,6 +19,8 @@ script = ExtResource("1_jiood")
 texture_filter = 1
 script = ExtResource("1_mcmpp")
 
+[node name="GridCompute" type="GridCompute" parent="Grid"]
+
 [node name="GridGPUCompute" type="Node" parent="Grid"]
 script = ExtResource("3_dp1oe")
 
@@ -46,20 +48,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Buttons" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+[node name="General" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Buttons"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/General"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="NewButton" type="MenuButton" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="NewButton" type="MenuButton" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "New"
@@ -74,25 +76,29 @@ popup/item_2/id = 2
 popup/item_3/text = "4096x4096"
 popup/item_3/id = 3
 
-[node name="ClearButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="LoadButton" type="Button" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[node name="ClearButton" type="Button" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Clear
 "
 
-[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Generate"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
 layout_mode = 2
 dragging_enabled = false
 dragger_visibility = 1
 
-[node name="RandomizeButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer"]
+[node name="RandomizeButton" type="Button" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/HSplitContainer"]
 layout_mode = 2
 text = "Randomize"
 
-[node name="RandomizeSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer"]
+[node name="RandomizeSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/HSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 1.0
@@ -100,54 +106,158 @@ step = 0.01
 value = 0.5
 alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="RuleEditor" parent="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer" instance=ExtResource("6_wvhmq")]
+[node name="RuleEditor" parent="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer" instance=ExtResource("6_wvhmq")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Iterations" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+[node name="Iteration" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Iterations"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/Iteration"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="PlayPauseButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PlayPauseButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Play"
 icon = ExtResource("3_3td6k")
 
-[node name="NextButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="NextButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Step once"
 icon = ExtResource("4_dp1oe")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 dragging_enabled = false
 dragger_visibility = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="PlaybackLimitCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+text = "Playback Limit"
+
+[node name="PlaybackLimitSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.1
+step = 0.1
+value = 10.0
+allow_greater = true
+alignment = 1
+suffix = "/s"
+
+[node name="HSplitContainer4" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FastForwardCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer4"]
+unique_name_in_owner = true
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Fast Forward"
+
+[node name="FastForwardSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 10.0
+value = 2.0
+rounded = true
+allow_greater = true
+alignment = 1
+editable = false
+suffix = "x"
+
+[node name="HSplitContainer3" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer"]
+layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer3"]
+layout_mode = 2
+text = "Force Multithread"
+
+[node name="MTCheckButton" type="CheckButton" parent="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="EditTool" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/EditTool"]
+layout_mode = 2
+
+[node name="PencilButton" type="Button" parent="CanvasLayer/Control/MarginContainer/EditTool/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Pencil Tool"
+toggle_mode = true
+icon = ExtResource("7_y1ys1")
+
+[node name="BucketButton" type="Button" parent="CanvasLayer/Control/MarginContainer/EditTool/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Bucket Tool"
+toggle_mode = true
+icon = ExtResource("8_mtuhj")
+
+[node name="Info" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="GridSizeLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Grid Size: 0x0"
+
+[node name="GenerationLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generation: 0"
+
+[node name="CounterLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Alive: 0"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Info"]
+layout_mode = 2
+size_flags_vertical = 4
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/Info/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Zoom"
 
-[node name="ZoomSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="ZoomSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Info/HSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -159,74 +269,6 @@ allow_greater = true
 allow_lesser = true
 alignment = 1
 suffix = "x"
-
-[node name="HSplitContainer2" type="HSplitContainer" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-dragging_enabled = false
-dragger_visibility = 1
-
-[node name="PlaybackLimitCheckBox" type="CheckBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-button_pressed = true
-text = "Playback Limit"
-
-[node name="PlaybackLimitSpinBox" type="SpinBox" parent="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-min_value = 0.1
-step = 0.1
-value = 10.0
-allow_greater = true
-alignment = 1
-suffix = "/s"
-
-[node name="Tools" type="PanelContainer" parent="CanvasLayer/Control/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer/Tools"]
-layout_mode = 2
-
-[node name="PencilButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-tooltip_text = "Pencil Tool"
-toggle_mode = true
-icon = ExtResource("7_y1ys1")
-
-[node name="BucketButton" type="Button" parent="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "Bucket Tool"
-toggle_mode = true
-icon = ExtResource("8_mtuhj")
-
-[node name="Infos" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-
-[node name="GridSizeLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Grid Size: 0x0"
-
-[node name="GenerationLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Generation: 0"
-
-[node name="CounterLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Infos"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Alive: 0"
 
 [node name="BackgroundCanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -251,11 +293,14 @@ size_flags_vertical = 4
 texture = ExtResource("7_se62r")
 stretch_mode = 1
 
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/ClearButton" to="." method="_on_trash_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/GenerateButton" to="." method="_on_generate_pattern_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Buttons/MarginContainer/HBoxContainer/HSplitContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/PlayPauseButton" to="." method="_on_play_pause_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
-[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Iterations/MarginContainer/VBoxContainer/HSplitContainer2/PlaybackLimitCheckBox" to="." method="_on_playback_limit_check_box_toggled"]
-[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer/PencilButton" to="." method="_on_pencil_button_toggled"]
-[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Tools/VBoxContainer/BucketButton" to="." method="_on_bucket_button_toggled"]
+[connection signal="compute_method_changed" from="Grid" to="." method="_on_grid_compute_method_changed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/ClearButton" to="." method="_on_trash_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/GenerateButton" to="." method="_on_generate_pattern_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/General/MarginContainer/HBoxContainer/HSplitContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HBoxContainer/PlayPauseButton" to="." method="_on_play_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer2/PlaybackLimitCheckBox" to="." method="_on_playback_limit_check_box_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/Iteration/MarginContainer/VBoxContainer/HSplitContainer4/FastForwardCheckBox" to="." method="_on_fast_forward_check_box_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/EditTool/VBoxContainer/PencilButton" to="." method="_on_pencil_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/MarginContainer/EditTool/VBoxContainer/BucketButton" to="." method="_on_bucket_button_toggled"]

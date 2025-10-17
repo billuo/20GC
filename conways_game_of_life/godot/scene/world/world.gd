@@ -14,6 +14,7 @@ var _playing := false:
 	set = set_playing
 var _last_step_start := 0.0
 var _step_interval := 0.0
+var _fast_forward := 0
 
 var _current_tool := Tool.None:
 	set = set_current_tool
@@ -32,6 +33,7 @@ var _tool_drag_last = null
 ]
 @onready var zoom_spin_box: SpinBox = %ZoomSpinBox
 @onready var play_back_limit_spin_box: SpinBox = %PlaybackLimitSpinBox
+@onready var fast_forward_spin_box: SpinBox = %FastForwardSpinBox
 @onready var rule_editor: RuleEditor = %RuleEditor
 
 
@@ -45,23 +47,40 @@ func _ready() -> void:
 	grid.cell_size_changed.connect(func(sz): zoom_spin_box.value = sz)
 	zoom_spin_box.value_changed.connect(func(v): grid.cell_size = v)
 	play_back_limit_spin_box.value_changed.connect(func(v): _step_interval = 1e6 / v)
+	fast_forward_spin_box.value_changed.connect(func(v): _fast_forward = v)
+
 	_step_interval = 1e6 / play_back_limit_spin_box.value
 	grid.position = Global.VIEWPORT_SIZE / 2.0
-	grid.reset(Vector2i(32, 32))
+	grid.reset(Vector2i(50, 50))
 	grid.cell_size = 20.0
 	%ToolPreview.grid = grid
+	%MTCheckButton.toggled.connect(func(v): grid.force_multithread = v)
+	%GridSizeLabel.gui_input.connect(
+		func(e: InputEvent):
+			if e is InputEventMouseButton and e.is_pressed() and e.double_click:
+				grid.grow(10)
+	)
 
 	grid.set_rules(rule_editor.b_mask, rule_editor.s_mask)
 	rule_editor.rules_changed.connect(func(): grid.set_rules(rule_editor.b_mask, rule_editor.s_mask))
 
+	var dst = PackedByteArray([0])
+	dst = GridUtil.blit_rect(PackedByteArray([1]), Vector2i.ONE, Rect2i(Vector2i.ZERO, Vector2i.ONE), dst, Vector2i.ONE, Vector2i.ZERO)
+	print(dst)
+
 
 func _process(_delta: float) -> void:
 	if _playing:
-		var now = Time.get_ticks_usec()
-		if now - _last_step_start > _step_interval:
-			_last_step_start = now
-			grid.step()
+		if _fast_forward > 1:
+			for i in range(_fast_forward):
+				grid.step()
 			_update_population()
+		else:
+			var now = Time.get_ticks_usec()
+			if now - _last_step_start > _step_interval:
+				_last_step_start = now
+				grid.step()
+				_update_population()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -115,9 +134,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			grid.position = Global.VIEWPORT_SIZE / 2.0
 
 	elif event.is_action_type():
-		if event.is_action(&"zoom_reset"):
+		if event.is_action_pressed(&"zoom_reset"):
 			grid.position = Global.VIEWPORT_SIZE / 2.0
 			grid.zoom_at(10.0, Global.VIEWPORT_SIZE / 2.0)
+		elif event.is_action_pressed(&"save_grid_image"):
+			grid.save_image()
 
 
 func set_playing(value: bool):
@@ -226,6 +247,7 @@ func _on_bucket_button_toggled(toggled_on: bool) -> void:
 func _on_trash_button_pressed() -> void:
 	grid.position = Global.VIEWPORT_SIZE / 2.0
 	grid.reset()
+	_update_population()
 	_playing = false
 
 
@@ -249,16 +271,61 @@ func _on_new_popup_id_pressed(id: int) -> void:
 
 func _on_playback_limit_check_box_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		%FastForwardCheckBox.button_pressed = false
 		%PlaybackLimitCheckBox.self_modulate = Color.WHITE
 		play_back_limit_spin_box.editable = true
 		_step_interval = 1e6 / play_back_limit_spin_box.value
 	else:
-		%PlaybackLimitCheckBox.self_modulate = Color.DARK_GRAY
+		%PlaybackLimitCheckBox.self_modulate = Color(0.5, 0.5, 0.5)
 		play_back_limit_spin_box.editable = false
 		_step_interval = 0.0
+
+
+func _on_fast_forward_check_box_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		%PlaybackLimitCheckBox.button_pressed = false
+		%FastForwardCheckBox.self_modulate = Color.WHITE
+		fast_forward_spin_box.editable = true
+		_fast_forward = int(fast_forward_spin_box.value)
+	else:
+		%FastForwardCheckBox.self_modulate = Color(0.5, 0.5, 0.5)
+		fast_forward_spin_box.editable = false
+		_fast_forward = 1
 
 
 func _on_randomize_button_pressed() -> void:
 	grid.position = Global.VIEWPORT_SIZE / 2.0
 	grid.randomize(%RandomizeSpinBox.value)
 	_update_population()
+
+
+func _on_grid_compute_method_changed(node: Variant) -> void:
+	(%MTCheckButton.get_parent() as Control).visible = node is GridCompute
+
+
+func _on_load_button_pressed() -> void:
+	var dialog := FileDialog.new()
+	dialog.use_native_dialog = true
+	dialog.access = FileDialog.ACCESS_FILESYSTEM
+	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	dialog.filters = PackedStringArray(["*.rle", "*.cell"])
+	dialog.file_selected.connect(func(path): _on_load_parsed_pattern(GridUtil.parse_file(path)))
+	add_child(dialog)
+	dialog.popup_centered()
+
+
+func _on_load_parsed_pattern(pattern: ParsedPattern):
+	if not pattern:
+		return
+	rule_editor.apply_rule_string(pattern.rule)
+	grid.set_data(pattern.size, pattern.bytes)
+	var s = ""
+	for y in range(pattern.size.y):
+		if not s.is_empty():
+			s += "\n"
+		for x in range(pattern.size.x):
+			var idx = x + y * pattern.size.x
+			s += "O" if pattern.bytes[idx] == 1 else "."
+	print("size:%s" % pattern.size)
+	print("rule:%s" % pattern.rule)
+	print(s)
