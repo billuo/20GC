@@ -9,12 +9,18 @@ layout(set = 0, binding = 0) uniform UniformData {
   int b_mask;
   int s_mask;
 };
-layout(set = 0, binding = 1, std430) restrict readonly buffer CurGrid { int data[]; }
+layout(set = 0, binding = 1, std430) restrict readonly buffer CurGrid {
+  int data[];
+}
 cur_grid;
-layout(set = 0, binding = 2, std430) restrict writeonly buffer NextGrid { int data[]; }
+layout(set = 0, binding = 2, std430) restrict writeonly buffer NextGrid {
+  int data[];
+}
 next_grid;
+layout(set = 0, binding = 3, std430) restrict buffer Stats { int population; }
+stats;
 
-int get_cur_grid(ivec2 coord) {
+int get_cur_cell(ivec2 coord) {
   if (coord.x < 0 || coord.y < 0 || coord.x >= width || coord.y >= height) {
     return 0;
   }
@@ -24,25 +30,28 @@ int get_cur_grid(ivec2 coord) {
   bool alive = byte != 0;
   return int(alive);
 }
-void set_next_grid(ivec2 coord, int byte) {
+void set_next_cell(ivec2 coord, int byte) {
   int idx = coord.x + coord.y * width;
   atomicAnd(next_grid.data[idx / 4], 0x00 << ((idx % 4) * 8));
   atomicOr(next_grid.data[idx / 4], (byte & 0xff) << ((idx % 4) * 8));
+  if ((byte & 0xff) != 0) {
+    atomicAdd(stats.population, 1);
+  }
 }
 
 void main() {
   ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
   if (coord.x >= width || coord.y >= height)
     return;
-  int n0 = get_cur_grid(coord + ivec2(-1, -1));
-  int n1 = get_cur_grid(coord + ivec2(0, -1));
-  int n2 = get_cur_grid(coord + ivec2(1, -1));
-  int n3 = get_cur_grid(coord + ivec2(-1, 0));
-  int n4 = get_cur_grid(coord + ivec2(0, 0));
-  int n5 = get_cur_grid(coord + ivec2(1, 0));
-  int n6 = get_cur_grid(coord + ivec2(-1, 1));
-  int n7 = get_cur_grid(coord + ivec2(0, 1));
-  int n8 = get_cur_grid(coord + ivec2(1, 1));
+  int n0 = get_cur_cell(coord + ivec2(-1, -1));
+  int n1 = get_cur_cell(coord + ivec2(0, -1));
+  int n2 = get_cur_cell(coord + ivec2(1, -1));
+  int n3 = get_cur_cell(coord + ivec2(-1, 0));
+  int n4 = get_cur_cell(coord + ivec2(0, 0));
+  int n5 = get_cur_cell(coord + ivec2(1, 0));
+  int n6 = get_cur_cell(coord + ivec2(-1, 1));
+  int n7 = get_cur_cell(coord + ivec2(0, 1));
+  int n8 = get_cur_cell(coord + ivec2(1, 1));
   int n_alive = n0 + n1 + n2 + n3 + n5 + n6 + n7 + n8;
   bool currently_alive = n4 != 0;
   bool next_alive;
@@ -53,5 +62,5 @@ void main() {
     // check against b_mask if should be born
     next_alive = (b_mask & (0x01 << n_alive)) != 0;
   }
-  set_next_grid(coord, int(next_alive));
+  set_next_cell(coord, int(next_alive));
 }

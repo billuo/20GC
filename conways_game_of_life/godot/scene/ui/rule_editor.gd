@@ -64,8 +64,8 @@ func _ready() -> void:
 	_on_line_edit_text_changed(DEFAULT_RULE_STRING)
 
 
-func _on_line_edit_text_changed(new_text: String) -> void:
-	var rules: PackedByteArray = GridCPUCompute.parse_rule_string(new_text)
+func apply_rule_string(rule_string: String):
+	var rules: PackedByteArray = GridUtil.parse_rule_string(rule_string)
 	if rules.is_empty():
 		# invalid string, do nothing
 		return
@@ -91,6 +91,10 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 	rules_changed.emit()
 
 
+func _on_line_edit_text_changed(new_text: String) -> void:
+	apply_rule_string(new_text)
+
+
 func _rebuild_based_on_buttons():
 	b_mask = 0x00
 	s_mask = 0x00
@@ -109,5 +113,5 @@ func _rebuild_based_on_buttons():
 
 
 func _on_rule_string_line_edit_focus_exited() -> void:
-	if GridCPUCompute.parse_rule_string(line_edit.text).is_empty():
+	if GridUtil.parse_rule_string(line_edit.text).is_empty():
 		_rebuild_based_on_buttons()
