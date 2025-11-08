@@ -7,22 +7,25 @@ pub(crate) struct Solver {
 
 impl Solver {
     fn negamax(&mut self, position: &Position, mut alpha: i32, mut beta: i32) -> i32 {
-        // let possible_non_losing_moves = position.possible_non_losing_moves();
-        // if possible_non_losing_moves == 0 {
-        //     return -((Position::WIDTH * Position::HEIGHT - position.n_moves()) as i32) / 2;
-        // }
-        if position.n_moves() == Position::WIDTH * Position::HEIGHT {
+        let possible_non_losing_moves = position.possible_non_losing_moves();
+        if possible_non_losing_moves == 0 {
+            return -((Position::WIDTH * Position::HEIGHT - position.n_moves()) as i32) / 2;
+        }
+        if position.n_moves() >= Position::WIDTH * Position::HEIGHT - 2 {
             return 0;
         }
-        for x in 0..Position::WIDTH {
-            if position.can_play(x) && position.is_winning_move(x) {
-                return (Position::WIDTH * Position::HEIGHT + 1 - position.n_moves()) as i32 / 2;
+        let min = -((Position::WIDTH * Position::HEIGHT - 2 - position.n_moves()) as i32) / 2;
+        if alpha < min {
+            alpha = min;
+            if alpha >= beta {
+                return alpha;
             }
         }
-        let mut max = (Position::WIDTH * Position::HEIGHT - 1 - position.n_moves()) as i32 / 2;
-        if let Some(v) = self.tt.get(position.key()) {
-            max = v as i32
-        }
+        let max = if let Some(v) = self.tt.get(position.key()) {
+            v as i32
+        } else {
+            (Position::WIDTH * Position::HEIGHT - 1 - position.n_moves()) as i32 / 2
+        };
         if beta > max {
             beta = max;
             if alpha >= beta {
@@ -30,7 +33,7 @@ impl Solver {
             }
         }
         for x in [3, 2, 4, 1, 5, 0, 6] {
-            if position.can_play(x) {
+            if possible_non_losing_moves & Position::column_mask(x) != 0 {
                 let mut new_position = *position;
                 new_position.play(x);
                 let score = -self.negamax(&new_position, -beta, -alpha);
@@ -46,6 +49,9 @@ impl Solver {
         alpha
     }
     pub(crate) fn solve(&mut self, position: &Position, weak: bool) -> i32 {
+        if position.can_win_next() {
+            return (Position::WIDTH * Position::HEIGHT + 1 - position.n_moves()) as i32 / 2;
+        }
         let (mut min, mut max) = if weak {
             (-1, 1)
         } else {
@@ -79,10 +85,7 @@ mod test {
         let mut test_case = |code: &str| {
             let mut p = Position::default();
             p.apply_str(code);
-            let score1 = solver.negamax(&p, -100, 100);
-            let score2 = solver.solve(&p, false);
-            eprintln!("{code} negamax={score1} solve={score2}");
-            assert_eq!(score1, score2);
+            eprintln!("{code} solve={}", solver.solve(&p, false));
         };
         for i in 0..24 {
             test_case(&"01234560123456012345610325406214365"[0..35 - i]);

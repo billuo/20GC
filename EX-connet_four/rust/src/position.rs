@@ -38,7 +38,7 @@ impl Position {
     const fn bottom_mask(col: usize) -> i64 {
         1 << (col * 7)
     }
-    const fn column_mask(col: usize) -> i64 {
+    pub(crate) const fn column_mask(col: usize) -> i64 {
         0b111111 << (col * 7)
     }
     const fn has_wins(pos: i64) -> bool {
@@ -60,37 +60,37 @@ impl Position {
         }
         false
     }
-    fn find_winning_moves(position: i64, mask: i64) -> i64 {
-        let HEIGHT = Self::HEIGHT;
+    fn find_winning_moves(pos: i64, mask: i64) -> i64 {
+        let h = Self::HEIGHT;
 
         // vertical;
-        let mut r = (position << 1) & (position << 2) & (position << 3);
+        let mut r = (pos << 1) & (pos << 2) & (pos << 3);
 
         //horizontal
-        let mut p = (position << (HEIGHT + 1)) & (position << (2 * (HEIGHT + 1)));
-        r |= p & (position << (3 * (HEIGHT + 1)));
-        r |= p & (position >> (HEIGHT + 1));
-        p = (position >> (HEIGHT + 1)) & (position >> (2 * (HEIGHT + 1)));
-        r |= p & (position << (HEIGHT + 1));
-        r |= p & (position >> (3 * (HEIGHT + 1)));
+        let mut p = (pos << (h + 1)) & (pos << (2 * (h + 1)));
+        r |= p & (pos << (3 * (h + 1)));
+        r |= p & (pos >> (h + 1));
+        p = (pos >> (h + 1)) & (pos >> (2 * (h + 1)));
+        r |= p & (pos << (h + 1));
+        r |= p & (pos >> (3 * (h + 1)));
 
         //diagonal 1
-        p = (position << HEIGHT) & (position << (2 * HEIGHT));
-        r |= p & (position << (3 * HEIGHT));
-        r |= p & (position >> HEIGHT);
-        p = (position >> HEIGHT) & (position >> (2 * HEIGHT));
-        r |= p & (position << HEIGHT);
-        r |= p & (position >> (3 * HEIGHT));
+        p = (pos << h) & (pos << (2 * h));
+        r |= p & (pos << (3 * h));
+        r |= p & (pos >> h);
+        p = (pos >> h) & (pos >> (2 * h));
+        r |= p & (pos << h);
+        r |= p & (pos >> (3 * h));
 
         //diagonal 2
-        p = (position << (HEIGHT + 2)) & (position << (2 * (HEIGHT + 2)));
-        r |= p & (position << (3 * (HEIGHT + 2)));
-        r |= p & (position >> (HEIGHT + 2));
-        p = (position >> (HEIGHT + 2)) & (position >> (2 * (HEIGHT + 2)));
-        r |= p & (position << (HEIGHT + 2));
-        r |= p & (position >> (3 * (HEIGHT + 2)));
+        p = (pos << (h + 2)) & (pos << (2 * (h + 2)));
+        r |= p & (pos << (3 * (h + 2)));
+        r |= p & (pos >> (h + 2));
+        p = (pos >> (h + 2)) & (pos >> (2 * (h + 2)));
+        r |= p & (pos << (h + 2));
+        r |= p & (pos >> (3 * (h + 2)));
 
-        return r & (Self::BOARD_MASK ^ mask);
+        r & (Self::BOARD_MASK ^ mask)
     }
 
     pub(crate) fn can_play(&self, col: usize) -> bool {
