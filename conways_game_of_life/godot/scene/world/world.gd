@@ -1,21 +1,20 @@
 class_name World
 extends Node2D
 
-const PLAY_ICON := preload("res://asset/play-button.svg")
-const PAUSE_ICON := preload("res://asset/pause-button.svg")
-
 enum Tool {
 	None,
 	Pencil,
 	Bucket,
 }
 
+const PLAY_ICON := preload("res://asset/play-button.svg")
+const PAUSE_ICON := preload("res://asset/pause-button.svg")
+
 var _playing := false:
 	set = set_playing
 var _last_step_start := 0.0
 var _step_interval := 0.0
 var _fast_forward := 0
-
 var _current_tool := Tool.None:
 	set = set_current_tool
 var _current_mouse_cell_pos = null
@@ -57,16 +56,15 @@ func _ready() -> void:
 	%MTCheckButton.toggled.connect(func(v): grid.force_multithread = v)
 	%GridSizeLabel.gui_input.connect(
 		func(e: InputEvent):
-			if e is InputEventMouseButton and e.is_pressed() and e.double_click:
-				grid.grow(10)
+			if e is InputEventMouseButton:
+				if e.is_pressed() and e.button_index == MOUSE_BUTTON_RIGHT:
+					var popup: Window = preload("res://scene/ui/grid_size_edit_popup.tscn").instantiate()
+					add_child(popup)
+					popup.popup_centered()
 	)
 
 	grid.set_rules(rule_editor.b_mask, rule_editor.s_mask)
 	rule_editor.rules_changed.connect(func(): grid.set_rules(rule_editor.b_mask, rule_editor.s_mask))
-
-	var dst = PackedByteArray([0])
-	dst = GridUtil.blit_rect(PackedByteArray([1]), Vector2i.ONE, Rect2i(Vector2i.ZERO, Vector2i.ONE), dst, Vector2i.ONE, Vector2i.ZERO)
-	print(dst)
 
 
 func _process(_delta: float) -> void:

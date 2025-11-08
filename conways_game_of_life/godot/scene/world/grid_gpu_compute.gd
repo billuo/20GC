@@ -6,7 +6,6 @@ var data_1: PackedByteArray
 var data_2: PackedByteArray
 var image_bytes: PackedByteArray
 var population := 0
-
 var rd: RenderingDevice
 var step_shader: RID
 var ubo: RID
@@ -29,20 +28,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	_free_if_valid(step_shader)
 	rd.free()
-
-
-func _free_if_valid(rid: RID):
-	if rid.is_valid():
-		rd.free_rid(rid)
-
-
-func _mypprint(a: PackedByteArray):
-	var s = ""
-	for y in range(size.y):
-		for x in range(size.x):
-			s += str(a[x + y * size.x])
-		s += "\n"
-	print(s)
 
 
 func set_data(new_data: PackedByteArray):
@@ -141,3 +126,17 @@ func randomize(alive_ratio: float):
 	var d = GridUtil.randomize(data_1, alive_ratio)
 	data_1 = d["data"]
 	population = d["population"]
+
+
+func _free_if_valid(rid: RID):
+	if rid.is_valid():
+		rd.free_rid(rid)
+
+
+func _mypprint(a: PackedByteArray):
+	var s = ""
+	for y in range(size.y):
+		for x in range(size.x):
+			s += str(a[x + y * size.x])
+		s += "\n"
+	print(s)

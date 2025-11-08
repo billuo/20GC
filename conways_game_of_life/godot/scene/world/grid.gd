@@ -6,13 +6,14 @@ signal cell_size_changed(size: float)
 signal generation_changed(gen: int)
 signal compute_method_changed(node)
 
-const TOTAL_TIME_MAX_SAMPLES := 100
-
 enum ComputeMethod {
 	Auto,
 	GPU,
 	CPU,
 }
+
+const TOTAL_TIME_MAX_SAMPLES := 100
+
 @export var compute_method = ComputeMethod.Auto:
 	set(value):
 		compute_method = value
@@ -28,7 +29,6 @@ var force_multithread := false:
 		if _compute is GridCompute:
 			_compute.parallel = value
 			print_debug(_compute.parallel)
-
 var _generation := 0:
 	set = _set_generation
 var _b_mask := 0
@@ -50,42 +50,10 @@ func _process(_delta: float) -> void:
 		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
-func _resolve_compute():
-	# FIXME: not properly initialized and data transferred if switch at runtime
-	var renderer = ProjectSettings.get_setting_with_override("rendering/renderer/rendering_method")
-	match renderer:
-		"forward_plus":
-			match compute_method:
-				ComputeMethod.Auto, ComputeMethod.GPU:
-					_compute = $GridGPUCompute
-				ComputeMethod.CPU:
-					_compute = $GridCompute
-		"mobile":
-			match compute_method:
-				ComputeMethod.GPU:
-					_compute = $GridGPUCompute
-				ComputeMethod.Auto, ComputeMethod.CPU:
-					_compute = $GridCompute
-		"gl_compatibility":
-			if compute_method == ComputeMethod.GPU:
-				push_error("GPU compute unsupported by compatibility renderer")
-			_compute = $GridCompute
-		_:
-			push_error("unknown renderer: %s" % renderer)
-			_compute = $GridCompute
-	print("Using %s compute" % ("CPU" if _compute is GridCompute else "GPU"))
-	compute_method_changed.emit(_compute)
-
-
 func set_cell_size(value: float):
 	cell_size = clampf(value, 0.1, 100.0)
 	scale = Vector2.ONE * cell_size
 	cell_size_changed.emit(cell_size)
-
-
-func _set_generation(value: int):
-	_generation = value
-	generation_changed.emit(_generation)
 
 
 func set_rules(b_mask: int, s_mask: int):
@@ -147,7 +115,7 @@ func set_data(new_size: Vector2i, new_data: PackedByteArray):
 
 
 func generate_pattern():
-	for y in range(1, size.y):
+	for y in range(size.y):
 		for x in range(size.x):
 			_compute.set_cell(Vector2i(x, y), y % 2 == 0)
 	_update_image()
@@ -196,15 +164,6 @@ func set_cell(cell_pos: Vector2i, alive: bool):
 		_update_image()
 
 
-func _update_image():
-	var image_bytes = _compute.render_image()
-	_image = Image.create_from_data(size.x, size.y, false, Image.FORMAT_R8, image_bytes)
-	if texture and texture.get_size() == Vector2(size):
-		texture.update(_image)
-	else:
-		texture = ImageTexture.create_from_image(_image)
-
-
 func save_image():
 	if not texture:
 		push_error("no image yet")
@@ -225,3 +184,44 @@ func save_image():
 	var image = (texture as ImageTexture).get_image()
 	image.save_png(path)
 	print("Image saved to ", path)
+
+
+func _resolve_compute():
+	# FIXME: not properly initialized and data transferred if switch at runtime
+	var renderer = ProjectSettings.get_setting_with_override("rendering/renderer/rendering_method")
+	match renderer:
+		"forward_plus":
+			match compute_method:
+				ComputeMethod.Auto, ComputeMethod.GPU:
+					_compute = $GridGPUCompute
+				ComputeMethod.CPU:
+					_compute = $GridCompute
+		"mobile":
+			match compute_method:
+				ComputeMethod.GPU:
+					_compute = $GridGPUCompute
+				ComputeMethod.Auto, ComputeMethod.CPU:
+					_compute = $GridCompute
+		"gl_compatibility":
+			if compute_method == ComputeMethod.GPU:
+				push_error("GPU compute unsupported by compatibility renderer")
+			_compute = $GridCompute
+		_:
+			push_error("unknown renderer: %s" % renderer)
+			_compute = $GridCompute
+	print("Using %s compute" % ("CPU" if _compute is GridCompute else "GPU"))
+	compute_method_changed.emit(_compute)
+
+
+func _set_generation(value: int):
+	_generation = value
+	generation_changed.emit(_generation)
+
+
+func _update_image():
+	var image_bytes = _compute.render_image()
+	_image = Image.create_from_data(size.x, size.y, false, Image.FORMAT_R8, image_bytes)
+	if texture and texture.get_size() == Vector2(size):
+		texture.update(_image)
+	else:
+		texture = ImageTexture.create_from_image(_image)

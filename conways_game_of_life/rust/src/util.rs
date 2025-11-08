@@ -35,10 +35,10 @@ impl GridUtil {
         let src_bound = Rect2i::new(Vector2i::ZERO, src_size);
         let dst_bound = Rect2i::new(Vector2i::ZERO, dst_size);
         let dst_rect = Rect2i::new(dst_offset, src_rect.size);
-        assert!(src_bound.has_area());
-        assert!(dst_bound.has_area());
-        assert!(src_rect.has_area());
-        assert!(dst_rect.has_area());
+        assert!(!src_bound.is_negative());
+        assert!(!dst_bound.is_negative());
+        assert!(!src_rect.is_negative());
+        assert!(!dst_rect.is_negative());
         assert!(src_bound.encloses(src_rect));
         assert!(dst_bound.encloses(dst_rect));
         for y in 0..src_rect.size.y {

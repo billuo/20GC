@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6ocq7geulfa7"]
+[gd_scene load_steps=14 format=3 uid="uid://c6ocq7geulfa7"]
 
 [ext_resource type="Script" uid="uid://cqh23fh2et0ux" path="res://scene/world/world.gd" id="1_jiood"]
 [ext_resource type="Script" uid="uid://8ono43xommmf" path="res://scene/world/grid.gd" id="1_mcmpp"]
+[ext_resource type="Shader" uid="uid://ckjlfkrnua7my" path="res://scene/world/grid.gdshader" id="2_q1aoa"]
 [ext_resource type="Texture2D" uid="uid://ci1tua2j0r7mw" path="res://asset/play-button.svg" id="3_3td6k"]
 [ext_resource type="Script" uid="uid://c5nxmqqytgdjk" path="res://scene/world/grid_gpu_compute.gd" id="3_dp1oe"]
 [ext_resource type="Script" uid="uid://dxt78jvc0wsc2" path="res://scene/world/tool_preview.gd" id="4_4mi5g"]
@@ -12,11 +13,16 @@
 [ext_resource type="Texture2D" uid="uid://dwqyuti0xdj4j" path="res://asset/pencil.svg" id="7_y1ys1"]
 [ext_resource type="Texture2D" uid="uid://7rpqungbgnna" path="res://asset/paint-bucket.svg" id="8_mtuhj"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lpx6o"]
+shader = ExtResource("2_q1aoa")
+shader_parameter/color = Color(0.20150247, 0.92768556, 0.31560758, 1)
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_jiood")
 
 [node name="Grid" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_lpx6o")
 script = ExtResource("1_mcmpp")
 
 [node name="GridCompute" type="GridCompute" parent="Grid"]
@@ -234,6 +240,7 @@ size_flags_vertical = 8
 [node name="GridSizeLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Info"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 0
 text = "Grid Size: 0x0"
 
 [node name="GenerationLabel" type="Label" parent="CanvasLayer/Control/MarginContainer/Info"]
