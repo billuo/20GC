@@ -1,0 +1,501 @@
+<REAPER_PROJECT 0.1 "7.45/win64" 1762601297
+  <NOTES 0 2
+  >
+  RIPPLE 0 0
+  GROUPOVERRIDE 0 0 0
+  AUTOXFADE 129
+  ENVATTACH 3
+  POOLEDENVATTACH 0
+  MIXERUIFLAGS 11 48
+  ENVFADESZ10 40
+  PEAKGAIN 1
+  FEEDBACK 0
+  PANLAW 1
+  PROJOFFS 0 0 0
+  MAXPROJLEN 0 0
+  GRID 3455 8 1 8 1 0 0 0
+  TIMEMODE 3 5 -1 30 0 0 -1
+  VIDEO_CONFIG 0 0 65792
+  PANMODE 3
+  PANLAWFLAGS 3
+  CURSOR 0
+  ZOOM 71.0452691125324 0 0
+  VZOOMEX 13.58808708 144
+  USE_REC_CFG 0
+  RECMODE 1
+  SMPTESYNC 0 30 100 40 1000 300 0 0 1 0 0
+  LOOP 1
+  LOOPGRAN 0 4
+  RECORD_PATH "Media" ""
+  <RECORD_CFG
+    ZXZhdxgAAQ==
+  >
+  <APPLYFX_CFG
+  >
+  RENDER_FILE ""
+  RENDER_PATTERN grid-clear
+  RENDER_FMT 0 1 44100
+  RENDER_1X 0
+  RENDER_RANGE 2 0 0 0 1000
+  RENDER_RESAMPLE 3 0 1
+  RENDER_ADDTOPROJ 0
+  RENDER_STEMS 0
+  RENDER_DITHER 0
+  RENDER_TRIM 0 0 0 0
+  TIMELOCKMODE 1
+  TEMPOENVLOCKMODE 1
+  ITEMMIX 1
+  DEFPITCHMODE 589824 0
+  TAKELANE 1
+  SAMPLERATE 44100 0 0
+  <RENDER_CFG
+    bDNwbYAAAAAAAAAAAgAAAP////8EAAAAgAAAAAAAAAA=
+  >
+  LOCK 1
+  <METRONOME 6 2
+    VOL 0.25 0.125
+    BEATLEN 4
+    FREQ 1760 880 3
+    SAMPLES "" "" "" ""
+    SPLIGNORE 0 0
+    SPLDEF 2 660 "" 0 ""
+    SPLDEF 3 440 "" 0 ""
+    PATTERN 0 169
+    PATTERNSTR ABBB
+    MULT 1
+  >
+  GLOBAL_AUTO -1
+  TEMPO 120 4 4 0
+  PLAYRATE 1 0 0.25 4
+  SELECTION 0 3.95522465478891
+  SELECTION2 0 3.95522465478891
+  MASTERAUTOMODE 0
+  MASTERTRACKHEIGHT 0 0
+  MASTERPEAKCOL 16576
+  MASTERMUTESOLO 0
+  MASTERTRACKVIEW 0 0.6667 0.5 0.5 0 0 0 0 0 0 0 0 0 0
+  MASTERHWOUT 0 0 1 0 0 0 0 -1
+  MASTER_NCH 2 2
+  MASTER_VOLUME 1 0 -1 -1 1
+  MASTER_PANMODE 3
+  MASTER_PANLAWFLAGS 3
+  MASTER_FX 1
+  MASTER_SEL 0
+  <MASTERPLAYSPEEDENV
+    EGUID {9F101F4E-63E1-41BD-9488-942F8A166B8B}
+    ACT 0 -1
+    VIS 0 1 1
+    LANEHEIGHT 0 0
+    ARM 0
+    DEFSHAPE 0 -1 -1
+  >
+  <TEMPOENVEX
+    EGUID {152465D5-B0A2-4F7E-A754-415748A8D8F6}
+    ACT 0 -1
+    VIS 1 0 1
+    LANEHEIGHT 0 0
+    ARM 0
+    DEFSHAPE 1 -1 -1
+  >
+  <PROJBAY
+  >
+  <TRACK {2C3140EE-C2B4-43A7-B6F8-2FE4EF82937A}
+    NAME 510488__musicalmorsels__steady_rain_room_window_indoor
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    PANLAWFLAGS 3
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 1 0 0
+    IPHASE 0
+    PLAYOFFS 0 1
+    ISBUS 0 0
+    BUSCOMP 0 0 0 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FIXEDLANES 9 0 0 0 0
+    SEL 0
+    REC 0 0 1 0 0 0 0 0
+    VU 64
+    TRACKHEIGHT 0 0 0 0 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {2C3140EE-C2B4-43A7-B6F8-2FE4EF82937A}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 6.11
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0 0
+      FADEOUT 1 0.01 0 1 0 0 0
+      MUTE 0 0
+      SEL 0
+      IGUID {5089A7BA-3D9C-42C0-AD27-E5722C1DB732}
+      IID 6
+      NAME 510488__musicalmorsels__steady_rain_room_window_indoor-glued.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {7E232920-D238-40FD-B87E-337B288B27B7}
+      <SOURCE WAVE
+        FILE "Media\510488__musicalmorsels__steady_rain_room_window_indoor-glued.wav"
+      >
+    >
+    <ITEM
+      POSITION 6.11
+      SNAPOFFS 0
+      LENGTH 56.89475056689344
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0 0
+      FADEOUT 1 0.01 0 1 0 0 0
+      MUTE 0 0
+      SEL 0
+      IGUID {57A57D4B-03ED-4D32-BFA2-3237A8B30317}
+      IID 6
+      NAME 510488__musicalmorsels__steady_rain_room_window_indoor-glued.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 6.11
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {FDC2783A-90AB-4DC5-ACB0-73276FEB5F70}
+      <SOURCE WAVE
+        FILE "Media\510488__musicalmorsels__steady_rain_room_window_indoor-glued.wav"
+      >
+    >
+  >
+  <TRACK {88C60219-083E-45AC-9247-FA983E30B935}
+    NAME 505962__jedg__small-plastic-impact-drop-slide
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    PANLAWFLAGS 3
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 1 0 0
+    IPHASE 0
+    PLAYOFFS 0 1
+    ISBUS 0 0
+    BUSCOMP 0 0 0 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FIXEDLANES 9 0 0 0 0
+    SEL 0
+    REC 0 0 1 0 0 0 0 0
+    VU 64
+    TRACKHEIGHT 0 0 0 0 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {88C60219-083E-45AC-9247-FA983E30B935}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 6.11
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0 0 1 0 0 0
+      FADEOUT 1 0.01 0 1 0 0 0
+      MUTE 0 0
+      SEL 0
+      IGUID {39991AFC-EB06-4E4D-ABC6-7430384EAF30}
+      IID 7
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {6EFBFDEE-0D75-4A32-97C4-CB3FDE6450C4}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+    <ITEM
+      POSITION 6.11
+      SNAPOFFS 0
+      LENGTH 23.89
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.01 0 1 0 0 0
+      FADEOUT 1 0 0 1 0 0 0
+      MUTE 0 0
+      SEL 0
+      IGUID {E8BACABD-01F3-49A2-82B7-E6E639559093}
+      IID 7
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 6.11
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {E6A4BF0C-78BD-44ED-9EBE-24B413C0EFDB}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+  >
+  <TRACK {B0D585A4-38B7-44BC-9972-3EE40F8E9157}
+    NAME ""
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    PANLAWFLAGS 3
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 0 0 0
+    IPHASE 0
+    PLAYOFFS 0 1
+    ISBUS 0 0
+    BUSCOMP 0 0 0 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FIXEDLANES 9 0 0 0 0
+    SEL 0
+    REC 0 0 1 0 0 0 0 0
+    VU 64
+    TRACKHEIGHT 0 0 0 0 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {B0D585A4-38B7-44BC-9972-3EE40F8E9157}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+  >
+  <TRACK {DCDD3DBD-BDEE-43E0-8746-28377DBF1A42}
+    NAME ""
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    PANLAWFLAGS 3
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 0 2 0
+    IPHASE 0
+    PLAYOFFS 0 1
+    ISBUS 0 0
+    BUSCOMP 0 0 0 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FIXEDLANES 9 0 0 0 0
+    SEL 1
+    REC 0 0 1 0 0 0 0 0
+    VU 64
+    TRACKHEIGHT 0 0 0 0 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {DCDD3DBD-BDEE-43E0-8746-28377DBF1A42}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0
+      SNAPOFFS 0
+      LENGTH 1.08381600860764
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.4222659773796 0 1 0 0 0
+      FADEOUT 1.1 0 0.43703420998863 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {9E89229F-0575-4160-94D0-FFC5189AD04E}
+      IID 24
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 14.77930920828591
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {C1723049-4B5D-476F-B358-913CFD6DE956}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+    <ITEM
+      POSITION 0.64678179861901
+      SNAPOFFS 0
+      LENGTH 0.78891129103799
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.43703420998863 1 1 0 0
+      FADEOUT 1.1 0 0.07036642946296 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {E5005D32-6EF4-4247-9507-67423BD3BC04}
+      IID 12
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 6.55513563644295
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {A83ED8F7-C7D5-4F95-98D9-0AE32958303D}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+    <ITEM
+      POSITION 1.36532666019403
+      SNAPOFFS 0
+      LENGTH 0.66698863696849
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.07036642946296 1 1 0 0
+      FADEOUT 1.1 0 0.20249606185093 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {EA6B6210-C92D-4AF1-BF2C-CE5B3AC9160B}
+      IID 14
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 8.45928061617556
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {08C2FC28-71EB-4098-B583-244E5D4803DD}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+    <ITEM
+      POSITION 1.82981923531159
+      SNAPOFFS 0
+      LENGTH 2.12540541947732
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.20249606185093 1 1 0 0
+      FADEOUT 1 0.61932343349009 0 1 0 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {923CC3B9-CF60-4200-8073-79B54164C0B9}
+      IID 8
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 1.66091284435975
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {FB1C66E1-FCC7-406A-B361-A70468BA1227}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+  >
+  <TRACK {5C5848E9-669F-4C75-A878-18655D971B50}
+    NAME ""
+    PEAKCOL 16576
+    BEAT -1
+    AUTOMODE 0
+    PANLAWFLAGS 3
+    VOLPAN 1 0 -1 -1 1
+    MUTESOLO 0 2 0
+    IPHASE 0
+    PLAYOFFS 0 1
+    ISBUS 0 0
+    BUSCOMP 0 0 0 0 0
+    SHOWINMIX 1 0.6667 0.5 1 0.5 0 0 0
+    FIXEDLANES 9 0 0 0 0
+    SEL 0
+    REC 0 0 1 0 0 0 0 0
+    VU 64
+    TRACKHEIGHT 0 0 0 0 0 0 0
+    INQ 0 0 0 0.5 100 0 0 100
+    NCHAN 2
+    FX 1
+    TRACKID {5C5848E9-669F-4C75-A878-18655D971B50}
+    PERF 0
+    MIDIOUT -1
+    MAINSEND 1 0
+    <ITEM
+      POSITION 0.30785216155931
+      SNAPOFFS 0
+      LENGTH 1.1169886369545
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1 0.14256488097893 0 1 0 0 0
+      FADEOUT 1.1 0 0.70698863696849 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {BAFDB8A0-439F-4559-849B-69584CC77104}
+      IID 22
+      NAME 505962__jedg__small-plastic-impact-drop-slide-glued.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {EBADE0AD-8C67-482E-AF63-AB60A6C65D0A}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide-glued.wav"
+      >
+    >
+    <ITEM
+      POSITION 0.71785216154532
+      SNAPOFFS 0
+      LENGTH 1.1169886369545
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.70698863696849 1 1 0 0
+      FADEOUT 1.1 0 0.14577688898142 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {E911B50F-4CC1-47BE-BFBA-03299D213A52}
+      IID 22
+      NAME 505962__jedg__small-plastic-impact-drop-slide-glued.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {20CFE972-508D-4F1F-BBA7-CBE0768088C6}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide-glued.wav"
+      >
+    >
+    <ITEM
+      POSITION 1.68906390951839
+      SNAPOFFS 0
+      LENGTH 0.58092558703707
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.14577688898142 1 1 0 0
+      FADEOUT 1.1 0 0.25718833771271 1 1 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {E998CDA8-F437-4DAF-B609-618411947510}
+      IID 16
+      NAME 505962__jedg__small-plastic-impact-drop-slide.wav
+      VOLPAN 1 0 1 -1
+      SOFFS 15.01441625261851
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {1BD1CFAD-D710-43CB-AE98-0FB2E51C9200}
+      <SOURCE WAVE
+        FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+      >
+    >
+    <ITEM
+      POSITION 2.01280115884275
+      SNAPOFFS 0
+      LENGTH 1.83221718556776
+      LOOP 1
+      ALLTAKES 0
+      FADEIN 1.1 0 0.25718833771271 1 1 0 0
+      FADEOUT 1 0.62172138374625 0 1 0 0 0
+      MUTE 0 0
+      SEL 1
+      IGUID {9224A3FB-9FD4-415D-B2DE-A4FEB75BA4E8}
+      IID 10
+      NAME "505962__jedg__small-plastic-impact-drop-slide.wav loop"
+      VOLPAN 1 0 1 -1
+      SOFFS 0
+      PLAYRATE 1 1 0 -1 0 0.0025
+      CHANMODE 0
+      GUID {8D8241DB-183B-4527-9BA9-A6DEA35BBEB0}
+      <SOURCE SECTION
+        LENGTH 1.83221718556777
+        STARTPOS 4.06318136193404
+        OVERLAP 0
+        <SOURCE WAVE
+          FILE "Media\505962__jedg__small-plastic-impact-drop-slide.wav"
+        >
+      >
+    >
+  >
+>

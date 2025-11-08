@@ -1,0 +1,12 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b5qr7r8teeuqf"]
+
+[ext_resource type="FontFile" uid="uid://xdc310sp8lb" path="res://asset/ZhiyiMaru-Regular.ttf" id="1_joxn1"]
+
+[resource]
+default_font = ExtResource("1_joxn1")
+default_font_size = 32
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+VBoxContainer/constants/separation = 8

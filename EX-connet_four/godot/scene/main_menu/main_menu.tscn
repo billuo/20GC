@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://baix47kord4q4"]
+
+[ext_resource type="Script" uid="uid://cup7i76eu28rm" path="res://scene/main_menu/main_menu.gd" id="1_cds3d"]
+[ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="1_o25w2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o25w2"]
+font_size = 96
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_cds3d")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_o25w2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Connect Four"
+label_settings = SubResource("LabelSettings_o25w2")
+
+[node name="Subtitle" type="RichTextLabel" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 6
+bbcode_enabled = true
+text = "20 Games Challenges Series [font_size=16]in place of tic-tac-toe[/font_size]"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="ModeSelect" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="SinglePlayer" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Single Player"
+
+[node name="TwoPlayers" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Two Players"
+
+[node name="Help" type="RichTextLabel" parent="CanvasLayer/MarginContainer"]
+visible = false
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Rules:
+
+- Two players each chooses a color and then take turns dropping colored tokens into a six-row, seven-column grid.
+
+- The grid is vertically suspended, so the pieces fall straight down, occupying the lowest available space within the column.
+
+- To win the game, be the first player to form a horizontal, vertical, or diagonal line of four of your own tokens."
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect/SinglePlayer" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect/TwoPlayers" to="." method="_on_two_players_pressed"]
