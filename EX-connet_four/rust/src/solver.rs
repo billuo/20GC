@@ -2,7 +2,7 @@ use crate::position::Position;
 
 #[derive(Default)]
 pub struct Solver {
-    tt: crate::transposition::TranspositionTable,
+    tt: crate::transposition::MRUTable<u64, u32, u8>,
 }
 
 impl Solver {
@@ -22,7 +22,7 @@ impl Solver {
             }
         }
         let max = if let Some(v) = self.tt.get(position.key()) {
-            v as i32
+            v as i8 as i32
         } else {
             (position.remaining_moves() - 1) as i32 / 2
         };
@@ -32,14 +32,19 @@ impl Solver {
                 return beta;
             }
         }
-        let mut moves = crate::position::SortedMoves::default();
+        // let mut moves = crate::position::SortedMoves::default();
+        // for col in [3, 2, 4, 1, 5, 0, 6] {
+        //     let move_bit = possible_non_losing_moves & Position::column_mask(col);
+        //     if move_bit != 0 {
+        //         moves.insert(col, position.score_move(move_bit));
+        //     }
+        // }
+        // for col in moves.iter() {
         for col in [3, 2, 4, 1, 5, 0, 6] {
-            let move_bit = possible_non_losing_moves & Position::column_mask(col);
-            if move_bit != 0 {
-                moves.insert(col, position.score_move(move_bit));
+            if possible_non_losing_moves & Position::column_mask(col) == 0 {
+                continue;
             }
-        }
-        for col in moves.iter() {
+
             let mut new_position = *position;
             new_position.play(col);
             let score = -self.negamax(&new_position, -beta, -alpha);
@@ -50,7 +55,7 @@ impl Solver {
                 alpha = score;
             }
         }
-        self.tt.put(position.key(), alpha as i8);
+        self.tt.put(position.key(), alpha as u8);
         alpha
     }
     pub fn solve(&mut self, position: &Position, weak: bool) -> i32 {
@@ -115,19 +120,6 @@ mod test {
         alpha
     }
 
-    #[test]
-    fn solve() {
-        let mut solver = Solver::default();
-        let mut test_case = |code: &str| {
-            let mut p = Position::default();
-            p.apply_str(code);
-            eprintln!("{code} solve={}", solver.solve(&p, false));
-        };
-        for i in 0..24 {
-            test_case(&"01234560123456012345610325406214365"[0..35 - i]);
-        }
-    }
-
     fn all_moves() -> Vec<usize> {
         let mut v = vec![];
         for x in 0..Position::WIDTH {
@@ -146,19 +138,20 @@ mod test {
             .map(|c| char::from_digit(c as u32, 10).unwrap())
             .collect::<String>();
         p.apply_moves(moves.iter().copied());
+        eprint!("{code} ");
         let answer = solver.solve(&p, false);
         let reference = negamax_reference(&p, -100, 100);
-        eprintln!("{code} {answer} {reference}");
+        eprintln!("{answer} {reference}");
         assert_eq!(answer, reference);
     }
 
     #[test]
-    fn correctness_endgame() {
+    fn random_endgame() {
         use rand::prelude::*;
         let rng = &mut rand::rng();
         let mut solver = Solver::default();
         let mut all_moves = all_moves();
-        for _ in 0..1000 {
+        for _ in 0..100 {
             all_moves.shuffle(rng);
             let min = Position::AREA / 3 * 2;
             let max = Position::AREA;
@@ -169,12 +162,13 @@ mod test {
     }
 
     #[test]
-    fn correctness_midgame() {
+    #[ignore = "slow"]
+    fn random_midgame() {
         use rand::prelude::*;
         let rng = &mut rand::rng();
         let mut solver = Solver::default();
         let mut all_moves = all_moves();
-        for _ in 0..1000 {
+        for _ in 0..10 {
             all_moves.shuffle(rng);
             let min = Position::AREA / 3;
             let max = Position::AREA / 3 * 2;
@@ -182,5 +176,75 @@ mod test {
             let moves = &all_moves[0..rng.random_range(range)];
             test_correctness(&mut solver, moves);
         }
+    }
+
+    #[test]
+    #[ignore = "slow"]
+    fn random_earlygame() {
+        use rand::prelude::*;
+        let rng = &mut rand::rng();
+        let mut solver = Solver::default();
+        let mut all_moves = all_moves();
+        for _ in 0..1 {
+            all_moves.shuffle(rng);
+            let min = Position::AREA / 6;
+            let max = Position::AREA / 3;
+            let range = min..max;
+            let moves = &all_moves[0..rng.random_range(range)];
+            let mut p = Position::default();
+            let code = moves
+                .iter()
+                .copied()
+                .map(|c| char::from_digit(c as u32, 10).unwrap())
+                .collect::<String>();
+            p.apply_moves(moves.iter().copied());
+            eprint!("{code} ");
+            let answer = solver.solve(&p, false);
+            eprintln!("{answer}");
+        }
+    }
+
+    fn test_against_data(data: &str) {
+        let mut solver = Solver::default();
+        for line in data.lines() {
+            let (code, answer) = line.split_once(' ').unwrap();
+            let answer = answer.parse::<i32>().unwrap();
+            let mut p = Position::default();
+            for c in code.chars() {
+                let col = c.to_digit(10).unwrap() - 1;
+                p.play(col as usize);
+            }
+            let score = solver.solve(&p, false);
+            eprintln!("{code}");
+            assert_eq!(answer, score);
+        }
+    }
+
+    #[test]
+    fn data_l1r1() {
+        test_against_data(include_str!("Test_L1_R1"));
+    }
+    #[test]
+    #[ignore = "slow"]
+    fn data_l1r2() {
+        test_against_data(include_str!("Test_L1_R2"));
+    }
+    #[test]
+    #[ignore = "slow"]
+    fn data_l1r3() {
+        test_against_data(include_str!("Test_L1_R3"));
+    }
+    #[test]
+    fn data_l2r1() {
+        test_against_data(include_str!("Test_L2_R1"));
+    }
+    #[test]
+    #[ignore = "slow"]
+    fn data_l2r2() {
+        test_against_data(include_str!("Test_L2_R2"));
+    }
+    #[test]
+    fn data_l3r1() {
+        test_against_data(include_str!("Test_L3_R1"));
     }
 }

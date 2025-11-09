@@ -1,7 +1,7 @@
 #[derive(Default, Clone, Copy)]
 pub struct Position {
-    position: i64,
-    mask: i64,
+    position: u64,
+    mask: u64,
     moves: usize,
 }
 impl Position {
@@ -19,31 +19,31 @@ impl Position {
      * 0  7 14 21 28 35 42
      */
 
-    const BOTTOM_MASK: i64 = Self::bottom_mask(0)
+    const BOTTOM_MASK: u64 = Self::bottom_mask(0)
         | Self::bottom_mask(1)
         | Self::bottom_mask(2)
         | Self::bottom_mask(3)
         | Self::bottom_mask(4)
         | Self::bottom_mask(5)
         | Self::bottom_mask(6);
-    const BOARD_MASK: i64 = Self::column_mask(0)
+    const BOARD_MASK: u64 = Self::column_mask(0)
         | Self::column_mask(1)
         | Self::column_mask(2)
         | Self::column_mask(3)
         | Self::column_mask(4)
         | Self::column_mask(5)
         | Self::column_mask(6);
-    const fn top_mask(col: usize) -> i64 {
+    const fn top_mask(col: usize) -> u64 {
         1 << (col * 7 + 5)
     }
-    const fn bottom_mask(col: usize) -> i64 {
+    const fn bottom_mask(col: usize) -> u64 {
         1 << (col * 7)
     }
-    pub const fn column_mask(col: usize) -> i64 {
+    pub const fn column_mask(col: usize) -> u64 {
         0b111111 << (col * 7)
     }
 
-    // const fn has_wins(pos: i64) -> bool {
+    // const fn has_wins(pos: u64) -> bool {
     //     let m = pos & (pos >> 7);
     //     if m & (m >> 14) != 0 {
     //         return true;
@@ -63,7 +63,7 @@ impl Position {
     //     false
     // }
 
-    fn find_winning_moves(pos: i64, mask: i64) -> i64 {
+    fn find_winning_moves(pos: u64, mask: u64) -> u64 {
         let h = Self::HEIGHT;
 
         // vertical;
@@ -96,19 +96,9 @@ impl Position {
         r & (Self::BOARD_MASK ^ mask)
     }
 
-    pub fn score_move(&self, move_bit: i64) -> i32 {
+    pub fn score_move(&self, move_bit: u64) -> u32 {
         let winning_moves = Self::find_winning_moves(self.position | move_bit, self.mask);
-        if true {
-            winning_moves.count_ones() as i32
-        } else {
-            let mut x = winning_moves;
-            let mut n = 0;
-            while x != 0 {
-                x &= x - 1;
-                n += 1;
-            }
-            n
-        }
+        winning_moves.count_ones()
     }
 
     pub fn can_play(&self, col: usize) -> bool {
@@ -125,21 +115,45 @@ impl Position {
         self.winning_moves() & self.possible_moves() & Self::column_mask(col) != 0
     }
 
-    pub fn n_moves(&self) -> usize {
+    pub const fn n_moves(&self) -> usize {
         self.moves
     }
-    pub fn remaining_moves(&self) -> usize {
+    pub const fn remaining_moves(&self) -> usize {
         Self::AREA - self.n_moves()
     }
 
     pub fn key(&self) -> u64 {
-        (self.position + self.mask) as u64
+        self.position + self.mask
+    }
+    pub fn key3(&self) -> u64 {
+        let mut k = 0;
+        for col in 0..Self::WIDTH {
+            self.compute_key3(&mut k, col);
+        }
+        let mut k_rev = 0;
+        for col in (0..Self::WIDTH).rev() {
+            self.compute_key3(&mut k_rev, col);
+        }
+        k.min(k_rev) / 3
+    }
+    fn compute_key3(&self, k: &mut u64, col: usize) {
+        let mut p = 1 << (col * (Self::HEIGHT + 1));
+        while p & self.mask != 0 {
+            *k *= 3;
+            if p & self.position != 0 {
+                *k += 1;
+            } else {
+                *k += 2;
+            }
+            p <<= 1;
+        }
+        *k *= 3;
     }
 
-    pub fn possible_moves(&self) -> i64 {
+    pub fn possible_moves(&self) -> u64 {
         (self.mask + Self::BOTTOM_MASK) & Self::BOARD_MASK
     }
-    pub fn possible_non_losing_moves(&self) -> i64 {
+    pub fn possible_non_losing_moves(&self) -> u64 {
         let mut possible_moves = self.possible_moves();
         let opponent_winning_moves = self.opponent_winning_moves();
         let forced_moves = possible_moves & opponent_winning_moves;
@@ -152,10 +166,10 @@ impl Position {
         }
         possible_moves & !(opponent_winning_moves >> 1)
     }
-    pub fn winning_moves(&self) -> i64 {
+    pub fn winning_moves(&self) -> u64 {
         Self::find_winning_moves(self.position, self.mask)
     }
-    pub fn opponent_winning_moves(&self) -> i64 {
+    pub fn opponent_winning_moves(&self) -> u64 {
         Self::find_winning_moves(self.position ^ self.mask, self.mask)
     }
     pub fn can_win_next(&self) -> bool {
@@ -165,12 +179,13 @@ impl Position {
     pub fn apply_str(&mut self, s: &str) {
         for c in s.chars() {
             let col = c.to_digit(10).expect("valid digit") as usize;
-            assert!(self.can_play(col));
-            self.play(col);
+            assert!(self.can_play(col - 1));
+            self.play(col - 1);
         }
     }
     pub fn apply_moves(&mut self, it: impl IntoIterator<Item = usize>) {
         for col in it {
+            assert!(self.can_play(col));
             self.play(col)
         }
     }
@@ -178,11 +193,11 @@ impl Position {
 
 #[derive(Default)]
 pub struct SortedMoves {
-    records: [(usize, i32); Position::WIDTH],
+    records: [(usize, u32); Position::WIDTH],
     n: usize,
 }
 impl SortedMoves {
-    pub fn insert(&mut self, col: usize, score: i32) {
+    pub fn insert(&mut self, col: usize, score: u32) {
         let mut pos = self.n;
         self.n += 1;
         while pos > 0 && self.records[pos].1 > score {
