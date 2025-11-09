@@ -13,6 +13,7 @@ var single_player_id: int
 var current_player_id: int:
 	set = set_current_player_id
 var _tween_export_button_text_change: Tween
+var _ai := Ai.new()
 
 @onready var screen: Screen = $Screen
 @onready var prompt: Prompt = $Prompt
@@ -66,20 +67,28 @@ func set_game_state(value: GameState) -> void:
 func set_current_player_id(value: int) -> void:
 	current_player_id = value
 	prompt.color = PlayerManager.get_player_color(value)
-	if PlayerManager.get_player_is_ai(current_player_id):
-		_solve()
+	_solve()
 
 
 func _solve():
 	if game_state != GameState.InProgress:
 		return
-	solver.start_solve.call_deferred(screen)
-	await solver.solved
-	var inserted = screen.try_insert_piece(solver.solution, current_player_id)
-	assert(inserted)
-	_play_piece_drop_sound(solver.solution)
-	current_player_id = PlayerManager.next_player(current_player_id)
-	prompt.force_update()
+	solver.solve_position(screen.get_moves())
+	var moves: Array[AnalyzedMove] = await solver.solved
+	if PlayerManager.get_player_is_ai(current_player_id):
+		var col = _ai.pick_a_move(moves)
+		var inserted = screen.try_insert_piece(col, current_player_id)
+		assert(inserted)
+		_play_piece_drop_sound(col)
+		current_player_id = PlayerManager.next_player(current_player_id)
+		prompt.force_update()
+	else:
+		var scores = []
+		scores.resize(7)
+		for i in range(7):
+			if moves[i]:
+				scores[i] = moves[i].score
+		print_debug(scores)
 
 
 func _play_piece_drop_sound(col: int) -> void:
@@ -118,11 +127,11 @@ func _on_restart_button_pressed() -> void:
 	game_state = GameState.InProgress
 	for child in four_highlights_parent.get_children():
 		child.queue_free()
-	var n = screen.get_n_pieces()
+	var n = screen.get_n_moves()
 	if n > 6:
-		restart_button.disabled = true
+		# restart_button.disabled = true
 		$Audio/GridClear.play()
-		$Audio/GridClear.finished.connect(func(): restart_button.disabled = false)
+	# $Audio/GridClear.finished.connect(func(): restart_button.disabled = false)
 	else:
 		var play_random_sound = func(): [$Audio/PieceDropLow, $Audio/PieceDropMid, $Audio/PieceDropHigh].pick_random().play()
 		for i in range(n):
@@ -135,16 +144,19 @@ func _on_restart_button_pressed() -> void:
 func _on_withdraw_button_pressed() -> void:
 	if game_state != GameState.InProgress:
 		return
-	if GameOptions.mode == GameOptions.Mode.NoPlayer:
-		return
-	var id = current_player_id
-	while true:
-		screen.withdraw()
-		id = PlayerManager.prev_player(id)
-		if not PlayerManager.get_player_is_ai(id):
-			current_player_id = id
-			break
-	prompt.force_update()
+	match GameOptions.mode:
+		GameOptions.Mode.NoPlayer:
+			return
+		GameOptions.Mode.SinglePlayer:
+			if screen.get_n_moves() > 1 and not PlayerManager.get_player_is_ai(current_player_id):
+				screen.withdraw()
+				screen.withdraw()
+				prompt.force_update()
+		GameOptions.Mode.TwoPlayers:
+			if screen.get_n_moves() > 0:
+				screen.withdraw()
+				current_player_id = PlayerManager.prev_player(current_player_id)
+				prompt.force_update()
 
 
 func _on_export_button_pressed() -> void:

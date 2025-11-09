@@ -51,7 +51,7 @@ func get_n_filled(col: int) -> int:
 	return SIZE.y
 
 
-func get_n_pieces() -> int:
+func get_n_moves() -> int:
 	return piece_order.size()
 
 
