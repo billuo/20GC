@@ -2,9 +2,9 @@ use godot::classes::INode;
 use godot::classes::Node;
 use godot::prelude::*;
 
-pub(crate) mod position;
-pub(crate) mod solver;
-pub(crate) mod transposition;
+pub mod position;
+pub mod solver;
+pub mod transposition;
 
 use position::Position;
 
