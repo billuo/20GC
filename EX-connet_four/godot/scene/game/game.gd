@@ -12,21 +12,29 @@ var four_highlights_parent: Node2D
 var single_player_id: int
 var current_player_id: int:
 	set = set_current_player_id
+var _tween_export_button_text_change: Tween
 
 @onready var screen: Screen = $Screen
 @onready var prompt: Prompt = $Prompt
 @onready var solver: Solver = $Solver
 @onready var restart_button: Button = %RestartButton
+@onready var export_button: Button = %ExportButton
 
 
 func _ready() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	four_highlights_parent = Node2D.new()
 	add_child(four_highlights_parent)
-	if GameOptions.single_player:
-		single_player_id = randi_range(1, PlayerManager.N_PLAYERS)
-		for id in range(1, PlayerManager.N_PLAYERS + 1):
-			if id != single_player_id:
+	match GameOptions.mode:
+		GameOptions.Mode.SinglePlayer:
+			single_player_id = randi_range(1, PlayerManager.N_PLAYERS)
+			for id in range(1, PlayerManager.N_PLAYERS + 1):
+				if id != single_player_id:
+					PlayerManager.set_player_is_ai(id, true)
+		GameOptions.Mode.TwoPlayers:
+			pass
+		GameOptions.Mode.NoPlayer:
+			for id in range(1, PlayerManager.N_PLAYERS + 1):
 				PlayerManager.set_player_is_ai(id, true)
 	current_player_id = 1
 
@@ -35,7 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if game_state == GameState.InProgress:
 		if event is InputEventKey:
 			if event.is_pressed() and event.keycode == KEY_F1:
-				print_debug(screen.to_code_string())
+				print_debug(screen.get_moves_string())
 		if not PlayerManager.get_player_is_ai(current_player_id):
 			# only process mouse input if it's human player's turn
 			if event is InputEventMouseMotion:
@@ -120,12 +128,36 @@ func _on_restart_button_pressed() -> void:
 		for i in range(n):
 			get_tree().create_timer(randf_range(0.1, 0.5)).timeout.connect(play_random_sound)
 	screen.clear()
+	current_player_id = 1
 	prompt.force_update()
 
 
 func _on_withdraw_button_pressed() -> void:
 	if game_state != GameState.InProgress:
 		return
-	screen.withdraw()
-	current_player_id = PlayerManager.prev_player(current_player_id)
+	if GameOptions.mode == GameOptions.Mode.NoPlayer:
+		return
+	var id = current_player_id
+	while true:
+		screen.withdraw()
+		id = PlayerManager.prev_player(id)
+		if not PlayerManager.get_player_is_ai(id):
+			current_player_id = id
+			break
 	prompt.force_update()
+
+
+func _on_export_button_pressed() -> void:
+	DisplayServer.clipboard_set(screen.get_moves_string())
+	export_button.text = "Copied!"
+	if not _tween_export_button_text_change or _tween_export_button_text_change:
+		_tween_export_button_text_change = export_button.create_tween()
+		_tween_export_button_text_change.tween_interval(0.5)
+		_tween_export_button_text_change.finished.connect(
+			func():
+				export_button.text = "Export"
+				_tween_export_button_text_change = null
+		)
+	else:
+		_tween_export_button_text_change.stop()
+		_tween_export_button_text_change.play()

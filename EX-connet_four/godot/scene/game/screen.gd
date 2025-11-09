@@ -55,11 +55,18 @@ func get_n_pieces() -> int:
 	return piece_order.size()
 
 
-func to_code_string() -> String:
+func get_moves_string() -> String:
 	var s = ""
 	for pos in piece_order:
-		s += str(pos.x)
+		s += str(pos.x + 1)
 	return s
+
+
+func get_moves() -> PackedByteArray:
+	var a = PackedByteArray()
+	for pos in piece_order:
+		a.push_back(pos.x)
+	return a
 
 
 # try insert a piece at top of given column.

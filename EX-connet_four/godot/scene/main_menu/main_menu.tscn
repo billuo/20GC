@@ -58,6 +58,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Two Players"
 
+[node name="NoPlayer" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect"]
+layout_mode = 2
+text = "No Player"
+
 [node name="Help" type="RichTextLabel" parent="CanvasLayer/MarginContainer"]
 visible = false
 custom_minimum_size = Vector2(800, 500)
@@ -74,3 +78,4 @@ text = "Rules:
 
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect/SinglePlayer" to="." method="_on_single_player_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect/TwoPlayers" to="." method="_on_two_players_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ModeSelect/NoPlayer" to="." method="_on_no_player_pressed"]

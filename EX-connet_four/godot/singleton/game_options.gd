@@ -1,3 +1,9 @@
 extends Node
 
-var single_player := false
+enum Mode {
+	SinglePlayer,
+	TwoPlayers,
+	NoPlayer,
+}
+
+var mode: Mode

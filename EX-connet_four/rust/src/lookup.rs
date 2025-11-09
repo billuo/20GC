@@ -89,6 +89,9 @@ pub struct OpeningBook {
     depth: usize,
 }
 impl OpeningBook {
+    pub fn depth(&self) -> usize {
+        self.depth
+    }
     pub fn get(&self, position: &Position) -> Option<i32> {
         if position.n_moves() > self.depth {
             None
@@ -97,8 +100,13 @@ impl OpeningBook {
         }
     }
 }
+impl Default for OpeningBook {
+    fn default() -> Self {
+        load_embedded_opening_book()
+    }
+}
 
-pub fn load_opening_book() -> OpeningBook {
+fn load_embedded_opening_book() -> OpeningBook {
     let (header, data) = include_bytes!("7x6_small.book").split_at(6);
     let w = header[0] as usize;
     let h = header[1] as usize;
@@ -136,7 +144,7 @@ mod test {
     use super::*;
     #[test]
     fn load_opening_book() {
-        let book = super::load_opening_book();
+        let book = super::load_embedded_opening_book();
         let test_case = |code: &str| {
             let mut p = Position::default();
             p.apply_str(code);

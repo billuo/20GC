@@ -111,8 +111,21 @@ impl Position {
         self.moves += 1;
     }
 
+    #[must_use]
+    pub fn played(&self, col: usize) -> Position {
+        let mut new = *self;
+        new.play(col);
+        new
+    }
+
     pub fn is_winning_move(&self, col: usize) -> bool {
         self.winning_moves() & self.possible_moves() & Self::column_mask(col) != 0
+    }
+    pub fn is_forced_move(&self, col: usize) -> bool {
+        let possible_moves = self.possible_moves();
+        let opponent_winning_moves = self.opponent_winning_moves();
+        let forced_moves = possible_moves & opponent_winning_moves;
+        forced_moves & Self::column_mask(col) != 0
     }
 
     pub const fn n_moves(&self) -> usize {
@@ -197,7 +210,7 @@ pub struct SortedMoves {
     n: usize,
 }
 impl SortedMoves {
-    pub fn insert(&mut self, col: usize, score: u32) {
+    pub fn insert_sorted(&mut self, col: usize, score: u32) {
         let mut pos = self.n;
         self.n += 1;
         while pos > 0 && self.records[pos].1 > score {
@@ -205,6 +218,10 @@ impl SortedMoves {
             pos -= 1;
         }
         self.records[pos] = (col, score);
+    }
+    pub fn insert(&mut self, col: usize) {
+        self.records[self.n].0 = col;
+        self.n += 1;
     }
     pub fn iter(&self) -> impl Iterator<Item = usize> {
         self.records[0..self.n].iter().map(|r| r.0)

@@ -72,9 +72,11 @@ script = ExtResource("7_oixtr")
 method = 1
 
 [node name="Audio" type="Node2D" parent="."]
+position = Vector2(640, 420)
 
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("9_o100e")
+volume_db = 10.0
 autoplay = true
 
 [node name="PieceDropHigh" type="AudioStreamPlayer2D" parent="Audio"]
@@ -122,6 +124,11 @@ layout_mode = 2
 focus_mode = 0
 text = "Restart"
 
+[node name="ExportButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Export"
+
 [node name="SettingsButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
@@ -132,3 +139,4 @@ text = "Settings"
 [connection signal="tied" from="Screen" to="." method="_on_game_tied"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/WithdrawButton" to="." method="_on_withdraw_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]

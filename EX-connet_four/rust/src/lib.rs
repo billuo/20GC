@@ -1,61 +1,78 @@
-use godot::classes::INode;
-use godot::classes::Node;
 use godot::prelude::*;
 
+pub mod lookup;
 pub mod position;
 pub mod solver;
-pub mod transposition;
 
 use position::Position;
 
 #[derive(GodotClass)]
-#[class(base=Node)]
-struct C4Solver {
-    solver: solver::Solver,
-    base: Base<Node>,
+#[class(init)]
+struct AnalyzedMove {
+    /// column to play
+    #[var]
+    col: u32,
+    /// score of the move, the more positive the better (more likely to win)
+    #[var]
+    score: i32,
+    /// true if playing this move wins immediately
+    #[var]
+    winning: bool,
+    /// true if playing this move loses immediately
+    #[var]
+    losing: bool,
+    /// true if NOT playing this move loses immediately
+    #[var]
+    forced: bool,
 }
-#[godot_api]
-impl INode for C4Solver {
-    fn init(base: Base<Node>) -> Self {
-        godot_print!("Hello, world!");
+
+impl AnalyzedMove {
+    fn new(position: &Position, col: usize, score: i32) -> Self {
+        let winning = position.is_winning_move(col);
+        let losing = position.played(col).can_win_next();
+        let forced = position.is_forced_move(col);
         Self {
-            solver: Default::default(),
-            base,
+            col: col as u32,
+            score,
+            winning,
+            losing,
+            forced,
         }
     }
+}
+
+#[derive(GodotClass)]
+#[class(init)]
+struct C4Solver {
+    solver: solver::Solver,
 }
 
 #[godot_api]
 impl C4Solver {
     #[func]
-    fn solve(&mut self, moves: PackedByteArray) -> i32 {
-        let mut p = Position::default();
-        for col in moves.as_slice() {
-            p.play(*col as usize)
-        }
-        self.solver.solve(&p, false)
+    fn solve(&mut self, moves: PackedByteArray, #[opt(default = true)] weak: bool) -> i32 {
+        let mut position = Position::default();
+        position.apply_moves(moves.as_slice().iter().map(|b| *b as usize));
+        self.solver.solve(&position, weak)
     }
 
     #[func]
-    fn rate_next_moves(&mut self, moves: PackedByteArray) -> Array<Variant> {
+    fn analyze(
+        &mut self,
+        moves: PackedByteArray,
+        #[opt(default = true)] weak: bool,
+    ) -> Array<Option<Gd<AnalyzedMove>>> {
         let mut p = Position::default();
-        for col in moves.as_slice() {
-            p.play(*col as usize)
-        }
-        let mut arr = Array::<Variant>::new();
-        arr.resize(Position::WIDTH, &Variant::nil());
-        for col in 0..Position::WIDTH {
-            if p.can_play(col) {
-                let mut newp = p;
-                newp.play(col);
-                arr.set(col, &self.solver.solve(&p, false).to_variant());
-            }
-        }
-        arr
+        p.apply_moves(moves.as_slice().iter().map(|b| *b as usize));
+        self.solver
+            .analyze(&p, weak)
+            .into_iter()
+            .enumerate()
+            .map(|(i, s)| s.map(|s| Gd::from_object(AnalyzedMove::new(&p, i, -s))))
+            .collect()
     }
 }
 
 struct MyExtension;
-
 #[gdextension]
 unsafe impl ExtensionLibrary for MyExtension {}
