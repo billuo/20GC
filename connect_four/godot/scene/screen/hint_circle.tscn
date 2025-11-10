@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgai4v7spslqc"]
+
+[ext_resource type="Texture2D" uid="uid://b3phlj6ketmq" path="res://asset/piece_highlight.png" id="1_otcj4"]
+[ext_resource type="Script" uid="uid://db23ta875fipg" path="res://scene/screen/hint_circle.gd" id="2_qhqmk"]
+
+[node name="HintCircle" type="Sprite2D"]
+texture = ExtResource("1_otcj4")
+script = ExtResource("2_qhqmk")

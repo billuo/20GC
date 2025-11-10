@@ -41,6 +41,8 @@ impl AnalyzedMove {
     }
 }
 
+/// ref: https://github.com/PascalPons/connect4
+/// ref: http://blog.gamesolver.org/solving-connect-four/12-lower-bound-transposition-table/
 #[derive(GodotClass)]
 #[class(init)]
 struct C4Solver {

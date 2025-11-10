@@ -3,7 +3,8 @@ extends Node2D
 
 signal player_won(id: int, fours: Array)
 signal tied
-signal clear_finished
+# position as in position of the game, not some coordinates
+signal position_changed
 
 const SIZE = Vector2i(7, 6)
 const HOLE_SIZE = Vector2(100, 100)
@@ -45,10 +46,7 @@ func get_hole_center_local(hole_pos: Vector2i) -> Vector2:
 
 
 func get_n_filled(col: int) -> int:
-	for y in range(SIZE.y - 1, -1, -1):
-		if _get_piece(Vector2i(col, y)) == 0:
-			return SIZE.y - y - 1
-	return SIZE.y
+	return SIZE.y - 1 - get_top_empty_hole(col)
 
 
 func get_n_moves() -> int:
@@ -69,12 +67,20 @@ func get_moves() -> PackedByteArray:
 	return a
 
 
+func get_top_empty_hole(col: int) -> int:
+	for y in range(SIZE.y - 1, -1, -1):
+		if _get_piece(Vector2i(col, y)) == 0:
+			return y
+	return -1
+
+
 # try insert a piece at top of given column.
 # return if successful
 func try_insert_piece(col: int, piece: int) -> bool:
 	for y in range(SIZE.y - 1, -1, -1):
 		if _get_piece(Vector2i(col, y)) == 0:
 			_set_piece(Vector2i(col, y), piece)
+			position_changed.emit()
 			return true
 	return false
 
@@ -93,6 +99,7 @@ func withdraw() -> bool:
 	var tween = sprite.create_tween()
 	tween.tween_property(sprite, "position", sprite.position - Vector2(0.0, Global.VIEWPORT_SIZE.y), 0.5)
 	tween.finished.connect(sprite.queue_free)
+	position_changed.emit()
 	return true
 
 
@@ -106,7 +113,6 @@ func clear() -> void:
 	add_child(piece_sprites_parent)
 	var timer = get_tree().create_timer(1.0)
 	timer.timeout.connect(old_parent.queue_free)
-	timer.timeout.connect(clear_finished.emit)
 	var interval = 0.0
 	for x in range(SIZE.x):
 		for y in range(SIZE.y - 1, -1, -1):
@@ -117,6 +123,37 @@ func clear() -> void:
 			tween.tween_interval(interval)
 			interval += 0.01
 			tween.tween_property(sprite, "position", sprite.position + Vector2(0, Global.VIEWPORT_SIZE.y), 0.5)
+	position_changed.emit()
+
+
+func display_hints(analysis: Ai.Analysis):
+	if $Hints.get_child_count() > 0:
+		return
+	for move in analysis.analyzed_moves:
+		if move == null:
+			continue
+		const HINT := preload("res://scene/screen/hint_circle.tscn")
+		var hint: HintCircle = HINT.instantiate()
+		$Hints.add_child(hint)
+		var y = get_top_empty_hole(move.col)
+		hint.position = get_hole_center_local(Vector2i(move.col, y))
+		hint.score = move.score
+		if move.winning:
+			hint.self_modulate = Color.ORANGE
+			hint.score = null
+		elif move.forced:
+			hint.self_modulate = Color.PURPLE
+		elif move.score < 0:
+			hint.self_modulate = Color.RED
+		elif move.score > 0:
+			hint.self_modulate = Color.GREEN
+		else:
+			hint.self_modulate = Color.BLUE
+
+
+func clear_hints():
+	for hint in $Hints.get_children():
+		hint.queue_free()
 
 
 func _get_piece(hole_pos: Vector2i) -> int:

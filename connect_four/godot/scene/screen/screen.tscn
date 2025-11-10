@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdw4xiu8dgjsv"]
+
+[ext_resource type="Script" uid="uid://bytfiiavhabuo" path="res://scene/screen/screen.gd" id="1_i7t4b"]
+[ext_resource type="Texture2D" uid="uid://b2mqmvtyaplc2" path="res://asset/screen.png" id="2_3uj5b"]
+[ext_resource type="Texture2D" uid="uid://b3phlj6ketmq" path="res://asset/piece_highlight.png" id="3_mc56u"]
+
+[node name="Screen" type="Node2D"]
+script = ExtResource("1_i7t4b")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3uj5b")
+region_enabled = true
+region_rect = Rect2(0, 100, 700, 600)
+
+[node name="Pieces" type="Node2D" parent="."]
+
+[node name="PieceHighlightSprite2D" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0.627451)
+texture = ExtResource("3_mc56u")
+
+[node name="Hints" type="Node2D" parent="."]
