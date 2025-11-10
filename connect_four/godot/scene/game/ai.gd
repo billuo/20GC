@@ -6,7 +6,7 @@ enum Personality {
 	Godlike,  # always choose the optimal move
 }
 
-var personality := Personality.Drunk
+var personality := Personality.Godlike
 # 0~10
 var difficulty: int
 

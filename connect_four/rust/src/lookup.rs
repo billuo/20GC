@@ -67,7 +67,7 @@ impl<K: PrimInt + Unsigned, PK: PrimInt + Unsigned, V: PrimInt + Unsigned> Defau
 }
 
 const fn has_factor(n: usize, min: usize, max: usize) -> bool {
-    if min * min > n {
+    if (min as u64 * min as u64) > n as u64 {
         return false;
     }
     if min + 1 >= max {

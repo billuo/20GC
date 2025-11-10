@@ -128,12 +128,12 @@ func _on_restart_button_pressed() -> void:
 	for child in four_highlights_parent.get_children():
 		child.queue_free()
 	var n = screen.get_n_moves()
+	var play_random_sound = func(): [$Audio/PieceDropLow, $Audio/PieceDropMid, $Audio/PieceDropHigh].pick_random().play()
 	if n > 6:
-		# restart_button.disabled = true
 		$Audio/GridClear.play()
-	# $Audio/GridClear.finished.connect(func(): restart_button.disabled = false)
+		for i in range(n / 2):
+			get_tree().create_timer(randf_range(0.1, 0.5)).timeout.connect(play_random_sound)
 	else:
-		var play_random_sound = func(): [$Audio/PieceDropLow, $Audio/PieceDropMid, $Audio/PieceDropHigh].pick_random().play()
 		for i in range(n):
 			get_tree().create_timer(randf_range(0.1, 0.5)).timeout.connect(play_random_sound)
 	screen.clear()

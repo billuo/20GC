@@ -7,9 +7,11 @@ reloadable = true
 linux.debug.x86_64 =     "res://../rust/target/debug/libc4solver.so"
 linux.release.x86_64 =   "res://../rust/target/release/libc4solver.so"
 windows.debug.x86_64 =   "res://../rust/target/debug/c4solver.dll"
-#windows.debug.x86_64 =   "res://../rust/target/release/c4solver.dll"
 windows.release.x86_64 = "res://../rust/target/release/c4solver.dll"
 macos.debug =            "res://../rust/target/debug/libc4solver.dylib"
 macos.release =          "res://../rust/target/release/libc4solver.dylib"
 macos.debug.arm64 =      "res://../rust/target/debug/libc4solver.dylib"
 macos.release.arm64 =    "res://../rust/target/release/libc4solver.dylib"
+web.debug.wasm32 =       "res://../rust/target/wasm32-unknown-emscripten/debug/c4solver.wasm"
+web.release.wasm32 =     "res://../rust/target/wasm32-unknown-emscripten/release/c4solver.wasm"
+

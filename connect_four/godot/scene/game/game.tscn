@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://bdkyxi1h2bmic"]
+[gd_scene load_steps=22 format=3 uid="uid://bdkyxi1h2bmic"]
 
 [ext_resource type="Script" uid="uid://dnv0jbam4d3iq" path="res://scene/game/game.gd" id="1_cirq1"]
+[ext_resource type="Texture2D" uid="uid://bh8bagbydev08" path="res://asset/floor.jpg" id="2_5wlrd"]
 [ext_resource type="Script" uid="uid://bytfiiavhabuo" path="res://scene/game/screen.gd" id="2_7d2hf"]
-[ext_resource type="Texture2D" uid="uid://cfrl46idqupe4" path="res://asset/hole.png" id="3_c7fbu"]
 [ext_resource type="Texture2D" uid="uid://b3phlj6ketmq" path="res://asset/piece_highlight.png" id="4_8u7u6"]
+[ext_resource type="Texture2D" uid="uid://b2mqmvtyaplc2" path="res://asset/screen.png" id="5_fkm2x"]
 [ext_resource type="Script" uid="uid://cucat3jxbytdv" path="res://scene/game/prompt.gd" id="5_v4hye"]
 [ext_resource type="Texture2D" uid="uid://dj2u771wkedyo" path="res://asset/piece.png" id="6_yv2ml"]
 [ext_resource type="PackedScene" uid="uid://cepc17f0c3o82" path="res://scene/mouse_cursor/mouse_cursor.tscn" id="7_2rwqa"]
@@ -39,15 +40,22 @@ stream_1/stream = ExtResource("14_o100e")
 [node name="Main" type="Node2D"]
 script = ExtResource("1_cirq1")
 
+[node name="Background" type="Node2D" parent="."]
+z_index = -1
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+scale = Vector2(0.67870367, 0.6787037)
+texture = ExtResource("2_5wlrd")
+centered = false
+
 [node name="Screen" type="Node2D" parent="."]
-position = Vector2(640, 420)
+position = Vector2(640, 380)
 script = ExtResource("2_7d2hf")
 
 [node name="Sprite2D" type="Sprite2D" parent="Screen"]
-texture_repeat = 2
-texture = ExtResource("3_c7fbu")
+texture = ExtResource("5_fkm2x")
 region_enabled = true
-region_rect = Rect2(0, 0, 707, 606)
+region_rect = Rect2(0, 100, 700, 600)
 
 [node name="Pieces" type="Node2D" parent="Screen"]
 
@@ -69,30 +77,33 @@ texture = ExtResource("6_yv2ml")
 
 [node name="Solver" type="Node" parent="."]
 script = ExtResource("7_oixtr")
-method = 1
 
 [node name="Audio" type="Node2D" parent="."]
 position = Vector2(640, 420)
 
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("9_o100e")
-volume_db = 10.0
+volume_db = 15.0
 autoplay = true
 
 [node name="PieceDropHigh" type="AudioStreamPlayer2D" parent="Audio"]
 stream = SubResource("AudioStreamRandomizer_v4hye")
+volume_db = -5.0
 max_polyphony = 15
 
 [node name="PieceDropMid" type="AudioStreamPlayer2D" parent="Audio"]
 stream = SubResource("AudioStreamRandomizer_c7fbu")
+volume_db = -5.0
 max_polyphony = 15
 
 [node name="PieceDropLow" type="AudioStreamPlayer2D" parent="Audio"]
 stream = SubResource("AudioStreamRandomizer_8u7u6")
+volume_db = -5.0
 max_polyphony = 15
 
 [node name="GridClear" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("16_okn60")
+volume_db = -5.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 

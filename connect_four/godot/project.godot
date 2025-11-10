@@ -21,6 +21,10 @@ PlayerManager="*res://singleton/player_manager.gd"
 AppController="*res://singleton/app_controller.gd"
 GameOptions="*res://singleton/game_options.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=1280
@@ -40,4 +44,5 @@ toggle_fullscreen={
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.0627451, 0.0627451, 0.0627451, 1)

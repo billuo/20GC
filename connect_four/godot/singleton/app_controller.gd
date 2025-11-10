@@ -20,7 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _ready() -> void:
-	pass
+	OS.set_environment("RUST_BACKTRACE", "1")
 	# Log.info(["AppController is ready: base_resolution={}, content_scale={}", base_resolution, get_content_scale()])
 	# Log.info(["Engine singletons: {}", Engine.get_singleton_list()])
 
