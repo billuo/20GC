@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bdkyxi1h2bmic"]
+[gd_scene load_steps=24 format=3 uid="uid://bdkyxi1h2bmic"]
 
 [ext_resource type="Script" uid="uid://dnv0jbam4d3iq" path="res://scene/game/game.gd" id="1_cirq1"]
 [ext_resource type="Texture2D" uid="uid://bh8bagbydev08" path="res://asset/floor.jpg" id="2_5wlrd"]
@@ -8,15 +8,16 @@
 [ext_resource type="PackedScene" uid="uid://cepc17f0c3o82" path="res://scene/mouse_cursor/mouse_cursor.tscn" id="7_2rwqa"]
 [ext_resource type="Script" uid="uid://bjbfd8ms11b7" path="res://scene/game/solver.gd" id="7_oixtr"]
 [ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="8_o100e"]
-[ext_resource type="AudioStream" uid="uid://bg3f4fbmqhd57" path="res://asset/piece_drop_high.wav" id="9_c7fbu"]
-[ext_resource type="AudioStream" uid="uid://3fg6v6v71pgo" path="res://asset/ambient.mp3" id="9_o100e"]
-[ext_resource type="AudioStream" uid="uid://dfdvkru8ucu04" path="res://asset/piece_drop_high2.wav" id="10_8u7u6"]
-[ext_resource type="AudioStream" uid="uid://cotj8efa03kj8" path="res://asset/piece_drop_mid.wav" id="11_v4hye"]
-[ext_resource type="AudioStream" uid="uid://biqv0gx2in73i" path="res://asset/piece_drop_mid2.wav" id="12_yv2ml"]
-[ext_resource type="AudioStream" uid="uid://bopdng5aihveo" path="res://asset/piece_drop_low.wav" id="13_2rwqa"]
-[ext_resource type="AudioStream" uid="uid://c1arm28g06w74" path="res://asset/piece_drop_low2.wav" id="14_o100e"]
-[ext_resource type="AudioStream" uid="uid://c3tro1agvj6h7" path="res://asset/grid-clear.mp3" id="16_okn60"]
-[ext_resource type="FontFile" uid="uid://g3ucrn8f4bkb" path="res://asset/Higher Jump.ttf" id="19_fkm2x"]
+[ext_resource type="AudioStream" uid="uid://bg3f4fbmqhd57" path="res://asset/audio/piece_drop_high.wav" id="9_c7fbu"]
+[ext_resource type="AudioStream" uid="uid://3fg6v6v71pgo" path="res://asset/audio/ambient.mp3" id="9_o100e"]
+[ext_resource type="AudioStream" uid="uid://dfdvkru8ucu04" path="res://asset/audio/piece_drop_high2.wav" id="10_8u7u6"]
+[ext_resource type="AudioStream" uid="uid://cotj8efa03kj8" path="res://asset/audio/piece_drop_mid.wav" id="11_v4hye"]
+[ext_resource type="AudioStream" uid="uid://biqv0gx2in73i" path="res://asset/audio/piece_drop_mid2.wav" id="12_yv2ml"]
+[ext_resource type="AudioStream" uid="uid://bopdng5aihveo" path="res://asset/audio/piece_drop_low.wav" id="13_2rwqa"]
+[ext_resource type="AudioStream" uid="uid://c1arm28g06w74" path="res://asset/audio/piece_drop_low2.wav" id="14_o100e"]
+[ext_resource type="AudioStream" uid="uid://c3tro1agvj6h7" path="res://asset/audio/grid-clear.mp3" id="16_okn60"]
+[ext_resource type="PackedScene" uid="uid://8fy1dhr3knbc" path="res://scene/game/piece_stack.tscn" id="18_5wlrd"]
+[ext_resource type="FontFile" uid="uid://g3ucrn8f4bkb" path="res://asset/fonts/Higher Jump.ttf" id="19_fkm2x"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_v4hye"]
 playback_mode = 1
@@ -52,7 +53,7 @@ script = ExtResource("1_cirq1")
 z_index = -1
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
-scale = Vector2(0.67870367, 0.6787037)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_5wlrd")
 centered = false
 
@@ -120,10 +121,12 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 
 [node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Hint"
 
 [node name="WithdrawButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Withdraw"
@@ -167,6 +170,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 text = "Tie!"
 label_settings = SubResource("LabelSettings_mq16h")
+
+[node name="PieceStack1" parent="." instance=ExtResource("18_5wlrd")]
+position = Vector2(240, 680)
+player_id = 1
+
+[node name="PieceStack2" parent="." instance=ExtResource("18_5wlrd")]
+position = Vector2(1040, 680)
+player_id = 2
 
 [connection signal="player_won" from="Screen" to="." method="_on_player_won"]
 [connection signal="position_changed" from="Screen" to="." method="_on_screen_position_changed"]

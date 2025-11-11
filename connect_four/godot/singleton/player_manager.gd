@@ -17,6 +17,18 @@ func get_player_color(id: int) -> Color:
 			return Color.GRAY
 
 
+func get_player_ai_difficulty(id: int) -> GameOptions.AIDifficulty:
+	match GameOptions.mode:
+		GameOptions.Mode.SinglePlayer:
+			return GameOptions.ai_difficulty_1
+		GameOptions.Mode.TwoPlayers:
+			assert(false, "2P mode should not involve AI")
+		GameOptions.Mode.NoPlayer:
+			return GameOptions.ai_difficulty_1 if id == 1 else GameOptions.ai_difficulty_2
+	assert(false, "unknown game mode")
+	return GameOptions.AIDifficulty.Normal
+
+
 func get_player_is_ai(id: int) -> bool:
 	assert(id > 0)
 	assert(id <= N_PLAYERS)

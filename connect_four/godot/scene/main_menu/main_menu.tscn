@@ -1,16 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://baix47kord4q4"]
+[gd_scene load_steps=8 format=3 uid="uid://baix47kord4q4"]
 
 [ext_resource type="Script" uid="uid://cup7i76eu28rm" path="res://scene/main_menu/main_menu.gd" id="1_cds3d"]
 [ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="1_o25w2"]
+[ext_resource type="Texture2D" uid="uid://bh8bagbydev08" path="res://asset/floor.jpg" id="2_ywaph"]
 [ext_resource type="Script" uid="uid://qd77dvovdm6s" path="res://addons/spin_button/src/controls/sb_spin_button.gd" id="3_6836v"]
-[ext_resource type="Texture2D" uid="uid://cmqmidfvwfbu6" path="res://asset/spin_button_arrow_left.png" id="4_e8klu"]
-[ext_resource type="Texture2D" uid="uid://khdw8nncsyjo" path="res://asset/spin_button_arrow_right.png" id="5_ywaph"]
+[ext_resource type="Texture2D" uid="uid://cmqmidfvwfbu6" path="res://asset/ui/spin_button_arrow_left.png" id="4_e8klu"]
+[ext_resource type="Texture2D" uid="uid://khdw8nncsyjo" path="res://asset/ui/spin_button_arrow_right.png" id="5_ywaph"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_o25w2"]
 font_size = 96
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_cds3d")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_ywaph")
+centered = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -23,12 +29,13 @@ grow_vertical = 2
 theme = ExtResource("1_o25w2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+[node name="Control2" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="Title" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
@@ -45,15 +52,21 @@ bbcode_enabled = true
 text = "20 Games Challenges Series [font_size=16]in place of tic-tac-toe[/font_size]"
 horizontal_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
-custom_minimum_size = Vector2(700, 400)
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
 
-[node name="NPlayers" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="NPlayers" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_vertical = 4
 flat = true
@@ -65,15 +78,16 @@ loop = true
 next_icon = ExtResource("5_ywaph")
 prev_icon = ExtResource("4_e8klu")
 nav_focus_mode = 0
+mousewheel = true
 title = "Players"
 title_alignment = 4
 content_stretch_ratio = 2.0
 auto_min_height = false
 metadata/_custom_type_script = "uid://qd77dvovdm6s"
 
-[node name="AIDifficulty" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer2"]
+[node name="AIDifficulty1" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_vertical = 4
 flat = true
@@ -85,13 +99,36 @@ loop = true
 next_icon = ExtResource("5_ywaph")
 prev_icon = ExtResource("4_e8klu")
 nav_focus_mode = 0
+mousewheel = true
 title = "AI Difficulty"
 title_alignment = 4
 content_stretch_ratio = 2.0
 auto_min_height = false
 metadata/_custom_type_script = "uid://qd77dvovdm6s"
 
-[node name="Start" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer2"]
+[node name="AIDifficulty2" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_vertical = 4
+flat = true
+script = ExtResource("3_6836v")
+items = Array[String](["Easy", "Normal", "Hard", "Impossible"])
+selected = 1
+item_count = 4
+loop = true
+next_icon = ExtResource("5_ywaph")
+prev_icon = ExtResource("4_e8klu")
+nav_focus_mode = 0
+mousewheel = true
+title = "AI Difficulty 2"
+title_alignment = 4
+content_stretch_ratio = 2.0
+auto_min_height = false
+metadata/_custom_type_script = "uid://qd77dvovdm6s"
+
+[node name="Start" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
@@ -112,4 +149,43 @@ text = "Rules:
 
 - To win the game, be the first player to form a horizontal, vertical, or diagonal line of four of your own tokens."
 
-[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer2/Start" to="." method="_on_start_pressed"]
+[node name="NavigationHelps" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/MarginContainer/NavigationHelps"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[img=48]res://asset/input_prompts/keyboard_escape.png[/img] Exit"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/MarginContainer/NavigationHelps"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[img]res://asset/input_prompts/keyboard_space.png[/img] / [img]res://asset/input_prompts/keyboard_enter.png[/img] Confirm"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/NavigationHelps"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 8
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[img=32]res://asset/input_prompts/keyboard_w.png[/img][img=32]res://asset/input_prompts/keyboard_a.png[/img][img=32]res://asset/input_prompts/keyboard_s.png[/img][img=32]res://asset/input_prompts/keyboard_d.png[/img] /[img=32]res://asset/input_prompts/keyboard_arrow_up.png[/img][img=32]res://asset/input_prompts/keyboard_arrow_left.png[/img][img=32]res://asset/input_prompts/keyboard_arrow_down.png[/img][img=32]res://asset/input_prompts/keyboard_arrow_right.png[/img] Navigate
+"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="item_selected" from="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/NPlayers" to="." method="_on_n_players_item_selected"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]

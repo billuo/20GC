@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bopdng5aihveo"
-path="res://.godot/imported/piece_drop_low.wav-fc603d15b9049098342b14df0c057de5.sample"
+path="res://.godot/imported/piece_drop_low.wav-40b121f6c81af2ce20ea9ccead1b15b0.sample"
 
 [deps]
 
-source_file="res://asset/piece_drop_low.wav"
-dest_files=["res://.godot/imported/piece_drop_low.wav-fc603d15b9049098342b14df0c057de5.sample"]
+source_file="res://asset/audio/piece_drop_low.wav"
+dest_files=["res://.godot/imported/piece_drop_low.wav-40b121f6c81af2ce20ea9ccead1b15b0.sample"]
 
 [params]
 

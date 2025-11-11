@@ -1,10 +1,10 @@
 class_name Ai
 
 
-static func pick_a_move(moves: Array[AnalyzedMove]) -> int:
+static func pick_a_move(moves: Array[AnalyzedMove], difficulty: GameOptions.AIDifficulty) -> int:
 	var a = Analysis.new(moves)
 
-	match GameOptions.ai_difficulty:
+	match difficulty:
 		GameOptions.AIDifficulty.Drunk:
 			if not a.winning_moves.is_empty() and randf() < 0.9:
 				return a.winning_moves.pick_random()

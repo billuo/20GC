@@ -14,4 +14,5 @@ enum AIDifficulty {
 }
 
 var mode: Mode
-var ai_difficulty: AIDifficulty
+var ai_difficulty_1: AIDifficulty
+var ai_difficulty_2: AIDifficulty

@@ -1,7 +1,7 @@
 class_name HintCircle
 extends Sprite2D
 
-const FONT := preload("res://asset/ZhiyiMaru-Regular.ttf")
+const FONT := preload("res://asset/fonts/ZhiyiMaru-Regular.ttf")
 
 var score = null:
 	set(value):

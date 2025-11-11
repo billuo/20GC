@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfrl46idqupe4"
-path="res://.godot/imported/hole.png-9067f7a2aafb8d9ee02481806b95b0f9.ctex"
+uid="uid://cmqmidfvwfbu6"
+path="res://.godot/imported/spin_button_arrow_left.png-30883944cb03fd69e52d4f0c27946907.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/hole.png"
-dest_files=["res://.godot/imported/hole.png-9067f7a2aafb8d9ee02481806b95b0f9.ctex"]
+source_file="res://asset/ui/spin_button_arrow_left.png"
+dest_files=["res://.godot/imported/spin_button_arrow_left.png-30883944cb03fd69e52d4f0c27946907.ctex"]
 
 [params]
 

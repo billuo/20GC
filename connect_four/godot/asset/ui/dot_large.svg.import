@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmqmidfvwfbu6"
-path="res://.godot/imported/spin_button_arrow_left.png-fe7c5ce28bfa5fac3953b52a899d54e7.ctex"
+uid="uid://bh1nscox20xlq"
+path="res://.godot/imported/dot_large.svg-daedbcac9bb5c635a02933ba17c8e60b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/spin_button_arrow_left.png"
-dest_files=["res://.godot/imported/spin_button_arrow_left.png-fe7c5ce28bfa5fac3953b52a899d54e7.ctex"]
+source_file="res://asset/ui/dot_large.svg"
+dest_files=["res://.godot/imported/dot_large.svg-daedbcac9bb5c635a02933ba17c8e60b.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=2.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

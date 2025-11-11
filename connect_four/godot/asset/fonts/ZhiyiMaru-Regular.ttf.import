@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://xdc310sp8lb"
-path="res://.godot/imported/ZhiyiMaru-Regular.ttf-d55b3d15aea014f506e3837c7632d205.fontdata"
+path="res://.godot/imported/ZhiyiMaru-Regular.ttf-14ef2e727b02c7e197ec6fff0bd5640a.fontdata"
 
 [deps]
 
-source_file="res://asset/ZhiyiMaru-Regular.ttf"
-dest_files=["res://.godot/imported/ZhiyiMaru-Regular.ttf-d55b3d15aea014f506e3837c7632d205.fontdata"]
+source_file="res://asset/fonts/ZhiyiMaru-Regular.ttf"
+dest_files=["res://.godot/imported/ZhiyiMaru-Regular.ttf-14ef2e727b02c7e197ec6fff0bd5640a.fontdata"]
 
 [params]
 

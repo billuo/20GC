@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://khdw8nncsyjo"
-path="res://.godot/imported/spin_button_arrow_right.png-b56f461e33e9e0932ac8dae756d9e5f7.ctex"
+uid="uid://b3oxeht530ny8"
+path="res://.godot/imported/keyboard_arrow_up.png-5e1b7dc8e86aab238c27409fac44fe47.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/spin_button_arrow_right.png"
-dest_files=["res://.godot/imported/spin_button_arrow_right.png-b56f461e33e9e0932ac8dae756d9e5f7.ctex"]
+source_file="res://asset/input_prompts/keyboard_arrow_up.png"
+dest_files=["res://.godot/imported/keyboard_arrow_up.png-5e1b7dc8e86aab238c27409fac44fe47.ctex"]
 
 [params]
 

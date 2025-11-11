@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://3xytu85rtilh"]
+
+[ext_resource type="Script" uid="uid://lwxys4jsiqwe" path="res://scene/game/piece_sideway.gd" id="1_4lyfb"]
+[ext_resource type="Texture2D" uid="uid://bi5tix2jbtqd8" path="res://asset/piece_sideway.png" id="1_rbnt5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_rbnt5"]
+bounce = 1.0
+absorbent = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1wrk1"]
+size = Vector2(90, 18)
+
+[node name="PieceSideway" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_rbnt5")
+can_sleep = false
+lock_rotation = true
+continuous_cd = 1
+script = ExtResource("1_4lyfb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_rbnt5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1wrk1")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-50, -10, 100, 20)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]

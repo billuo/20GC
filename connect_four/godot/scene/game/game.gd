@@ -6,12 +6,15 @@ enum GameState {
 	FinishedTie,
 }
 
+
+
 var _game_state: GameState = GameState.InProgress:
 	set = set_game_state
 var _four_highlights_parent: Node2D
 var _single_player_id: int
 var _current_player_id: int:
 	set = set_current_player_id
+var _current_piece_stack: PieceStack
 var _winner_player_id: int
 var _tween_export_button_text_change: Tween
 var _position_analysis: Ai.Analysis
@@ -22,46 +25,55 @@ var _position_analysis: Ai.Analysis
 @onready var restart_button: Button = %RestartButton
 @onready var copy_moves_button: Button = %CopyMovesButton
 @onready var game_result_label: Label = %GameResultLabel
+@onready var piece_stack_1: PieceStack = $PieceStack1
+@onready var piece_stack_2: PieceStack = $PieceStack2
 
 
 func _ready() -> void:
-	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	_four_highlights_parent = Node2D.new()
 	add_child(_four_highlights_parent)
 	match GameOptions.mode:
 		GameOptions.Mode.SinglePlayer:
-			_single_player_id = randi_range(1, PlayerManager.N_PLAYERS)
-			for id in range(1, PlayerManager.N_PLAYERS + 1):
-				if id != _single_player_id:
-					PlayerManager.set_player_is_ai(id, true)
+			_single_player_id = randi_range(1, 2)
+			for id in range(1, 3):
+				PlayerManager.set_player_is_ai(id, id != _single_player_id)
 		GameOptions.Mode.TwoPlayers:
-			pass
+			for id in range(1, 3):
+				PlayerManager.set_player_is_ai(id, false)
 		GameOptions.Mode.NoPlayer:
-			for id in range(1, PlayerManager.N_PLAYERS + 1):
+			for id in range(1, 3):
 				PlayerManager.set_player_is_ai(id, true)
 	_current_player_id = 1
+	_current_piece_stack.pop()
 	prompt.force_update()
+	%CurrentMovesLabel.text = "Moves: "
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _game_state == GameState.InProgress:
-		if not PlayerManager.get_player_is_ai(_current_player_id):
-			# only process mouse input if it's human player's turn
-			if event is InputEventMouseMotion:
-				prompt.force_update(event.global_position)
-			elif event is InputEventMouseButton:
-				if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
-					var mouse_pos = event.global_position
-					var hole_pos = screen.get_nearest_hole(mouse_pos)
-					if screen.try_insert_piece(hole_pos.x, _current_player_id):
-						_play_piece_drop_sound(hole_pos.x)
-						_current_player_id = PlayerManager.next_player(_current_player_id)
-						prompt.force_update(mouse_pos)
+	if event.is_action_pressed("ui_cancel"):
+		print_debug("back to main menu")
+		get_tree().change_scene_to_packed(load("res://scene/main_menu/main_menu.tscn"))
+		return
+	# only process mouse input if it's human player's turn
+	if not PlayerManager.get_player_is_ai(_current_player_id) and _game_state == GameState.InProgress:
+		if event is InputEventMouseMotion:
+			prompt.force_update(event.global_position)
+		elif event is InputEventMouseButton:
+			if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+				var mouse_pos = event.global_position
+				var hole_pos = screen.get_nearest_hole(mouse_pos)
+				if screen.try_insert_piece(hole_pos.x, _current_player_id):
+					_play_piece_drop_sound(hole_pos.x)
+					_current_player_id = PlayerManager.next_player(_current_player_id)
+					_current_piece_stack.pop()
+					prompt.force_update(mouse_pos)
 
 
 func set_game_state(value: GameState) -> void:
 	_game_state = value
+	# update prompt
 	prompt.visible = _game_state == GameState.InProgress
+	# update game result
 	game_result_label.visible = _game_state != GameState.InProgress
 	if _game_state == GameState.FinishedTie:
 		game_result_label.text = "Tie"
@@ -69,11 +81,18 @@ func set_game_state(value: GameState) -> void:
 	elif _game_state == GameState.FinishedWon:
 		game_result_label.text = "Player %d Won!" % _winner_player_id
 		game_result_label.self_modulate = PlayerManager.get_player_color(_winner_player_id)
+	# update buttons
+	%HintButton.disabled = _game_state != GameState.InProgress
+	%WithdrawButton.disabled = _game_state != GameState.InProgress
 
 
 func set_current_player_id(value: int) -> void:
 	_current_player_id = value
 	prompt.color = PlayerManager.get_player_color(value)
+	if _current_player_id == 1:
+		_current_piece_stack = piece_stack_1
+	else:
+		_current_piece_stack = piece_stack_2
 	_solve()
 
 
@@ -83,11 +102,12 @@ func _solve():
 	if PlayerManager.get_player_is_ai(_current_player_id):
 		solver.solve_position(screen.get_moves())
 		var moves: Array[AnalyzedMove] = await solver.solved
-		var col = Ai.pick_a_move(moves)
+		var col = Ai.pick_a_move(moves, PlayerManager.get_player_ai_difficulty(_current_player_id))
 		var inserted = screen.try_insert_piece(col, _current_player_id)
 		assert(inserted)
 		_play_piece_drop_sound(col)
 		_current_player_id = PlayerManager.next_player(_current_player_id)
+		_current_piece_stack.pop()
 		prompt.force_update()
 
 
@@ -144,10 +164,13 @@ func _on_withdraw_button_pressed() -> void:
 			if screen.get_n_moves() > 1 and not PlayerManager.get_player_is_ai(_current_player_id):
 				screen.withdraw()
 				screen.withdraw()
+				piece_stack_1.push()
+				piece_stack_2.push()
 				prompt.force_update()
 		GameOptions.Mode.TwoPlayers:
 			if screen.get_n_moves() > 0:
 				screen.withdraw()
+				_current_piece_stack.push()
 				_current_player_id = PlayerManager.prev_player(_current_player_id)
 				prompt.force_update()
 
@@ -166,7 +189,10 @@ func _on_restart_button_pressed() -> void:
 		for i in range(n):
 			get_tree().create_timer(randf_range(0.1, 0.5)).timeout.connect(play_random_sound)
 	screen.clear()
+	piece_stack_1.reset()
+	piece_stack_2.reset()
 	_current_player_id = 1
+	piece_stack_1.pop()
 	prompt.force_update()
 
 
@@ -190,4 +216,3 @@ func _on_screen_position_changed() -> void:
 	%CurrentMovesLabel.text = "Moves: %s" % screen.get_moves_string()
 	_position_analysis = null
 	screen.clear_hints()
-

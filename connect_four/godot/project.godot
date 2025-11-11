@@ -30,6 +30,8 @@ gdscript/warnings/integer_division=0
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="viewport"
+mouse_cursor/custom_image="uid://bh1nscox20xlq"
+mouse_cursor/custom_image_hotspot=Vector2(32, 32)
 
 [editor_plugins]
 
@@ -74,6 +76,10 @@ toggle_fullscreen={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":true,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194309,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
+
+[physics]
+
+common/physics_interpolation=true
 
 [rendering]
 
