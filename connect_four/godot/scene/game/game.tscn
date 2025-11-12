@@ -58,13 +58,14 @@ texture = ExtResource("2_5wlrd")
 centered = false
 
 [node name="Screen" parent="." instance=ExtResource("3_oixtr")]
-position = Vector2(640, 380)
+position = Vector2(640, 415.53)
 
 [node name="Prompt" type="Node2D" parent="." node_paths=PackedStringArray("screen")]
 script = ExtResource("5_v4hye")
 screen = NodePath("../Screen")
 
 [node name="TopSprite2D" type="Sprite2D" parent="Prompt"]
+z_index = -1
 texture = ExtResource("6_yv2ml")
 
 [node name="PreviewSprite2D" type="Sprite2D" parent="Prompt"]
@@ -118,7 +119,7 @@ theme = ExtResource("8_o100e")
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 8
+size_flags_vertical = 0
 
 [node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -140,7 +141,7 @@ text = "Restart"
 [node name="HSplitContainer" type="HSplitContainer" parent="UI/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 8
+size_flags_vertical = 0
 dragging_enabled = false
 dragger_visibility = 1
 
@@ -172,11 +173,11 @@ text = "Tie!"
 label_settings = SubResource("LabelSettings_mq16h")
 
 [node name="PieceStack1" parent="." instance=ExtResource("18_5wlrd")]
-position = Vector2(240, 680)
+position = Vector2(211.66, 720)
 player_id = 1
 
 [node name="PieceStack2" parent="." instance=ExtResource("18_5wlrd")]
-position = Vector2(1040, 680)
+position = Vector2(1067.765, 720)
 player_id = 2
 
 [connection signal="player_won" from="Screen" to="." method="_on_player_won"]

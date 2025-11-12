@@ -6,6 +6,19 @@ const GAME_SCENE := preload("res://scene/game/game.tscn")
 func _ready() -> void:
 	%Start.grab_focus.call_deferred()
 	rand_from_seed(int(Time.get_unix_time_from_system() * 1000.0))
+	var state = MainMenuState.load_from_fs()
+	if state:
+		%NPlayers.select(state.n_players_selected_index)
+		%AIDifficulty1.select(state.ai_difficulty_1_selected_index)
+		%AIDifficulty2.select(state.ai_difficulty_2_selected_index)
+
+
+func _exit_tree() -> void:
+	var state = MainMenuState.new()
+	state.n_players_selected_index = %NPlayers.selected
+	state.ai_difficulty_1_selected_index = %AIDifficulty1.selected
+	state.ai_difficulty_2_selected_index = %AIDifficulty2.selected
+	MainMenuState.save_to_fs(state)
 
 
 func _unhandled_input(event: InputEvent) -> void:
