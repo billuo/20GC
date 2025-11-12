@@ -150,6 +150,7 @@ text = "Rules:
 - To win the game, be the first player to form a horizontal, vertical, or diagonal line of four of your own tokens."
 
 [node name="NavigationHelps" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
