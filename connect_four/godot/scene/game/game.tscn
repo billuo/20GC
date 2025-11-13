@@ -142,6 +142,8 @@ text = "Withdraw"
 
 [node name="HSplitContainer" type="HSplitContainer" parent="UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
+dragging_enabled = false
+dragger_visibility = 1
 
 [node name="HintHelpButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2

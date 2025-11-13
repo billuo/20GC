@@ -182,8 +182,8 @@ func _on_withdraw_button_pressed() -> void:
 				prompt.force_update()
 		GameOptions.Mode.TwoPlayers:
 			if screen.get_n_moves() > 0:
-				screen.withdraw()
 				_current_piece_stack.push()
+				screen.withdraw()
 				prompt.force_update()
 
 
@@ -219,6 +219,7 @@ func _on_screen_position_changed() -> void:
 		solver.solve_position(screen.get_game_position())
 	prompt.color = PlayerManager.get_player_color(pid)
 	%WithdrawButton.disabled = PlayerManager.get_player_is_ai(pid)
+	%HintButton.disabled = PlayerManager.get_player_is_ai(pid)
 	if pid == 1:
 		_current_piece_stack = piece_stack_1
 	else:

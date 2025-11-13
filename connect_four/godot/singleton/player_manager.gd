@@ -2,7 +2,6 @@ extends Node
 
 const N_PLAYERS = 2
 
-# FIXME: mutex guarding _player_next_move
 var _player_is_ai: Array[bool] = [false, false]
 
 
