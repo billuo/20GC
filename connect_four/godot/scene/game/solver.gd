@@ -54,7 +54,6 @@ func _work():
 			break
 
 		_mutex.lock()
-		print_debug("solving %d positions" % positions.size())
 		for i in range(positions.size()):
 			var pos = positions[i]
 			var moves = solver.analyze(pos, false)

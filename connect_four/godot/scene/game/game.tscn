@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bdkyxi1h2bmic"]
+[gd_scene load_steps=25 format=3 uid="uid://bdkyxi1h2bmic"]
 
 [ext_resource type="Script" uid="uid://dnv0jbam4d3iq" path="res://scene/game/game.gd" id="1_cirq1"]
 [ext_resource type="Texture2D" uid="uid://bh8bagbydev08" path="res://asset/floor.jpg" id="2_5wlrd"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bmnht2lpfqwkm" path="res://asset/ui/help.svg" id="16_5wlrd"]
 [ext_resource type="AudioStream" uid="uid://c3tro1agvj6h7" path="res://asset/audio/grid-clear.mp3" id="16_okn60"]
 [ext_resource type="PackedScene" uid="uid://8fy1dhr3knbc" path="res://scene/game/piece_stack.tscn" id="18_5wlrd"]
+[ext_resource type="Script" uid="uid://b1x40ujeeynbt" path="res://scene/game/thinking_label.gd" id="18_fkm2x"]
 [ext_resource type="FontFile" uid="uid://g3ucrn8f4bkb" path="res://asset/fonts/Higher Jump.ttf" id="19_fkm2x"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_v4hye"]
@@ -176,8 +177,10 @@ autowrap_mode = 1
 
 [node name="ThinkingLabel" type="Label" parent="UI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Thinking..."
+script = ExtResource("18_fkm2x")
 
 [node name="GameResultLabel" type="Label" parent="UI/MarginContainer"]
 unique_name_in_owner = true

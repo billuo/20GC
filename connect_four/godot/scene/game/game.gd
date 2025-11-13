@@ -128,7 +128,6 @@ func _play_piece_drop_sound(col: int) -> void:
 
 
 func _exit():
-	print_debug("back to main menu")
 	get_tree().change_scene_to_packed(load("res://scene/main_menu/main_menu.tscn"))
 
 
@@ -137,7 +136,6 @@ func _on_player_won(id: int, fours: Array) -> void:
 	_game_state = GameState.FinishedWon
 	var highlighted = {}
 	for four in fours:
-		print_debug(four)
 		for pos in four:
 			if not highlighted.has(pos):
 				highlighted.set(pos, true)
@@ -193,17 +191,13 @@ func _on_copy_moves_button_pressed() -> void:
 	DisplayServer.clipboard_set(screen.get_moves_string())
 	var orig_text = copy_moves_button.text
 	copy_moves_button.text = "Copied!"
-	if not _tween_export_button_text_change or _tween_export_button_text_change:
-		_tween_export_button_text_change = copy_moves_button.create_tween()
-		_tween_export_button_text_change.tween_interval(0.5)
-		_tween_export_button_text_change.finished.connect(
-			func():
-				copy_moves_button.text = orig_text
-				_tween_export_button_text_change = null
-		)
-	else:
+	if _tween_export_button_text_change and _tween_export_button_text_change.is_running():
 		_tween_export_button_text_change.stop()
 		_tween_export_button_text_change.play()
+	else:
+		_tween_export_button_text_change = copy_moves_button.create_tween()
+		_tween_export_button_text_change.tween_interval(0.5)
+		_tween_export_button_text_change.finished.connect(func(): copy_moves_button.text = orig_text)
 
 
 func _on_screen_position_changed() -> void:
@@ -212,9 +206,7 @@ func _on_screen_position_changed() -> void:
 	%CurrentMovesLabel.text = "Moves: %s" % screen.get_moves_string()
 	_position_analysis = null
 	screen.clear_hints()
-	print_debug("position changed. pid=%d (%sAI)" % [pid, "" if PlayerManager.get_player_is_ai(pid) else "not "])
 	if PlayerManager.get_player_is_ai(pid):
-		print_debug("solving...")
 		solver.solve_position(screen.get_game_position())
 	prompt.color = PlayerManager.get_player_color(pid)
 	%WithdrawButton.disabled = is_ai
@@ -235,19 +227,14 @@ func _on_exit_button_pressed() -> void:
 
 
 func _on_solver_solved(pos: PackedByteArray, moves: Array[AnalyzedMove]) -> void:
-	print_debug("solved")
 	if not is_inside_tree():
 		return
-	print_debug("in tree")
 	if _game_state != GameState.InProgress:
 		return
-	print_debug("in progress")
 	if pos != screen.get_game_position():
 		return
-	print_debug("same position")
 	var pid = pos.size() % 2 + 1
 	if not PlayerManager.get_player_is_ai(pid):
 		return
-	print_debug("is AI; playing move")
 	var move = Ai.pick_a_move(moves, PlayerManager.get_player_ai_difficulty(pid))
 	play_a_move(move)

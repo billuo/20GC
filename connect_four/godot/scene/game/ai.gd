@@ -80,10 +80,3 @@ class Analysis:
 				best_moves = [col]
 			elif move.score == best_move_score:
 				best_moves.push_back(col)
-		# print_debug("possible moves: %s" % str(possible_moves))
-		# print_debug("winning moves: %s" % str(winning_moves))
-		# print_debug("forced moves: %s" % str(forced_moves))
-		# print_debug("good moves: %s" % str(good_moves))
-		# print_debug("neutral moves: %s" % str(neutral_moves))
-		# print_debug("bad moves: %s" % str(bad_moves))
-		# print_debug("best moves: %s" % str(best_moves))
