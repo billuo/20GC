@@ -1,0 +1,114 @@
+[gd_scene load_steps=4 format=3 uid="uid://oq76g0tvljju"]
+
+[ext_resource type="Texture2D" uid="uid://b2mqmvtyaplc2" path="res://asset/screen.png" id="2_2bgxg"]
+[ext_resource type="Texture2D" uid="uid://y2jsw8bdeoq2" path="res://asset/screen_frame.png" id="3_wxvej"]
+[ext_resource type="Texture2D" uid="uid://dj2u771wkedyo" path="res://asset/piece.png" id="4_hm2ss"]
+
+[node name="Screen" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_2bgxg")
+region_enabled = true
+region_rect = Rect2(0, 0, 700, 600)
+
+[node name="FrameSprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.535, 0.535)
+texture = ExtResource("3_wxvej")
+
+[node name="_Node2D_440" type="Node2D" parent="."]
+
+[node name="_Sprite2D_481" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(0, 250)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_482" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(-100, 250)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_483" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(0, 150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_484" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(200, 250)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_485" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(0, 50)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_486" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(0, -50)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_487" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(-100, 150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_488" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(-200, 250)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_489" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(-200, 150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_490" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(-100, 50)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_491" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(-100, -50)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_492" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(200, 150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_493" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(200, 50)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_494" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(-100, -150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_495" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 0, 0, 1)
+z_index = -1
+position = Vector2(0, -150)
+texture = ExtResource("4_hm2ss")
+
+[node name="_Sprite2D_496" type="Sprite2D" parent="_Node2D_440"]
+self_modulate = Color(1, 1, 0, 1)
+z_index = -1
+position = Vector2(-300, 250)
+texture = ExtResource("4_hm2ss")

@@ -18,9 +18,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"toggle_fullscreen"):
 		get_viewport().set_input_as_handled()
 		toggle_fullscreen()
+	elif event.is_action_pressed(&"take_screenshot"):
+		get_viewport().set_input_as_handled()
+		var t = Time.get_unix_time_from_system()
+		var milli = int(fmod(t * 1000.0, 1000.0))
+		var d = Time.get_datetime_dict_from_unix_time(t)
+		var path = "user://screenshot-%d%d%d-%d%d%d-%d.png" % [d["year"], d["month"], d["day"], d["hour"], d["minute"], d["second"], milli]
+		get_viewport().get_texture().get_image().save_png(path)
+		print_debug("screenshot saved to %s" % ProjectSettings.globalize_path(path))
 
 
 func request_exit() -> void:
+	if OS.get_name() == "Web":
+		return
 	# Log.info_stack(["Exiting..."])
 	get_tree().quit()
 

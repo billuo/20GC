@@ -1,9 +1,9 @@
 class_name Solver
 extends Node
 
-signal solved(moves: Array[AnalyzedMove])
+signal solved(position: PackedByteArray, moves: Array[AnalyzedMove])
 
-var inputs: Array[PackedByteArray]
+var positions: Array[PackedByteArray]
 var timestamps: Array[int]
 var _thread_stopped := false
 var _mutex: Mutex
@@ -34,9 +34,9 @@ func stop_thread():
 	_thread.wait_to_finish()
 
 
-func solve_position(moves: PackedByteArray) -> void:
+func solve_position(position: PackedByteArray) -> void:
 	_mutex.lock()
-	inputs.push_back(moves)
+	positions.push_back(position)
 	timestamps.push_back(Time.get_ticks_usec())
 	_mutex.unlock()
 	_semaphore.post()
@@ -54,14 +54,17 @@ func _work():
 			break
 
 		_mutex.lock()
-		for i in range(inputs.size()):
-			var moves = solver.analyze(inputs[i], false)
+		print_debug("solving %d positions" % positions.size())
+		for i in range(positions.size()):
+			var pos = positions[i]
+			var moves = solver.analyze(pos, false)
 			var now = Time.get_ticks_usec()
-			var time_left = timestamps[i] + MIN_THINKING_DELAY - now
-			if time_left <= 0:
-				solved.emit.call_deferred(moves)
+			var us_left = timestamps[i] + MIN_THINKING_DELAY - now
+			if us_left <= 0:
+				solved.emit.call_deferred(pos, moves)
 			else:
-				get_tree().create_timer(time_left / 1000000.0).timeout.connect(func(): solved.emit.call_deferred(moves))
-		inputs.clear()
+				var sec_left = us_left / 1000000.0
+				get_tree().create_timer(sec_left).timeout.connect(func(): solved.emit(pos, moves))
+		positions.clear()
 		timestamps.clear()
 		_mutex.unlock()

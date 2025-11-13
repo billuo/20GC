@@ -60,7 +60,7 @@ func get_moves_string() -> String:
 	return s
 
 
-func get_moves() -> PackedByteArray:
+func get_game_position() -> PackedByteArray:
 	var a = PackedByteArray()
 	for pos in piece_order:
 		a.push_back(pos.x)
@@ -83,6 +83,10 @@ func try_insert_piece(col: int, piece: int) -> bool:
 			position_changed.emit()
 			return true
 	return false
+
+
+func can_insert_piece(col: int) -> bool:
+	return get_top_empty_hole(col) != -1
 
 
 func withdraw() -> bool:
@@ -127,8 +131,7 @@ func clear() -> void:
 
 
 func display_hints(analysis: Ai.Analysis):
-	if $Hints.get_child_count() > 0:
-		return
+	clear_hints()
 	for move in analysis.analyzed_moves:
 		if move == null:
 			continue
@@ -138,17 +141,8 @@ func display_hints(analysis: Ai.Analysis):
 		var y = get_top_empty_hole(move.col)
 		hint.position = get_hole_center_local(Vector2i(move.col, y))
 		hint.score = move.score
-		if move.winning:
-			hint.self_modulate = Color.ORANGE
-			hint.score = null
-		elif move.forced:
-			hint.self_modulate = Color.PURPLE
-		elif move.score < 0:
-			hint.self_modulate = Color.RED
-		elif move.score > 0:
-			hint.self_modulate = Color.GREEN
-		else:
-			hint.self_modulate = Color.BLUE
+		hint.winning = move.winning
+		hint.forced = move.forced
 
 
 func clear_hints():

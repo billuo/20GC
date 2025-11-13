@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqi7nrsp6dg0k"]
+
+[ext_resource type="Texture2D" uid="uid://bh8bagbydev08" path="res://asset/floor.jpg" id="1_f62cj"]
+[ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="2_gp4vf"]
+[ext_resource type="PackedScene" uid="uid://oq76g0tvljju" path="res://scene/cover_art/cover_art_screen.tscn" id="3_xx0hy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xx0hy"]
+font_size = 160
+outline_size = 8
+outline_color = Color(0.10625774, 0.10625774, 0.10625774, 1)
+
+[node name="CoverArt" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_f62cj")
+centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_gp4vf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Title" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Connect Four"
+label_settings = SubResource("LabelSettings_xx0hy")
+
+[node name="Subtitle" type="RichTextLabel" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "20 Games Challenges Series [font_size=16]in place of tic-tac-toe[/font_size]"
+horizontal_alignment = 1
+
+[node name="Screen" parent="." instance=ExtResource("3_xx0hy")]
+position = Vector2(640, 415.53)

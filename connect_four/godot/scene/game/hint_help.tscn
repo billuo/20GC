@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://56tfulgohd40"]
+
+[ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="1_lhcbn"]
+[ext_resource type="PackedScene" uid="uid://cgai4v7spslqc" path="res://scene/screen/hint_circle.tscn" id="2_hqs4r"]
+[ext_resource type="Script" uid="uid://bsiwtbk0dt7av" path="res://scene/game/hint_help.gd" id="2_ses8d"]
+
+[node name="HintHelp" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_lhcbn")
+script = ExtResource("2_ses8d")
+
+[node name="Label1" type="Label" parent="."]
+custom_minimum_size = Vector2(830, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Hints are shown as a colorful circle at each possible location of next moves. Inside is a number measuring how quick the player wins/loses by playing there.
+
+Green circle if player eventually win.
+
+Red circle if player eventually lose.
+
+Blue circle if game eventually tie.
+
+Orange circle if playing the move wins immediately.
+
+Purple circle if not playing the move loses immediately.
+
+These are all assuming you continue to play perfectly after choosing a move."
+autowrap_mode = 3
+
+[node name="HintCirclePositive" parent="." instance=ExtResource("2_hqs4r")]
+position = Vector2(150, 215)
+score = 10
+
+[node name="HintCircleNegative" parent="." instance=ExtResource("2_hqs4r")]
+position = Vector2(150, 288)
+score = -10
+
+[node name="HintCircleZero" parent="." instance=ExtResource("2_hqs4r")]
+position = Vector2(150, 360)
+
+[node name="HintCircleWinning" parent="." instance=ExtResource("2_hqs4r")]
+position = Vector2(150, 440)
+winning = true
+
+[node name="HintCircleForced" parent="." instance=ExtResource("2_hqs4r")]
+position = Vector2(150, 524)
+forced = true

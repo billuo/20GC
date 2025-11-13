@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cdw4xiu8dgjsv" path="res://scene/screen/screen.tscn" id="3_oixtr"]
 [ext_resource type="Script" uid="uid://cucat3jxbytdv" path="res://scene/game/prompt.gd" id="5_v4hye"]
 [ext_resource type="Texture2D" uid="uid://dj2u771wkedyo" path="res://asset/piece.png" id="6_yv2ml"]
-[ext_resource type="PackedScene" uid="uid://cepc17f0c3o82" path="res://scene/mouse_cursor/mouse_cursor.tscn" id="7_2rwqa"]
 [ext_resource type="Script" uid="uid://bjbfd8ms11b7" path="res://scene/game/solver.gd" id="7_oixtr"]
 [ext_resource type="Theme" uid="uid://b5qr7r8teeuqf" path="res://res/default_theme.tres" id="8_o100e"]
 [ext_resource type="AudioStream" uid="uid://bg3f4fbmqhd57" path="res://asset/audio/piece_drop_high.wav" id="9_c7fbu"]
@@ -15,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://biqv0gx2in73i" path="res://asset/audio/piece_drop_mid2.wav" id="12_yv2ml"]
 [ext_resource type="AudioStream" uid="uid://bopdng5aihveo" path="res://asset/audio/piece_drop_low.wav" id="13_2rwqa"]
 [ext_resource type="AudioStream" uid="uid://c1arm28g06w74" path="res://asset/audio/piece_drop_low2.wav" id="14_o100e"]
+[ext_resource type="Texture2D" uid="uid://bmnht2lpfqwkm" path="res://asset/ui/help.svg" id="16_5wlrd"]
 [ext_resource type="AudioStream" uid="uid://c3tro1agvj6h7" path="res://asset/audio/grid-clear.mp3" id="16_okn60"]
 [ext_resource type="PackedScene" uid="uid://8fy1dhr3knbc" path="res://scene/game/piece_stack.tscn" id="18_5wlrd"]
 [ext_resource type="FontFile" uid="uid://g3ucrn8f4bkb" path="res://asset/fonts/Higher Jump.ttf" id="19_fkm2x"]
@@ -60,6 +60,14 @@ centered = false
 [node name="Screen" parent="." instance=ExtResource("3_oixtr")]
 position = Vector2(640, 415.53)
 
+[node name="PieceStack1" parent="." instance=ExtResource("18_5wlrd")]
+position = Vector2(211.66, 720)
+player_id = 1
+
+[node name="PieceStack2" parent="." instance=ExtResource("18_5wlrd")]
+position = Vector2(1067.765, 720)
+player_id = 2
+
 [node name="Prompt" type="Node2D" parent="." node_paths=PackedStringArray("screen")]
 script = ExtResource("5_v4hye")
 screen = NodePath("../Screen")
@@ -104,9 +112,6 @@ volume_db = -5.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="MouseCursor" parent="UI" instance=ExtResource("7_2rwqa")]
-scale = Vector2(0.5, 0.5)
-
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,47 +126,51 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="ExitButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Hint"
-
-[node name="WithdrawButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-text = "Withdraw"
+text = "Exit"
 
 [node name="RestartButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-focus_mode = 0
 text = "Restart"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="UI/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-dragging_enabled = false
-dragger_visibility = 1
-
-[node name="CopyMovesButton" type="Button" parent="UI/MarginContainer/HSplitContainer"]
+[node name="WithdrawButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Copy"
+text = "Withdraw"
 
-[node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainer/HSplitContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
 
-[node name="CurrentMovesLabel" type="Label" parent="UI/MarginContainer/HSplitContainer/PanelContainer"]
+[node name="HintHelpButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HSplitContainer"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("16_5wlrd")
+flat = true
+
+[node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HSplitContainer"]
 unique_name_in_owner = true
+layout_mode = 2
+text = "Hint"
+
+[node name="CopyMovesButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Copy Moves"
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentMovesLabel" type="Label" parent="UI/MarginContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Moves: 123456712345671234567123456712345671234567"
 label_settings = SubResource("LabelSettings_5wlrd")
+autowrap_mode = 1
 
 [node name="GameResultLabel" type="Label" parent="UI/MarginContainer"]
 unique_name_in_owner = true
@@ -172,18 +181,13 @@ size_flags_vertical = 0
 text = "Tie!"
 label_settings = SubResource("LabelSettings_mq16h")
 
-[node name="PieceStack1" parent="." instance=ExtResource("18_5wlrd")]
-position = Vector2(211.66, 720)
-player_id = 1
-
-[node name="PieceStack2" parent="." instance=ExtResource("18_5wlrd")]
-position = Vector2(1067.765, 720)
-player_id = 2
-
 [connection signal="player_won" from="Screen" to="." method="_on_player_won"]
 [connection signal="position_changed" from="Screen" to="." method="_on_screen_position_changed"]
 [connection signal="tied" from="Screen" to="." method="_on_game_tied"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HintButton" to="." method="_on_hint_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/WithdrawButton" to="." method="_on_withdraw_button_pressed"]
+[connection signal="solved" from="Solver" to="." method="_on_solver_solved"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/HSplitContainer/CopyMovesButton" to="." method="_on_copy_moves_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/WithdrawButton" to="." method="_on_withdraw_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HSplitContainer/HintHelpButton" to="." method="_on_hint_help_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HSplitContainer/HintButton" to="." method="_on_hint_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/CopyMovesButton" to="." method="_on_copy_moves_button_pressed"]

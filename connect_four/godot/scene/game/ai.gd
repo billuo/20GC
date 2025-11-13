@@ -20,6 +20,8 @@ static func pick_a_move(moves: Array[AnalyzedMove], difficulty: GameOptions.AIDi
 				return a.good_moves.pick_random()
 			if not a.neutral_moves.is_empty() and randf() < 0.9:
 				return a.neutral_moves.pick_random()
+			if not a.non_losing_moves.is_empty() and randf() < 0.9:
+				return a.non_losing_moves.pick_random()
 			return a.possible_moves.pick_random()
 		GameOptions.AIDifficulty.Veteran:
 			if not a.winning_moves.is_empty():
