@@ -26,6 +26,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var path = "user://screenshot-%d%d%d-%d%d%d-%d.png" % [d["year"], d["month"], d["day"], d["hour"], d["minute"], d["second"], milli]
 		get_viewport().get_texture().get_image().save_png(path)
 		print_debug("screenshot saved to %s" % ProjectSettings.globalize_path(path))
+	elif event.is_action_pressed(&"print_orphan_nodes"):
+		print_orphan_nodes()
 
 
 func request_exit() -> void:

@@ -8,7 +8,7 @@ enum GameState {
 
 var _game_state: GameState = GameState.InProgress:
 	set = set_game_state
-var _four_highlights_parent: Node2D
+var _wins_highlights_parent: Node2D
 var _single_player_id: int
 var _current_piece_stack: PieceStack
 var _winner_player_id: int
@@ -26,19 +26,10 @@ var _position_analysis: Ai.Analysis
 
 
 func _ready() -> void:
-	_four_highlights_parent = Node2D.new()
-	add_child(_four_highlights_parent)
-	match GameOptions.mode:
-		GameOptions.Mode.SinglePlayer:
-			_single_player_id = randi_range(1, 2)
-			for id in range(1, 3):
-				PlayerManager.set_player_is_ai(id, id != _single_player_id)
-		GameOptions.Mode.TwoPlayers:
-			for id in range(1, 3):
-				PlayerManager.set_player_is_ai(id, false)
-		GameOptions.Mode.NoPlayer:
-			for id in range(1, 3):
-				PlayerManager.set_player_is_ai(id, true)
+	_wins_highlights_parent = Node2D.new()
+	_wins_highlights_parent.name = "WinsHighlights"
+	add_child(_wins_highlights_parent)
+	_setup_players()
 	screen.clear()
 	_current_piece_stack.pop()
 	prompt.force_update()
@@ -96,9 +87,9 @@ func play_a_move(column: int):
 
 
 func restart() -> void:
-	_game_state = GameState.InProgress
-	for child in _four_highlights_parent.get_children():
+	for child in _wins_highlights_parent.get_children():
 		child.queue_free()
+	# sound
 	var n = screen.get_n_moves()
 	var play_random_sound = func(): [$Audio/PieceDropLow, $Audio/PieceDropMid, $Audio/PieceDropHigh].pick_random().play()
 	if n > 6:
@@ -108,12 +99,37 @@ func restart() -> void:
 	else:
 		for i in range(n):
 			get_tree().create_timer(randf_range(0.1, 0.5)).timeout.connect(play_random_sound)
+	_game_state = GameState.InProgress
+	_setup_players()
 	screen.clear()
 	piece_stack_1.reset()
 	piece_stack_2.reset()
 	piece_stack_1.pop()
 	prompt.force_update()
-	# TODO: player should switch side
+
+
+func _setup_players():
+	match GameOptions.mode:
+		GameOptions.Mode.SinglePlayer:
+			match GameOptions.initiative:
+				GameOptions.Initiative.Random:
+					_single_player_id = [1, 2].pick_random()
+				GameOptions.Initiative.Human:
+					_single_player_id = 1
+				GameOptions.Initiative.Computer:
+					_single_player_id = 2
+				_:
+					assert(false, "unknown initiative")
+			for id in [1, 2]:
+				PlayerManager.set_player_is_ai(id, id != _single_player_id)
+		GameOptions.Mode.TwoPlayers:
+			for id in [1, 2]:
+				PlayerManager.set_player_is_ai(id, false)
+		GameOptions.Mode.NoPlayer:
+			for id in [1, 2]:
+				PlayerManager.set_player_is_ai(id, true)
+		_:
+			assert(false, "unknown game mode")
 
 
 func _play_piece_drop_sound(col: int) -> void:
@@ -142,7 +158,7 @@ func _on_player_won(id: int, fours: Array) -> void:
 	for pos in highlighted:
 		var sprite = Sprite2D.new()
 		sprite.texture = preload("res://asset/piece_highlight.png")
-		_four_highlights_parent.add_child(sprite)
+		_wins_highlights_parent.add_child(sprite)
 		sprite.global_position = screen.global_position + screen.get_hole_center_local(pos)
 
 

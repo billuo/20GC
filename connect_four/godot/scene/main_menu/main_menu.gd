@@ -7,6 +7,7 @@ func _ready() -> void:
 	var state = MainMenuState.load_from_fs()
 	if state:
 		%NPlayers.select(state.n_players_selected_index)
+		%Initiative.select(state.initiative_selected_index)
 		%AIDifficulty1.select(state.ai_difficulty_1_selected_index)
 		%AIDifficulty2.select(state.ai_difficulty_2_selected_index)
 
@@ -14,6 +15,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	var state = MainMenuState.new()
 	state.n_players_selected_index = %NPlayers.selected
+	state.initiative_selected_index = %Initiative.selected
 	state.ai_difficulty_1_selected_index = %AIDifficulty1.selected
 	state.ai_difficulty_2_selected_index = %AIDifficulty2.selected
 	MainMenuState.save_to_fs(state)
@@ -31,6 +33,11 @@ func _on_start_pressed() -> void:
 		1: GameOptions.Mode.TwoPlayers,
 		2: GameOptions.Mode.NoPlayer,
 	}[%NPlayers.selected]
+	GameOptions.initiative = {
+		0: GameOptions.Initiative.Random,
+		1: GameOptions.Initiative.Human,
+		2: GameOptions.Initiative.Computer,
+	}[%Initiative.selected]
 	GameOptions.ai_difficulty_1 = {
 		0: GameOptions.AIDifficulty.Drunk,
 		1: GameOptions.AIDifficulty.Normal,
@@ -49,11 +56,14 @@ func _on_start_pressed() -> void:
 func _on_n_players_item_selected(index: int) -> void:
 	match index:
 		0:
+			%Initiative.show()
 			%AIDifficulty1.show()
 			%AIDifficulty2.hide()
 		1:
+			%Initiative.hide()
 			%AIDifficulty1.hide()
 			%AIDifficulty2.hide()
 		2:
+			%Initiative.hide()
 			%AIDifficulty1.show()
 			%AIDifficulty2.show()

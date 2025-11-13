@@ -5,6 +5,11 @@ enum Mode {
 	TwoPlayers,
 	NoPlayer,
 }
+enum Initiative {
+	Random,
+	Human,
+	Computer,
+}
 enum AIDifficulty {
 	Drunk,  # basically choose randomly
 	Normal,  # usually reasonable, but can make mistake
@@ -13,5 +18,6 @@ enum AIDifficulty {
 }
 
 var mode: Mode
+var initiative: Initiative
 var ai_difficulty_1: AIDifficulty
 var ai_difficulty_2: AIDifficulty

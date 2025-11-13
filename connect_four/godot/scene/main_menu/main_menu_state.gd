@@ -4,6 +4,7 @@ extends Resource
 const DEFAULT_PATH := "user://main_menu_state.tres"
 
 @export var n_players_selected_index: int
+@export var initiative_selected_index: int
 @export var ai_difficulty_1_selected_index: int
 @export var ai_difficulty_2_selected_index: int
 

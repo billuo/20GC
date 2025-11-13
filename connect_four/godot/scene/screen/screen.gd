@@ -16,6 +16,7 @@ const SCAN_LINES := [
 ]
 
 static var hint_circle_scene := load("res://scene/screen/hint_circle.tscn")
+
 var pieces: Array[int]
 var piece_sprites: Array[Sprite2D]
 var piece_order: Array[Vector2i]
@@ -115,9 +116,9 @@ func clear() -> void:
 	piece_highlight.hide()
 	var old_parent := piece_sprites_parent
 	piece_sprites_parent = Node2D.new()
+	piece_sprites_parent.name = "PieceSpriteParent"
 	add_child(piece_sprites_parent)
-	var timer = get_tree().create_timer(1.0)
-	timer.timeout.connect(old_parent.queue_free)
+	get_tree().create_timer(1.0).timeout.connect(old_parent.queue_free)
 	var interval = 0.0
 	for x in range(SIZE.x):
 		for y in range(SIZE.y - 1, -1, -1):
@@ -128,6 +129,8 @@ func clear() -> void:
 			tween.tween_interval(interval)
 			interval += 0.01
 			tween.tween_property(sprite, "position", sprite.position + Vector2(0, Global.VIEWPORT_SIZE.y), 0.5)
+	piece_sprites.clear()
+	piece_sprites.resize(SIZE.x * SIZE.y)
 	position_changed.emit()
 
 

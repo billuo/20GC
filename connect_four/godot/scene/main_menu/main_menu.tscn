@@ -85,6 +85,27 @@ content_stretch_ratio = 2.0
 auto_min_height = false
 metadata/_custom_type_script = "uid://qd77dvovdm6s"
 
+[node name="Initiative" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_vertical = 4
+flat = true
+script = ExtResource("3_6836v")
+items = Array[String](["Random", "You First", "Computer First"])
+selected = 0
+item_count = 3
+loop = true
+next_icon = ExtResource("5_ywaph")
+prev_icon = ExtResource("4_e8klu")
+nav_focus_mode = 0
+mousewheel = true
+title = "Initiative"
+title_alignment = 4
+content_stretch_ratio = 2.0
+auto_min_height = false
+metadata/_custom_type_script = "uid://qd77dvovdm6s"
+
 [node name="AIDifficulty1" type="Button" parent="CanvasLayer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 90)

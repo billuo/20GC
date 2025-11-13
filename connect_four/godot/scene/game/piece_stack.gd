@@ -33,7 +33,6 @@ func pop() -> bool:
 			max_y = child.position.y
 			bottom_piece = child
 	assert(bottom_piece)
-	remove_child(bottom_piece)  # NOTE: will be freed once out of screen
 	bottom_piece.collision_layer = 0
 	bottom_piece.collision_mask = 0
 	return true
