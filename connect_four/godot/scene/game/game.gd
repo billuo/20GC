@@ -6,8 +6,6 @@ enum GameState {
 	FinishedTie,
 }
 
-const HINT_HELP_SCENE := preload("res://scene/game/hint_help.tscn")
-
 var _game_state: GameState = GameState.InProgress:
 	set = set_game_state
 var _four_highlights_parent: Node2D
@@ -210,6 +208,7 @@ func _on_copy_moves_button_pressed() -> void:
 
 func _on_screen_position_changed() -> void:
 	var pid = current_player_id()
+	var is_ai = PlayerManager.get_player_is_ai(pid)
 	%CurrentMovesLabel.text = "Moves: %s" % screen.get_moves_string()
 	_position_analysis = null
 	screen.clear_hints()
@@ -218,8 +217,9 @@ func _on_screen_position_changed() -> void:
 		print_debug("solving...")
 		solver.solve_position(screen.get_game_position())
 	prompt.color = PlayerManager.get_player_color(pid)
-	%WithdrawButton.disabled = PlayerManager.get_player_is_ai(pid)
-	%HintButton.disabled = PlayerManager.get_player_is_ai(pid)
+	%WithdrawButton.disabled = is_ai
+	%HintButton.disabled = is_ai
+	%ThinkingLabel.visible = is_ai and _game_state == GameState.InProgress
 	if pid == 1:
 		_current_piece_stack = piece_stack_1
 	else:
@@ -227,7 +227,7 @@ func _on_screen_position_changed() -> void:
 
 
 func _on_hint_help_button_pressed() -> void:
-	$UI.add_child(HINT_HELP_SCENE.instantiate())
+	$UI.add_child(load("res://scene/game/hint_help.tscn").instantiate())
 
 
 func _on_exit_button_pressed() -> void:

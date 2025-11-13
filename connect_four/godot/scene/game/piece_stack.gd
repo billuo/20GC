@@ -2,7 +2,6 @@ class_name PieceStack
 extends Node2D
 
 const PIECE_SIZE := Vector2(90, 18)
-const PIECE_SIDEWAY_SCENE := preload("res://scene/game/piece_sideway.tscn")
 
 @export var player_id: int
 
@@ -34,7 +33,7 @@ func pop() -> bool:
 			max_y = child.position.y
 			bottom_piece = child
 	assert(bottom_piece)
-	remove_child(bottom_piece) # NOTE: will be freed once out of screen
+	remove_child(bottom_piece)  # NOTE: will be freed once out of screen
 	bottom_piece.collision_layer = 0
 	bottom_piece.collision_mask = 0
 	return true
@@ -45,7 +44,7 @@ func push():
 
 
 func _add_piece(height: int):
-	var piece: RigidBody2D = PIECE_SIDEWAY_SCENE.instantiate()
+	var piece: RigidBody2D = load("res://scene/game/piece_sideway.tscn").instantiate()
 	piece.collision_layer = 1 << player_id
 	piece.collision_mask = 1 << player_id
 	add_child(piece)

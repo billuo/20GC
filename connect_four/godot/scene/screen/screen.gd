@@ -15,6 +15,7 @@ const SCAN_LINES := [
 	[Vector2i(0, 3), Vector2i(1, 2), Vector2i(2, 1), Vector2i(3, 0)],
 ]
 
+static var hint_circle_scene := load("res://scene/screen/hint_circle.tscn")
 var pieces: Array[int]
 var piece_sprites: Array[Sprite2D]
 var piece_order: Array[Vector2i]
@@ -135,8 +136,7 @@ func display_hints(analysis: Ai.Analysis):
 	for move in analysis.analyzed_moves:
 		if move == null:
 			continue
-		const HINT := preload("res://scene/screen/hint_circle.tscn")
-		var hint: HintCircle = HINT.instantiate()
+		var hint: HintCircle = hint_circle_scene.instantiate()
 		$Hints.add_child(hint)
 		var y = get_top_empty_hole(move.col)
 		hint.position = get_hole_center_local(Vector2i(move.col, y))

@@ -1,7 +1,5 @@
 extends Node2D
 
-const GAME_SCENE := preload("res://scene/game/game.tscn")
-
 
 func _ready() -> void:
 	%Start.grab_focus.call_deferred()
@@ -45,7 +43,7 @@ func _on_start_pressed() -> void:
 		2: GameOptions.AIDifficulty.Veteran,
 		3: GameOptions.AIDifficulty.Godlike,
 	}[%AIDifficulty2.selected]
-	get_tree().change_scene_to_packed(GAME_SCENE)
+	get_tree().change_scene_to_packed(load("res://scene/game/game.tscn"))
 
 
 func _on_n_players_item_selected(index: int) -> void:
