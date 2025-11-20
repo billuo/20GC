@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 PlayerManager="*res://singleton/player_manager.gd"
 AppController="*res://singleton/app_controller.gd"
 GameOptions="*res://singleton/game_options.gd"
+AutoUISound="res://singleton/auto_ui_sound.gd"
 
 [debug]
 
@@ -36,6 +37,10 @@ mouse_cursor/custom_image_hotspot=Vector2(32, 32)
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/spin_button/plugin.cfg")
+
+[global_group]
+
+sounded_button="Button with automatic UI sounds"
 
 [input]
 

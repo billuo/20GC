@@ -49,7 +49,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event is InputEventMouseMotion:
 				prompt.force_update(event.global_position)
 			elif event is InputEventMouseButton:
-				if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+				if event.is_released() and event.button_index == MOUSE_BUTTON_LEFT:
 					var mouse_pos = event.global_position
 					var hole_pos = screen.get_nearest_hole(mouse_pos)
 					if screen.can_insert_piece(hole_pos.x):

@@ -13,11 +13,11 @@ grow_vertical = 2
 theme = ExtResource("1_lhcbn")
 script = ExtResource("2_ses8d")
 
-[node name="Label1" type="Label" parent="."]
+[node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(830, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Hints are shown as a colorful circle at each possible location of next moves. Inside is a number measuring how quick the player wins/loses by playing there.
+text = "A Hint is a colorful circle at one possible location of next moves. Inside is a number, measuring how quick the player wins/loses by playing there.
 
 Green circle if player eventually win.
 
@@ -29,24 +29,24 @@ Orange circle if playing the move wins immediately.
 
 Purple circle if not playing the move loses immediately.
 
-These are all assuming you continue to play perfectly after choosing a move."
+These are all assuming both players continue to play perfectly after choosing a move."
 autowrap_mode = 3
 
 [node name="HintCirclePositive" parent="." instance=ExtResource("2_hqs4r")]
-position = Vector2(150, 215)
+position = Vector2(150, 234.5)
 score = 10
 
 [node name="HintCircleNegative" parent="." instance=ExtResource("2_hqs4r")]
-position = Vector2(150, 288)
+position = Vector2(150, 307.5)
 score = -10
 
 [node name="HintCircleZero" parent="." instance=ExtResource("2_hqs4r")]
-position = Vector2(150, 360)
+position = Vector2(150, 379.5)
 
 [node name="HintCircleWinning" parent="." instance=ExtResource("2_hqs4r")]
-position = Vector2(150, 440)
+position = Vector2(150, 454)
 winning = true
 
 [node name="HintCircleForced" parent="." instance=ExtResource("2_hqs4r")]
-position = Vector2(150, 524)
+position = Vector2(150, 525)
 forced = true

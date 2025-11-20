@@ -89,7 +89,7 @@ position = Vector2(640, 420)
 
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("9_o100e")
-volume_db = 15.0
+volume_db = 20.0
 autoplay = true
 
 [node name="PieceDropHigh" type="AudioStreamPlayer2D" parent="Audio"]
@@ -127,16 +127,16 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="ExitButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+[node name="ExitButton" type="Button" parent="UI/MarginContainer/VBoxContainer" groups=["sounded_button"]]
 layout_mode = 2
 text = "Exit"
 
-[node name="RestartButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="UI/MarginContainer/VBoxContainer" groups=["sounded_button"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Restart"
 
-[node name="WithdrawButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+[node name="WithdrawButton" type="Button" parent="UI/MarginContainer/VBoxContainer" groups=["sounded_button"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Withdraw"
@@ -152,12 +152,12 @@ focus_mode = 0
 icon = ExtResource("16_5wlrd")
 flat = true
 
-[node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="HintButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HSplitContainer" groups=["sounded_button"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Hint"
 
-[node name="CopyMovesButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
+[node name="CopyMovesButton" type="Button" parent="UI/MarginContainer/VBoxContainer" groups=["sounded_button"]]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Copy Moves"
